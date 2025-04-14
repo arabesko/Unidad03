@@ -14,9 +14,9 @@ public class Player : MonoBehaviour, IDamagiable
     [SerializeField] private float _hightToCollect;
     [SerializeField] private LayerMask _layerArms;
 
-    [SerializeField] private Transform _weaponSpace1;
-    [SerializeField] private Transform _weaponSpace2;
-    [SerializeField] private Transform _weaponSpace3;
+    [SerializeField] private Transform _leftArm;
+    [SerializeField] private Transform _proyector;
+    [SerializeField] private Transform _rightArm;
 
     [SerializeField] private Transform _levitationPoint;
 
@@ -26,7 +26,7 @@ public class Player : MonoBehaviour, IDamagiable
 
     [SerializeField] private List<MeshRenderer> _bodyRender;
 
-    private Dictionary<KeyCode, GameObject> _invetoryWeapon = new Dictionary<KeyCode, GameObject>();
+    private Dictionary<string, GameObject> _modulos = new Dictionary<string, GameObject>();
 
     public List<MeshRenderer> BodyRender {  get { return _bodyRender; } }
 
@@ -40,9 +40,46 @@ public class Player : MonoBehaviour, IDamagiable
         _currentLife = _maxLife;
     }
 
+    private void Start()
+    {
+        SelectModule(); //Asigna el modulo inicial (Proyector)
+    }
+
     void FixedUpdate()
     {
         MovePlayer();
+    }
+
+    /// <summary>
+    /// Selecciona el modulo vacio para asignar el arma colectada
+    /// </summary>
+    private void SelectModule()
+    {
+        var myDriver = _elementDetected.GetComponent<IDrivers>();
+        if (myDriver == null) return;
+
+        _weaponSelected = _elementDetected;
+        _weaponSelected.transform.parent = transform;
+        _weaponSelected.GetComponent<Rigidbody>().isKinematic = true;
+        myDriver.Initialized(this);
+
+        //Selecciona que modulo esta disponible para asignar el arme colectada
+        if (!_modulos.ContainsKey("Proyector"))
+        {
+            _modulos.Add("Proyector", _elementDetected);
+            _elementDetected.transform.position = _proyector.transform.position;
+        }
+        else if (!_modulos.ContainsKey("Brazo_I"))
+        {
+            _modulos.Add("Brazo_I", _elementDetected);
+            _elementDetected.transform.position = _leftArm.transform.position;
+        }
+        
+        else if (!_modulos.ContainsKey("Brazo_D"))
+        {
+            _modulos.Add("Brazo_D", _elementDetected);
+            _elementDetected.transform.position = _rightArm.transform.position;
+        }
     }
 
     void Update()
@@ -52,30 +89,7 @@ public class Player : MonoBehaviour, IDamagiable
         //Colectar partes
         if (Input.GetKeyDown(KeyCode.C) && CollectWeapon())
         {
-            
-            _weaponSelected = _elementDetected;
-            _weaponSelected.transform.parent = transform;
-            _weaponSelected.GetComponent<Rigidbody>().isKinematic = true;
-            _weaponSelected.GetComponent<IDrivers>().Initialized(this);
-
-            //Codigo provisorio
-            if (_elementDetected.gameObject.name == "Arma1")
-            {
-               _invetoryWeapon.Add(KeyCode.Alpha1, _elementDetected);
-                _elementDetected.transform.position = _weaponSpace1.transform.position;
-            }
-
-            if (_elementDetected.gameObject.name == "Arma2")
-            {
-                _invetoryWeapon.Add(KeyCode.Alpha2, _weaponSelected);
-                _elementDetected.transform.position = _weaponSpace2.transform.position;
-            }
-
-            if (_elementDetected.gameObject.name == "Arma3")
-            {
-                _invetoryWeapon.Add(KeyCode.Alpha3, _weaponSelected);
-                _elementDetected.transform.position = _weaponSpace3.transform.position;
-            }
+            SelectModule();
         }
 
         //Levitar partes
@@ -96,27 +110,27 @@ public class Player : MonoBehaviour, IDamagiable
 
 
         //Cambiar de arma
-        if (Input.GetKeyDown (KeyCode.Alpha1))
+        if (Input.GetKeyDown(KeyCode.Alpha1))
         {
-           if (_invetoryWeapon.ContainsKey(KeyCode.Alpha1))
+           if (_modulos.ContainsKey("Brazo_I"))
             {
-                _invetoryWeapon[KeyCode.Alpha1].GetComponent<IDrivers>().Initialized(this);
+                _modulos["Brazo_I"].GetComponent<IDrivers>().Initialized(this);
             }
         }
 
         if (Input.GetKeyDown(KeyCode.Alpha2))
         {
-            if (_invetoryWeapon.ContainsKey(KeyCode.Alpha2))
+            if (_modulos.ContainsKey("Proyector"))
             {
-                _invetoryWeapon[KeyCode.Alpha2].GetComponent<IDrivers>().Initialized(this);
+                _modulos["Proyector"].GetComponent<IDrivers>().Initialized(this);
             }
         }
 
         if (Input.GetKeyDown(KeyCode.Alpha3))
         {
-            if (_invetoryWeapon.ContainsKey(KeyCode.Alpha3))
+            if (_modulos.ContainsKey("Brazo_D"))
             {
-                _invetoryWeapon[KeyCode.Alpha3].GetComponent<IDrivers>().Initialized(this);
+                _modulos["Brazo_D"].GetComponent<IDrivers>().Initialized(this);
             }
         }
     }

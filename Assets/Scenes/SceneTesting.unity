@@ -1107,7 +1107,7 @@ GameObject:
   m_Component:
   - component: {fileID: 270176509}
   m_Layer: 0
-  m_Name: Arma3
+  m_Name: Brazo_D
   m_TagString: Untagged
   m_Icon: {fileID: 4422084297763085224, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
@@ -3914,11 +3914,11 @@ MonoBehaviour:
   _layerArms:
     serializedVersion: 2
     m_Bits: 64
-  _weaponSpace1: {fileID: 1162600390}
-  _weaponSpace2: {fileID: 895910055}
-  _weaponSpace3: {fileID: 270176509}
+  _leftArm: {fileID: 1162600390}
+  _proyector: {fileID: 895910055}
+  _rightArm: {fileID: 270176509}
   _levitationPoint: {fileID: 371018552}
-  _elementDetected: {fileID: 0}
+  _elementDetected: {fileID: 2076743150}
   _weaponSelected: {fileID: 0}
   _elementSelected: {fileID: 0}
   _bodyRender:
@@ -4039,7 +4039,7 @@ GameObject:
   m_Component:
   - component: {fileID: 895910055}
   m_Layer: 0
-  m_Name: Arma2
+  m_Name: Proyector
   m_TagString: Untagged
   m_Icon: {fileID: 4422084297763085224, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
@@ -5455,7 +5455,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1162600390}
   m_Layer: 0
-  m_Name: Arma1
+  m_Name: Brazo_I
   m_TagString: Untagged
   m_Icon: {fileID: 4422084297763085224, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
@@ -9735,7 +9735,7 @@ GameObject:
   - component: {fileID: 2076743155}
   - component: {fileID: 2076743156}
   m_Layer: 6
-  m_Name: Arma1
+  m_Name: WeaponProyector
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -9820,8 +9820,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2076743150}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -3.62, y: 1.7565279, z: -0.44}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0.01, y: 2.45, z: -1.3600001}
   m_LocalScale: {x: 0.54038, y: 0.54038, z: 0.54038}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -9873,9 +9873,9 @@ SceneRoots:
   - {fileID: 963194228}
   - {fileID: 705507995}
   - {fileID: 391345452}
+  - {fileID: 34557454}
   - {fileID: 865509086}
   - {fileID: 2076743154}
   - {fileID: 608879059}
   - {fileID: 416456203}
-  - {fileID: 34557454}
   - {fileID: 206429542}
