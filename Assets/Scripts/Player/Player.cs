@@ -3,9 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-public class Player : MonoBehaviour
+public class Player : MonoBehaviour, IDamagiable
 {
-    // Serialized Fields (ajustables en el Inspector)
+    [SerializeField] private float _currentLife;
+    [SerializeField] private float _maxLife;
     [SerializeField] private float _moveSpeed = 5f;
     [SerializeField] private float _jumpForce = 7f;
     [SerializeField] private float _rotateSpeed = 1f;
@@ -17,7 +18,17 @@ public class Player : MonoBehaviour
     [SerializeField] private Transform _weaponSpace2;
     [SerializeField] private Transform _weaponSpace3;
 
-    [SerializeField] private GameObject _weapon;
+    [SerializeField] private Transform _levitationPoint;
+
+    [SerializeField] private GameObject _elementDetected; //La que detecta el Raycast
+    [SerializeField] private GameObject _weaponSelected; //El arma que esta activa
+    [SerializeField] private GameObject _elementSelected; //El el elemento levitado
+
+    [SerializeField] private List<MeshRenderer> _bodyRender;
+
+    private Dictionary<KeyCode, GameObject> _invetoryWeapon = new Dictionary<KeyCode, GameObject>();
+
+    public List<MeshRenderer> BodyRender {  get { return _bodyRender; } }
 
     // Componentes
     private Rigidbody rb;
@@ -26,7 +37,7 @@ public class Player : MonoBehaviour
     void Awake()
     {
         rb = GetComponent<Rigidbody>();
-
+        _currentLife = _maxLife;
     }
 
     void FixedUpdate()
@@ -38,23 +49,74 @@ public class Player : MonoBehaviour
     {
         HandleJump();
 
-        if (Input.GetKeyDown(KeyCode.C) && CollectArm())
+        //Colectar partes
+        if (Input.GetKeyDown(KeyCode.C) && CollectWeapon())
         {
-            _weapon.transform.parent = transform;
-            _weapon.GetComponent<Rigidbody>().isKinematic = true;
-            if (_weapon.gameObject.name == "Arma1")
+            
+            _weaponSelected = _elementDetected;
+            _weaponSelected.transform.parent = transform;
+            _weaponSelected.GetComponent<Rigidbody>().isKinematic = true;
+            _weaponSelected.GetComponent<IDrivers>().Initialized(this);
+
+            //Codigo provisorio
+            if (_elementDetected.gameObject.name == "Arma1")
             {
-                _weapon.transform.position = _weaponSpace1.transform.position;
+               _invetoryWeapon.Add(KeyCode.Alpha1, _elementDetected);
+                _elementDetected.transform.position = _weaponSpace1.transform.position;
             }
 
-            if (_weapon.gameObject.name == "Arma2")
+            if (_elementDetected.gameObject.name == "Arma2")
             {
-                _weapon.transform.position = _weaponSpace2.transform.position;
+                _invetoryWeapon.Add(KeyCode.Alpha2, _weaponSelected);
+                _elementDetected.transform.position = _weaponSpace2.transform.position;
             }
 
-            if (_weapon.gameObject.name == "Arma3")
+            if (_elementDetected.gameObject.name == "Arma3")
             {
-                _weapon.transform.position = _weaponSpace3.transform.position;
+                _invetoryWeapon.Add(KeyCode.Alpha3, _weaponSelected);
+                _elementDetected.transform.position = _weaponSpace3.transform.position;
+            }
+        }
+
+        //Levitar partes
+        if (Input.GetKeyDown(KeyCode.R) && CollectWeapon())
+        {
+            _elementSelected = _elementDetected;
+            _elementSelected.transform.parent = transform;
+            _elementSelected.GetComponent<Rigidbody>().isKinematic = true;
+            _elementSelected.transform.position = _levitationPoint.transform.position;
+            _elementSelected.GetComponent<IPuzzlesElements>().Activate();
+        }
+        else if (Input.GetKeyDown(KeyCode.R) && _elementSelected != null)
+        {
+            _elementSelected.GetComponent<Rigidbody>().isKinematic = false;
+            _elementSelected.GetComponent<IPuzzlesElements>().Desactivate();
+            _elementSelected.transform.parent = null;
+        }
+
+
+        //Cambiar de arma
+        if (Input.GetKeyDown (KeyCode.Alpha1))
+        {
+           if (_invetoryWeapon.ContainsKey(KeyCode.Alpha1))
+            {
+                _invetoryWeapon[KeyCode.Alpha1].GetComponent<IDrivers>().Initialized(this);
+            }
+        }
+
+        if (Input.GetKeyDown(KeyCode.Alpha2))
+        {
+            if (_invetoryWeapon.ContainsKey(KeyCode.Alpha2))
+            {
+                _invetoryWeapon[KeyCode.Alpha2].GetComponent<IDrivers>().Initialized(this);
+            }
+        }
+
+        if (Input.GetKeyDown(KeyCode.Alpha3))
+        {
+            if (_invetoryWeapon.ContainsKey(KeyCode.Alpha3))
+            {
+                _invetoryWeapon[KeyCode.Alpha3].GetComponent<IDrivers>().Initialized(this);
             }
         }
     }
@@ -66,29 +128,25 @@ public class Player : MonoBehaviour
 
         Vector3 moveDirection = new Vector3(horizontalInput, 0f, verticalInput).normalized;
 
-        Vector3 moveForce = moveDirection * _moveSpeed;
-        rb.AddForce(moveForce, ForceMode.Force);
+        rb.MovePosition(transform.position += moveDirection * _moveSpeed * Time.fixedDeltaTime);
 
         if (moveDirection.magnitude != 0)
         {
             Quaternion targetRotation = Quaternion.LookRotation(moveDirection);
-            transform.rotation = Quaternion.Slerp(
-                transform.rotation,
-                targetRotation,
-                Time.deltaTime * _rotateSpeed
-            );
+            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * _rotateSpeed);
         }
         
     }
 
-    private bool CollectArm()
+    private bool CollectWeapon()
     {
+        //ESTO SE CAMBIARA POR UN RANGO DE VISION
         RaycastHit hit;
         bool hasHit = Physics.Raycast(transform.position, transform.forward, out hit, _lineToCollect, _layerArms);
 
         if (hasHit)
         {
-            _weapon = hit.transform.gameObject;
+            _elementDetected = hit.transform.gameObject;
             return true;
         }
         return false;
@@ -108,5 +166,14 @@ public class Player : MonoBehaviour
         Gizmos.DrawLine(transform.position + (transform.up / 5) * _hightToCollect, transform.position + (transform.up / 5) * _hightToCollect + transform.forward * _lineToCollect);
     }
 
+    public void Health(int health)
+    {
+        _currentLife += health;
+    }
+
+    public void Damage(int damage)
+    {
+        _currentLife -= damage;
+    }
 }
 

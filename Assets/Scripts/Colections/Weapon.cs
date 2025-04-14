@@ -1,18 +1,31 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
-public class Weapon : MonoBehaviour
+public class Weapon : MonoBehaviour, IDrivers
 {
-    // Start is called before the first frame update
-    void Start()
+    private MeshRenderer _render;
+
+    private void Awake()
     {
-        
+        _render = GetComponent<MeshRenderer>();
+    }
+    public void Initialized(Player player)
+    {
+       ChangeColor(player);
+    }
+    public void PowerElement()
+    {
+        //Lo que sea que haga cada arma
     }
 
-    // Update is called once per frame
-    void Update()
+    public void ChangeColor(Player player)
     {
-        
+        //Provisorio, solo para que se entienda que paso algo al colectar
+        foreach (var item in player.BodyRender)
+        {
+            item.material = _render.material;
+        }
     }
 }
