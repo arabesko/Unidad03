@@ -74,7 +74,6 @@ public class Player : MonoBehaviour, IDamagiable
             _modulos.Add("Brazo_I", _elementDetected);
             _elementDetected.transform.position = _leftArm.transform.position;
         }
-        
         else if (!_modulos.ContainsKey("Brazo_D"))
         {
             _modulos.Add("Brazo_D", _elementDetected);
