@@ -38,7 +38,7 @@ Material:
     m_Ints: []
     m_Floats:
     - _Fade: 0.293
-    - _OpacidadVoronoi: 2.72
+    - _OpacidadVoronoi: 2.6
     - _QueueControl: 0
     - _QueueOffset: 0
     m_Colors: []
