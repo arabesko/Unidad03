@@ -5,6 +5,7 @@ using UnityEngine;
 public class Bullet : MonoBehaviour
 {
     [SerializeField] private float _moveSpeed;
+    [SerializeField] private float _speedRotation;
     void Start()
     {
         //Destroy(gameObject, 3f);
@@ -13,5 +14,6 @@ public class Bullet : MonoBehaviour
     void Update()
     {
         transform.position += transform.forward * _moveSpeed * Time.deltaTime;
+        transform.Rotate(0, 0, _speedRotation * Time.deltaTime);
     }
 }
