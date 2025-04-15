@@ -11,11 +11,11 @@ public class Weapon : MonoBehaviour, IDrivers
     {
         _render = GetComponent<MeshRenderer>();
     }
-    public void Initialized(Player player)
+    public virtual void Initialized(Player player)
     {
        ChangeColor(player);
     }
-    public void PowerElement()
+    public virtual void PowerElement()
     {
         //Lo que sea que haga cada arma
     }

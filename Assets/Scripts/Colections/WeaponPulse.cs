@@ -2,17 +2,17 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class WeaponPulse : MonoBehaviour
+public class WeaponPulse : Weapon
 {
-    // Start is called before the first frame update
-    void Start()
+    [SerializeField] public GameObject _myBulletPrebaf;
+    [SerializeField] public Transform _instancePoint;
+    public override void Initialized(Player player)
     {
-        
+        base.Initialized(player);
     }
 
-    // Update is called once per frame
-    void Update()
+    public override void PowerElement()
     {
-        
+        Instantiate(_myBulletPrebaf, _instancePoint.position, transform.rotation);
     }
 }

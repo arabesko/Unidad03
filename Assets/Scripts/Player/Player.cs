@@ -27,8 +27,9 @@ public class Player : MonoBehaviour, IDamagiable
     [SerializeField] private List<MeshRenderer> _bodyRender;
 
     private Dictionary<string, GameObject> _modulos = new Dictionary<string, GameObject>();
-
     public List<MeshRenderer> BodyRender {  get { return _bodyRender; } }
+    private delegate void PowerAccion();
+    private PowerAccion _myPower;
 
     // Componentes
     private Rigidbody rb;
@@ -43,6 +44,21 @@ public class Player : MonoBehaviour, IDamagiable
     private void Start()
     {
         SelectModule(); //Asigna el modulo inicial (Proyector)
+    }
+
+    public void Proyector()
+    {
+        print("Proyectando");
+    }
+
+    public void Invisible()
+    {
+        print("Me hago invisible");
+    }
+
+    public void Pulse()
+    {
+        print("Disparo una bala");
     }
 
     void FixedUpdate()
@@ -60,6 +76,7 @@ public class Player : MonoBehaviour, IDamagiable
 
         _weaponSelected = _elementDetected;
         _weaponSelected.transform.parent = transform;
+        _weaponSelected.transform.rotation = this.transform.rotation;
         _weaponSelected.GetComponent<Rigidbody>().isKinematic = true;
         myDriver.Initialized(this);
 
@@ -114,6 +131,7 @@ public class Player : MonoBehaviour, IDamagiable
            if (_modulos.ContainsKey("Brazo_I"))
             {
                 _modulos["Brazo_I"].GetComponent<IDrivers>().Initialized(this);
+                _weaponSelected = _modulos["Brazo_I"];
             }
         }
 
@@ -122,6 +140,7 @@ public class Player : MonoBehaviour, IDamagiable
             if (_modulos.ContainsKey("Proyector"))
             {
                 _modulos["Proyector"].GetComponent<IDrivers>().Initialized(this);
+                _weaponSelected = _modulos["Proyector"];
             }
         }
 
@@ -130,7 +149,13 @@ public class Player : MonoBehaviour, IDamagiable
             if (_modulos.ContainsKey("Brazo_D"))
             {
                 _modulos["Brazo_D"].GetComponent<IDrivers>().Initialized(this);
+                _weaponSelected = _modulos["Brazo_D"];
             }
+        }
+
+        if (Input.GetKeyDown(KeyCode.Q))
+        {
+            _weaponSelected.GetComponent<IDrivers>().PowerElement();
         }
     }
 
