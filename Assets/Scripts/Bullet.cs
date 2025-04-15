@@ -8,7 +8,7 @@ public class Bullet : MonoBehaviour
     [SerializeField] private float _speedRotation;
     void Start()
     {
-        //Destroy(gameObject, 3f);
+        Destroy(gameObject, 5f);
     }
 
     void Update()
