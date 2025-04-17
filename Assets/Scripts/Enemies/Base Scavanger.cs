@@ -14,12 +14,7 @@ public class BaseScavanger : MonoBehaviour
     [SerializeField] private int _index;
     [SerializeField] private float _rotationSpeed;
 
-    [SerializeField] Transform _point1;
-    [SerializeField] Transform _point2;
-    [SerializeField] Transform _point3;
-    [SerializeField] Transform _point4;
-
-    private bool shaseNow;
+    private bool _chaseNow;
 
     void Start()
     {
@@ -31,10 +26,10 @@ public class BaseScavanger : MonoBehaviour
     {
         if (Vector3.Distance(transform.position, _player.position) < _visionRange)
         {
-            shaseNow = true;
+            _chaseNow = true;
         }
 
-        if (shaseNow == true)
+        if (_chaseNow == true)
         {
 
             Vector3 playerDirection = (_player.position - transform.position).normalized;
@@ -69,5 +64,11 @@ public class BaseScavanger : MonoBehaviour
                 }
             }
         }
+    }
+
+    public void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(transform.position, _visionRange);
     }
 }
