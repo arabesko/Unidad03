@@ -1,7 +1,5 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 public class Player : MonoBehaviour, IDamagiable
 {
@@ -10,9 +8,20 @@ public class Player : MonoBehaviour, IDamagiable
     [SerializeField] private float _moveSpeed = 5f;
     [SerializeField] private float _jumpForce = 7f;
     [SerializeField] private float _rotateSpeed = 1f;
-    [SerializeField] private float _lineToCollect;
-    [SerializeField] private float _hightToCollect;
     [SerializeField] private LayerMask _layerArms;
+
+    private Vector3 _direction;
+
+    
+
+    //Field of view
+    [SerializeField] private float _viewRadius;
+    [SerializeField] private float _viewAngle;
+    [SerializeField] private List<GameObject> _colectables;
+    [SerializeField] private LayerMask _wallLayer;
+
+    private float _zAxis;
+    private float _xAxis;
 
     [SerializeField] private Transform _leftArm;
     [SerializeField] private Transform _proyector;
@@ -44,21 +53,6 @@ public class Player : MonoBehaviour, IDamagiable
     private void Start()
     {
         SelectModule(); //Asigna el modulo inicial (Proyector)
-    }
-
-    public void Proyector()
-    {
-        print("Proyectando");
-    }
-
-    public void Invisible()
-    {
-        print("Me hago invisible");
-    }
-
-    public void Pulse()
-    {
-        print("Disparo una bala");
     }
 
     void FixedUpdate()
@@ -100,8 +94,11 @@ public class Player : MonoBehaviour, IDamagiable
 
     void Update()
     {
+        _zAxis = Input.GetAxisRaw("Horizontal");
+        _xAxis = Input.GetAxisRaw("Vertical");
         HandleJump();
 
+        var a = CollectWeapon();
         //Colectar partes
         if (Input.GetKeyDown(KeyCode.C) && CollectWeapon())
         {
@@ -161,31 +158,25 @@ public class Player : MonoBehaviour, IDamagiable
 
     private void MovePlayer()
     {
-        float horizontalInput = Input.GetAxis("Horizontal");
-        float verticalInput = Input.GetAxis("Vertical");
+        Vector3 moveDirection = new Vector3(_zAxis, 0f, _xAxis).normalized;
 
-        Vector3 moveDirection = new Vector3(horizontalInput, 0f, verticalInput).normalized;
-
-        rb.MovePosition(transform.position += moveDirection * _moveSpeed * Time.fixedDeltaTime);
+        rb.MovePosition(transform.position + moveDirection * _moveSpeed * Time.fixedDeltaTime);
 
         if (moveDirection.magnitude != 0)
         {
             Quaternion targetRotation = Quaternion.LookRotation(moveDirection);
-            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * _rotateSpeed);
+            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.fixedDeltaTime * _rotateSpeed);
         }
-        
     }
 
     private bool CollectWeapon()
     {
-        //ESTO SE CAMBIARA POR UN RANGO DE VISION
-        RaycastHit hit;
-        bool hasHit = Physics.Raycast(transform.position, transform.forward, out hit, _lineToCollect, _layerArms);
-
-        if (hasHit)
+        foreach (var item in _colectables)
         {
-            _elementDetected = hit.transform.gameObject;
-            return true;
+            if (FieldOfView(item))
+            {
+                return true;
+            }
         }
         return false;
     }
@@ -198,11 +189,47 @@ public class Player : MonoBehaviour, IDamagiable
         }
     }
 
+    public bool FieldOfView(GameObject obj)
+    {
+        Vector3 dir = obj.transform.position - transform.position;
+        if (dir.magnitude < _viewRadius)
+        {
+            if (Vector3.Angle(transform.forward, dir) < _viewAngle * 0.5f) //Field of View
+            {
+                if (!Physics.Raycast(transform.position, dir, out RaycastHit hit, _viewRadius, _wallLayer)) //Line of Sign
+                {
+                    Debug.DrawLine(transform.position, obj.transform.position, Color.magenta);
+                    _elementDetected = obj.gameObject;
+                    return true;
+                }
+                else
+                {
+                    Debug.DrawLine(transform.position, hit.point, Color.magenta);
+                    _elementDetected = null;
+                }
+            }
+        }
+
+        return false;
+    }
     private void OnDrawGizmos()
     {
-        Gizmos.color = Color.red;
-        Gizmos.DrawLine(transform.position + (transform.up / 5) * _hightToCollect, transform.position + (transform.up / 5) * _hightToCollect + transform.forward * _lineToCollect);
+        Gizmos.color = Color.cyan;
+        Gizmos.DrawWireSphere(transform.position, _viewRadius);
+
+        Vector3 lineA = GetVectorFromAngle(_viewAngle * 0.5f + transform.eulerAngles.y);
+        Vector3 lineB = GetVectorFromAngle(-_viewAngle * 0.5f + transform.eulerAngles.y);
+
+        Gizmos.DrawLine(transform.position , transform.position + lineA * _viewRadius);
+        Gizmos.DrawLine(transform.position , transform.position + lineB * _viewRadius);
     }
+
+    public Vector3 GetVectorFromAngle(float angle)
+    {
+        return new Vector3(Mathf.Sin(angle * Mathf.Deg2Rad), 0, Mathf.Cos(angle * Mathf.Deg2Rad));
+    }
+
+    
 
     public void Health(int health)
     {
