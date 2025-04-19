@@ -30,4 +30,14 @@ public class ElementPuzzle : MonoBehaviour, IPuzzlesElements
     {
         _activateRotation = false;
     }
+
+    public void OriginalColor()
+    {
+        //Almacenar sus materiales originales
+    }
+
+    public void DetectionColor()
+    {
+        //Poner en blanco por una fraccion de segundos los elementos de puzzles
+    }
 }
