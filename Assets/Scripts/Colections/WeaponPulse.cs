@@ -11,6 +11,9 @@ public class WeaponPulse : Weapon
 
     public override void PowerElement()
     {
+        base.PowerElement();
         Instantiate(_myBulletPrebaf, _instancePoint.position, transform.rotation);
+        print("disparar");
+
     }
 }

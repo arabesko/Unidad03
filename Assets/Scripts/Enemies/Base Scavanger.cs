@@ -7,6 +7,7 @@ using UnityEngine.UIElements;
 public class BaseScavanger : MonoBehaviour
 {
     public Transform _player;
+    [SerializeField] private Player _miPlayer;
     [SerializeField] private float _speed;
     [SerializeField] private float _visionRange;
     [SerializeField] private float _life;
@@ -24,9 +25,12 @@ public class BaseScavanger : MonoBehaviour
     
     void Update()
     {
-        if (Vector3.Distance(transform.position, _player.position) < _visionRange)
+        if (Vector3.Distance(transform.position, _player.position) < _visionRange && !_miPlayer.IsInvisible)
         {
             _chaseNow = true;
+        } else
+        {
+            _chaseNow= false;
         }
 
         if (_chaseNow == true)

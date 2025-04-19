@@ -9,6 +9,8 @@ public class Player : MonoBehaviour, IDamagiable
     [SerializeField] private float _jumpForce = 7f;
     [SerializeField] private float _rotateSpeed = 1f;
     [SerializeField] private LayerMask _layerArms;
+    [SerializeField] private bool _isInvisible = false;
+    public bool IsInvisible { get { return _isInvisible; } set { _isInvisible = value; } }
 
     private Vector3 _direction;
 
@@ -33,10 +35,15 @@ public class Player : MonoBehaviour, IDamagiable
     [SerializeField] private GameObject _weaponSelected; //El arma que esta activa
     [SerializeField] private GameObject _elementSelected; //El el elemento levitado
 
-    [SerializeField] private List<MeshRenderer> _bodyRender;
+    //Partes del cuerpo
+    public List<MeshRenderer> bodyRender;
+
+    //Respaldo de las partes del cuerpo
+    [SerializeField] private List<Material> _bodyRenderOriginal; public List<Material> BodyRenderOriginal { get { return _bodyRenderOriginal; } }
 
     private Dictionary<string, GameObject> _modulos = new Dictionary<string, GameObject>();
-    public List<MeshRenderer> BodyRender {  get { return _bodyRender; } }
+    
+
     private delegate void PowerAccion();
     private PowerAccion _myPower;
 
@@ -48,6 +55,11 @@ public class Player : MonoBehaviour, IDamagiable
     {
         rb = GetComponent<Rigidbody>();
         _currentLife = _maxLife;
+
+        foreach (var item in bodyRender)
+        {
+            _bodyRenderOriginal.Add(item.material);
+        }
     }
 
     private void Start()
@@ -75,6 +87,9 @@ public class Player : MonoBehaviour, IDamagiable
         myDriver.Initialized(this);
 
         //Selecciona que modulo esta disponible para asignar el arme colectada
+
+        MyOriginalBody();
+
         if (!_modulos.ContainsKey("Proyector"))
         {
             _modulos.Add("Proyector", _elementDetected);
@@ -92,13 +107,20 @@ public class Player : MonoBehaviour, IDamagiable
         }
     }
 
+    public void MyOriginalBody()
+    {
+        for (int i = 0; i < bodyRender.Count; i++)
+        {
+            bodyRender[i].material = _bodyRenderOriginal[i];
+        }
+    }
+
     void Update()
     {
         _zAxis = Input.GetAxisRaw("Horizontal");
         _xAxis = Input.GetAxisRaw("Vertical");
         HandleJump();
 
-        var a = CollectWeapon();
         //Colectar partes
         if (Input.GetKeyDown(KeyCode.C) && CollectWeapon())
         {
@@ -114,6 +136,7 @@ public class Player : MonoBehaviour, IDamagiable
             _elementSelected.transform.position = _levitationPoint.transform.position;
             _elementSelected.GetComponent<IPuzzlesElements>().Activate();
         }
+        //Cuando deja de levitar cosas
         else if (Input.GetKeyDown(KeyCode.R) && _elementSelected != null)
         {
             _elementSelected.GetComponent<Rigidbody>().isKinematic = false;
@@ -209,7 +232,6 @@ public class Player : MonoBehaviour, IDamagiable
                 }
             }
         }
-
         return false;
     }
     private void OnDrawGizmos()
