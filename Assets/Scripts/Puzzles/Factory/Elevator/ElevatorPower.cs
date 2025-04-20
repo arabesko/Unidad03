@@ -6,7 +6,7 @@ public class ElevatorPower : MonoBehaviour
 {
     [SerializeField] private GameObject _elevator;
     [SerializeField] private Transform _destination;
-    [SerializeField] private float speed = 2f;
+    //[SerializeField] private float speed = 2f;
     private bool activated = false;
 
     private void OnTriggerEnter(Collider other)

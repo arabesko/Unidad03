@@ -21,9 +21,10 @@ public class WeaponRadar : Weapon
         Collider[] hitColliders = Physics.OverlapSphere(transform.position, _radarRadious, _targetLayer);
         foreach (Collider collider in hitColliders)
         {
-            if (collider.GetComponent<IPuzzlesElements>() != null)
+            IPuzzlesElements myPuzzle = collider.GetComponent<IPuzzlesElements>();
+            if (myPuzzle != null)
             {
-                renderer.material.color = Color.red;
+                myPuzzle.RadarActivate();
             }
         }
     }

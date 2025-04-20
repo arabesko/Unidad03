@@ -17,5 +17,5 @@ public interface IPuzzlesElements
     public void Activate();
     public void Desactivate();
 
-    public void DetectionColor();
+    public void RadarActivate();
 }

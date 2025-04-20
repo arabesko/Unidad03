@@ -1,4 +1,6 @@
+using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class ElementPuzzle : MonoBehaviour, IPuzzlesElements
@@ -6,6 +8,11 @@ public class ElementPuzzle : MonoBehaviour, IPuzzlesElements
     [SerializeField] private bool _activateRotation;
     [SerializeField] private float _speedRotation;
     [SerializeField] private List<MeshRenderer> _MyParts;
+    [SerializeField] private List<Material> _MyPartsBackup;
+
+    [SerializeField] private Material _myMaterialLight;
+
+    private bool _activateRadar = false;
 
     public void Activate()
     {
@@ -14,10 +21,12 @@ public class ElementPuzzle : MonoBehaviour, IPuzzlesElements
 
     void Start()
     {
-        
+        foreach (var part in _MyParts)
+        {
+            _MyPartsBackup.Add(part.material);
+        }
     }
 
-    // Update is called once per frame
     void Update()
     {
         if (_activateRotation)
@@ -33,11 +42,48 @@ public class ElementPuzzle : MonoBehaviour, IPuzzlesElements
 
     public void OriginalColor()
     {
-        //Almacenar sus materiales originales
+        for (int i = 0; i < _MyPartsBackup.Count; i++)
+        {
+            _MyParts[i].material = _MyPartsBackup[i];
+        }
     }
 
     public void DetectionColor()
     {
-        //Poner en blanco por una fraccion de segundos los elementos de puzzles
+        foreach(var item in _MyParts)
+        {
+            item.material = _myMaterialLight;
+        }
+    }
+
+    public IEnumerator ChangeColorBlink(float time)
+    {
+        DetectionColor();
+        yield return new WaitForSeconds(time);
+        OriginalColor();
+        yield return new WaitForSeconds(time);
+        DetectionColor();
+        yield return new WaitForSeconds(time);
+        OriginalColor();
+        yield return new WaitForSeconds(time);
+        DetectionColor();
+        yield return new WaitForSeconds(time);
+        OriginalColor();
+        yield return new WaitForSeconds(time);
+        DetectionColor();
+        yield return new WaitForSeconds(time);
+        OriginalColor();
+        yield return new WaitForSeconds(time);
+        DetectionColor();
+        yield return new WaitForSeconds(time);
+        OriginalColor();
+        _activateRadar = false;
+    }
+
+    public void RadarActivate()
+    {
+        if (_activateRadar) return;
+        StartCoroutine(ChangeColorBlink(0.05f));
+        _activateRadar = true;
     }
 }
