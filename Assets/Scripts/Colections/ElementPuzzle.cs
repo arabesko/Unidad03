@@ -3,19 +3,15 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class ElementPuzzle : MonoBehaviour, IPuzzlesElements
+public class ElementPuzzle : PuzzleMother
 {
-    [SerializeField] private bool _activateRotation;
-    [SerializeField] private float _speedRotation;
-    [SerializeField] private List<MeshRenderer> _MyParts;
-    [SerializeField] private List<Material> _MyPartsBackup;
-
-    [SerializeField] private Material _myMaterialLight;
+    
 
     private bool _activateRadar = false;
 
-    public void Activate()
+    public override void Activate()
     {
+        base.Activate();
         _activateRotation = true;
     }
 
@@ -35,8 +31,9 @@ public class ElementPuzzle : MonoBehaviour, IPuzzlesElements
         }
     }
 
-    public void Desactivate()
+    public override void Desactivate()
     {
+        base.Desactivate();
         _activateRotation = false;
     }
 
@@ -80,8 +77,9 @@ public class ElementPuzzle : MonoBehaviour, IPuzzlesElements
         _activateRadar = false;
     }
 
-    public void RadarActivate()
+    public override void ActionPuzzle()
     {
+        base.ActionPuzzle();
         if (_activateRadar) return;
         StartCoroutine(ChangeColorBlink(0.05f));
         _activateRadar = true;

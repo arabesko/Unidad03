@@ -24,7 +24,7 @@ public class WeaponRadar : Weapon
             IPuzzlesElements myPuzzle = collider.GetComponent<IPuzzlesElements>();
             if (myPuzzle != null)
             {
-                myPuzzle.RadarActivate();
+                myPuzzle.ActionPuzzle();
             }
         }
     }

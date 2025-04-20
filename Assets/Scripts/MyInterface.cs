@@ -17,7 +17,7 @@ public interface IPuzzlesElements
     public void Activate();
     public void Desactivate();
 
-    public void RadarActivate();
+    public void ActionPuzzle();
 }
 
 public enum ModulosUnit03
