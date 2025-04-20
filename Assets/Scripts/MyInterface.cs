@@ -19,3 +19,10 @@ public interface IPuzzlesElements
 
     public void RadarActivate();
 }
+
+public enum ModulosUnit03
+{
+    BrazoIzquierdo,
+    Proyector,
+    BrazoDerecho
+}

@@ -34,6 +34,7 @@ public class Player : MonoBehaviour, IDamagiable
     [SerializeField] private GameObject _elementDetected; //La que detecta el Raycast
     [SerializeField] private GameObject _weaponSelected; //El arma que esta activa
     [SerializeField] private GameObject _elementSelected; //El el elemento levitado
+    [SerializeField] private ModulosUnit03 _moduleSelected; //Es el modulo activo
 
     //Partes del cuerpo
     public List<MeshRenderer> bodyRender;
@@ -41,7 +42,7 @@ public class Player : MonoBehaviour, IDamagiable
     //Respaldo de las partes del cuerpo
     [SerializeField] private List<Material> _bodyRenderOriginal; public List<Material> BodyRenderOriginal { get { return _bodyRenderOriginal; } }
 
-    private Dictionary<string, GameObject> _modulos = new Dictionary<string, GameObject>();
+    private Dictionary<ModulosUnit03, GameObject> _modulos = new Dictionary<ModulosUnit03, GameObject>();
     
 
     private delegate void PowerAccion();
@@ -71,41 +72,7 @@ public class Player : MonoBehaviour, IDamagiable
     {
         MovePlayer();
     }
-
-    /// <summary>
-    /// Selecciona el modulo vacio para asignar el arma colectada
-    /// </summary>
-    private void SelectModule()
-    {
-        var myDriver = _elementDetected.GetComponent<IDrivers>();
-        if (myDriver == null) return;
-
-        _weaponSelected = _elementDetected;
-        _weaponSelected.transform.parent = transform;
-        _weaponSelected.transform.rotation = this.transform.rotation;
-        _weaponSelected.GetComponent<Rigidbody>().isKinematic = true;
-        myDriver.Initialized(this);
-
-        //Selecciona que modulo esta disponible para asignar el arme colectada
-
-        MyOriginalBody();
-
-        if (!_modulos.ContainsKey("Proyector"))
-        {
-            _modulos.Add("Proyector", _elementDetected);
-            _elementDetected.transform.position = _proyector.transform.position;
-        }
-        else if (!_modulos.ContainsKey("Brazo_I"))
-        {
-            _modulos.Add("Brazo_I", _elementDetected);
-            _elementDetected.transform.position = _leftArm.transform.position;
-        }
-        else if (!_modulos.ContainsKey("Brazo_D"))
-        {
-            _modulos.Add("Brazo_D", _elementDetected);
-            _elementDetected.transform.position = _rightArm.transform.position;
-        }
-    }
+    
 
     public void MyOriginalBody()
     {
@@ -144,32 +111,43 @@ public class Player : MonoBehaviour, IDamagiable
             _elementSelected.transform.parent = null;
         }
 
+        if (Input.GetKeyDown(KeyCode.F) && _elementDetected != null)
+        {
+            //Soltar modulo
+            LeaveModule();
+        }
+
 
         //Cambiar de arma
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
-           if (_modulos.ContainsKey("Brazo_I"))
+           if (_modulos.ContainsKey(ModulosUnit03.BrazoIzquierdo))
             {
-                _modulos["Brazo_I"].GetComponent<IDrivers>().Initialized(this);
-                _weaponSelected = _modulos["Brazo_I"];
+                _moduleSelected = ModulosUnit03.BrazoIzquierdo;
+                _modulos[ModulosUnit03.BrazoIzquierdo].GetComponent<IDrivers>().Initialized(this);
+                _weaponSelected = _modulos[ModulosUnit03.BrazoIzquierdo];
+
             }
         }
 
         if (Input.GetKeyDown(KeyCode.Alpha2))
         {
-            if (_modulos.ContainsKey("Proyector"))
+            if (_modulos.ContainsKey(ModulosUnit03.Proyector))
             {
-                _modulos["Proyector"].GetComponent<IDrivers>().Initialized(this);
-                _weaponSelected = _modulos["Proyector"];
+                _moduleSelected = ModulosUnit03.Proyector;
+                _modulos[ModulosUnit03.Proyector].GetComponent<IDrivers>().Initialized(this);
+                _weaponSelected = _modulos[ModulosUnit03.Proyector];
+                
             }
         }
 
         if (Input.GetKeyDown(KeyCode.Alpha3))
         {
-            if (_modulos.ContainsKey("Brazo_D"))
+            if (_modulos.ContainsKey(ModulosUnit03.BrazoDerecho))
             {
-                _modulos["Brazo_D"].GetComponent<IDrivers>().Initialized(this);
-                _weaponSelected = _modulos["Brazo_D"];
+                _moduleSelected = ModulosUnit03.BrazoDerecho;
+                _modulos[ModulosUnit03.BrazoDerecho].GetComponent<IDrivers>().Initialized(this);
+                _weaponSelected = _modulos[ModulosUnit03.BrazoDerecho];
             }
         }
 
@@ -177,6 +155,58 @@ public class Player : MonoBehaviour, IDamagiable
         {
             _weaponSelected.GetComponent<IDrivers>().PowerElement();
         }
+    }
+
+    /// <summary>
+    /// Selecciona el modulo vacio para asignar el arma colectada
+    /// </summary>
+    private void SelectModule()
+    {
+        var myDriver = _elementDetected.GetComponent<IDrivers>();
+        if (myDriver == null) return;
+
+        _weaponSelected = _elementDetected;
+        _weaponSelected.transform.parent = transform;
+        _weaponSelected.transform.rotation = this.transform.rotation;
+        _weaponSelected.GetComponent<Rigidbody>().isKinematic = true;
+        myDriver.Initialized(this);
+
+        //Selecciona que modulo esta disponible para asignar el arma colectada
+
+        MyOriginalBody();
+
+        if (!_modulos.ContainsKey(ModulosUnit03.Proyector))
+        {
+            _modulos.Add(ModulosUnit03.Proyector, _elementDetected);
+            _elementDetected.transform.position = _proyector.transform.position;
+            _moduleSelected = ModulosUnit03.Proyector;
+        }
+        else if (!_modulos.ContainsKey(ModulosUnit03.BrazoIzquierdo))
+        {
+            _modulos.Add(ModulosUnit03.BrazoIzquierdo, _elementDetected);
+            _elementDetected.transform.position = _leftArm.transform.position;
+            _moduleSelected = ModulosUnit03.BrazoIzquierdo;
+        }
+        else if (!_modulos.ContainsKey(ModulosUnit03.BrazoDerecho))
+        {
+            _modulos.Add(ModulosUnit03.BrazoDerecho, _elementDetected);
+            _elementDetected.transform.position = _rightArm.transform.position;
+            _moduleSelected = ModulosUnit03.BrazoDerecho;
+        }
+    }
+
+    public void LeaveModule()
+    {
+        if (_moduleSelected == ModulosUnit03.Proyector)
+        {
+            //Que se enoje la UI por intentar quitarse este modulo
+            return;
+        }
+
+        _weaponSelected.GetComponent<Rigidbody>().isKinematic = false;
+        _weaponSelected.transform.parent = null;
+        _modulos.Remove(_moduleSelected);
+
     }
 
     private void MovePlayer()
