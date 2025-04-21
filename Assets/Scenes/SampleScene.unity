@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.029087225, g: 0.029897584, b: 0.029896658, a: 1}
+  m_IndirectSpecularColor: {r: 0.029087221, g: 0.029897578, b: 0.029896645, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -10468,7 +10468,7 @@ MonoBehaviour:
   _maxLife: 0
   _moveSpeed: 5
   _jumpForce: 7
-  _rotateSpeed: 3
+  _rotateSpeed: 4
   _layerArms:
     serializedVersion: 2
     m_Bits: 64
@@ -12131,9 +12131,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _target: {fileID: 827203377}
   _smoothSpeed: 5
-  _xOffset: 2
-  _fixedY: 7.24
-  _fixedZ: -25
+  _xOffset: 1
+  _yOffset: 6
+  _zOffset: -7
 --- !u!114 &963194230
 MonoBehaviour:
   m_ObjectHideFlags: 0
