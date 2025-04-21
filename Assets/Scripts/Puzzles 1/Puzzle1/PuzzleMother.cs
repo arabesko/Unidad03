@@ -21,4 +21,9 @@ public class PuzzleMother : MonoBehaviour, IPuzzlesElements
     public virtual void Desactivate()
     {
     }
+
+    public virtual int MyReturnNumber()
+    {
+        return 0;
+    }
 }

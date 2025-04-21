@@ -18,6 +18,7 @@ public interface IPuzzlesElements
     public void Desactivate();
 
     public void ActionPuzzle();
+    public int MyReturnNumber();
 }
 
 public enum ModulosUnit03

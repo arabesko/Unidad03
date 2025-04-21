@@ -33,7 +33,7 @@ public class Player : MonoBehaviour, IDamagiable
 
     [SerializeField] private GameObject _elementDetected; //La que detecta el Raycast
     [SerializeField] private GameObject _weaponSelected; //El arma que esta activa
-    [SerializeField] private GameObject _elementSelected; //El el elemento levitado
+    [SerializeField] private GameObject _elementLevitated; //El el elemento levitado
     [SerializeField] private ModulosUnit03 _moduleSelected; //Es el modulo activo
 
     //Partes del cuerpo
@@ -66,6 +66,7 @@ public class Player : MonoBehaviour, IDamagiable
     private void Start()
     {
         SelectModule(); //Asigna el modulo inicial (Proyector)
+        _elementDetected = null;
     }
 
     void FixedUpdate()
@@ -92,23 +93,31 @@ public class Player : MonoBehaviour, IDamagiable
         if (Input.GetKeyDown(KeyCode.C) && CollectWeapon())
         {
             SelectModule();
+            _elementLevitated = null;
         }
 
         //Levitar partes
-        if (Input.GetKeyDown(KeyCode.R) && CollectWeapon())
+        if (Input.GetKeyDown(KeyCode.R) && CollectWeapon() && _elementLevitated == null)
         {
-            _elementSelected = _elementDetected;
-            _elementSelected.transform.parent = transform;
-            _elementSelected.GetComponent<Rigidbody>().isKinematic = true;
-            _elementSelected.transform.position = _levitationPoint.transform.position;
-            _elementSelected.GetComponent<IPuzzlesElements>().Activate();
+            _elementLevitated = _elementDetected;
+            IPuzzlesElements myPuzzle = _elementLevitated.GetComponent<IPuzzlesElements>();
+            if (myPuzzle == null)
+            {
+                _elementLevitated = null;
+                return;
+            }
+            _elementLevitated.transform.parent = transform;
+            _elementLevitated.GetComponent<Rigidbody>().isKinematic = true;
+            _elementLevitated.transform.position = _levitationPoint.transform.position;
+            myPuzzle.Activate();
         }
         //Cuando deja de levitar cosas
-        else if (Input.GetKeyDown(KeyCode.R) && _elementSelected != null)
+        else if (Input.GetKeyDown(KeyCode.R) && _elementLevitated != null)
         {
-            _elementSelected.GetComponent<Rigidbody>().isKinematic = false;
-            _elementSelected.GetComponent<IPuzzlesElements>().Desactivate();
-            _elementSelected.transform.parent = null;
+            _elementLevitated.GetComponent<Rigidbody>().isKinematic = false;
+            _elementLevitated.GetComponent<IPuzzlesElements>().Desactivate();
+            _elementLevitated.transform.parent = null;
+            _elementLevitated = null;
         }
 
         if (Input.GetKeyDown(KeyCode.F) && _elementDetected != null)
@@ -206,6 +215,11 @@ public class Player : MonoBehaviour, IDamagiable
         _weaponSelected.GetComponent<Rigidbody>().isKinematic = false;
         _weaponSelected.transform.parent = null;
         _modulos.Remove(_moduleSelected);
+
+        //Deja el proyector como arma por defecto
+        _moduleSelected = ModulosUnit03.Proyector;
+        _modulos[ModulosUnit03.Proyector].GetComponent<IDrivers>().Initialized(this);
+        _weaponSelected = _modulos[ModulosUnit03.Proyector];
 
     }
 

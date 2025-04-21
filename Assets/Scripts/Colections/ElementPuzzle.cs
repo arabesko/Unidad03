@@ -5,8 +5,8 @@ using UnityEngine;
 
 public class ElementPuzzle : PuzzleMother
 {
+    [SerializeField] private int _percent;    
     
-
     private bool _activateRadar = false;
 
     public override void Activate()
@@ -55,25 +55,15 @@ public class ElementPuzzle : PuzzleMother
 
     public IEnumerator ChangeColorBlink(float time)
     {
-        DetectionColor();
-        yield return new WaitForSeconds(time);
-        OriginalColor();
-        yield return new WaitForSeconds(time);
-        DetectionColor();
-        yield return new WaitForSeconds(time);
-        OriginalColor();
-        yield return new WaitForSeconds(time);
-        DetectionColor();
-        yield return new WaitForSeconds(time);
-        OriginalColor();
-        yield return new WaitForSeconds(time);
-        DetectionColor();
-        yield return new WaitForSeconds(time);
-        OriginalColor();
-        yield return new WaitForSeconds(time);
-        DetectionColor();
-        yield return new WaitForSeconds(time);
-        OriginalColor();
+        yield return new WaitForSeconds(0.4f);
+
+        for (int i = 0; i < 15; i++)
+        {
+            DetectionColor();
+            yield return new WaitForSeconds(time);
+            OriginalColor();
+            yield return new WaitForSeconds(time);
+        }
         _activateRadar = false;
     }
 
@@ -83,5 +73,10 @@ public class ElementPuzzle : PuzzleMother
         if (_activateRadar) return;
         StartCoroutine(ChangeColorBlink(0.05f));
         _activateRadar = true;
+    }
+
+    public override int MyReturnNumber()
+    {
+        return _percent;
     }
 }
