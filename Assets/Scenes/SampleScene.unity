@@ -10474,7 +10474,7 @@ MonoBehaviour:
     m_Bits: 64
   _isInvisible: 0
   _viewRadius: 3.97
-  _viewAngle: 31.2
+  _viewAngle: 60.9
   _colectables:
   - {fileID: 1471389672}
   - {fileID: 420215912}
