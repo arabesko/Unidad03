@@ -1,10 +1,11 @@
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class InteractionUI : MonoBehaviour
 {
-    [SerializeField] private GameObject _panelUI; // El panel que contiene el texto
-    [SerializeField] private Text _interactionText; // El texto que mostrará la tecla
+    [SerializeField] public GameObject _panelUI;
+    [SerializeField] public TextMeshProUGUI _interactionText;
 
     private void Start()
     {

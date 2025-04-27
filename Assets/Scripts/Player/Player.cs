@@ -270,19 +270,13 @@ public class Player : MonoBehaviour, IDamagiable
                     Debug.DrawLine(transform.position, obj.transform.position, Color.magenta);
                     _elementDetected = obj.gameObject;
                     return true;
-                    if (_interactionUI != null)
-                    {
-                        _interactionUI.ShowMessage("Presiona C para recoger / R para levitar");
-                    }
+                   
                 }
                 else
                 {
                     Debug.DrawLine(transform.position, hit.point, Color.magenta);
                     _elementDetected = null;
-                    if (_interactionUI != null)
-                    {
-                        _interactionUI.HideMessage();
-                    }
+               
                 }
             }
         }
