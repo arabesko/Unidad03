@@ -10,7 +10,7 @@ public class BaseScavanger : MonoBehaviour
     [SerializeField] private Player _miPlayer;
     [SerializeField] private float _speed;
     [SerializeField] private float _visionRange;
-    [SerializeField] private float _life;
+    [SerializeField] private float _life = 30f;
     [SerializeField] private Transform[] _positions;
     [SerializeField] private int _index;
     [SerializeField] private float _rotationSpeed;
@@ -69,7 +69,20 @@ public class BaseScavanger : MonoBehaviour
             }
         }
     }
+    public void TakeDamage(float damage)
+    {
+        _life -= damage;
 
+        if (_life <= 0)
+        {
+            Die();
+        }
+    }
+
+    private void Die()
+    {
+        Destroy(gameObject);
+    }
     public void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.red;
