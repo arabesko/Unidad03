@@ -2747,7 +2747,7 @@ MonoBehaviour:
   _miPlayer: {fileID: 827203374}
   _speed: 3
   _visionRange: 5
-  _life: 5
+  _life: 20
   _positions:
   - {fileID: 1961394584}
   - {fileID: 391823237}
@@ -10133,8 +10133,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 441779fef8e1f0a48b3483d099ff606a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _currentLife: 0
-  _maxLife: 0
+  _currentLife: 100
+  _maxLife: 100
   _moveSpeed: 5
   _jumpForce: 7
   _rotateSpeed: 4
