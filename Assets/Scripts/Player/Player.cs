@@ -299,8 +299,6 @@ public class Player : MonoBehaviour, IDamagiable
         return new Vector3(Mathf.Sin(angle * Mathf.Deg2Rad), 0, Mathf.Cos(angle * Mathf.Deg2Rad));
     }
 
-    
-
     public void Health(int health)
     {
         _currentLife += health;
@@ -309,6 +307,20 @@ public class Player : MonoBehaviour, IDamagiable
     public void Damage(int damage)
     {
         _currentLife -= damage;
+    }
+
+    public void TakeDamage(float damage)
+    {
+        _currentLife -= damage;
+        if (_currentLife <= 0)
+        {
+            Die();
+        }
+    }
+    private void Die()
+    {
+
+        Debug.Log("El jugador ha muerto.");
     }
 }
 

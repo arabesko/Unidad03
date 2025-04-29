@@ -69,6 +69,18 @@ public class BaseScavanger : MonoBehaviour
             }
         }
     }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("Player"))
+        {
+            Player player = collision.gameObject.GetComponent<Player>();
+            if (player != null)
+            {
+                player.TakeDamage(10f);
+            }
+        }
+    }
     public void TakeDamage(float damage)
     {
         _life -= damage;
