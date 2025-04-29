@@ -56,6 +56,9 @@ public class Player : MonoBehaviour, IDamagiable
     private bool isGrounded;
 
     [SerializeField] private InteractionUI _interactionUI;
+    [SerializeField] private GameObject _flecha1;
+    [SerializeField] private GameObject _flecha2;
+    [SerializeField] private GameObject _flecha3;
 
     void Awake()
     {
@@ -151,7 +154,7 @@ public class Player : MonoBehaviour, IDamagiable
                 _moduleSelected = ModulosUnit03.BrazoIzquierdo;
                 _modulos[ModulosUnit03.BrazoIzquierdo].GetComponent<IDrivers>().Initialized(this);
                 _weaponSelected = _modulos[ModulosUnit03.BrazoIzquierdo];
-
+                DesactivateArrow(_flecha1);
             }
         }
 
@@ -162,7 +165,8 @@ public class Player : MonoBehaviour, IDamagiable
                 _moduleSelected = ModulosUnit03.Proyector;
                 _modulos[ModulosUnit03.Proyector].GetComponent<IDrivers>().Initialized(this);
                 _weaponSelected = _modulos[ModulosUnit03.Proyector];
-                
+                DesactivateArrow(_flecha2);
+
             }
         }
 
@@ -173,12 +177,43 @@ public class Player : MonoBehaviour, IDamagiable
                 _moduleSelected = ModulosUnit03.BrazoDerecho;
                 _modulos[ModulosUnit03.BrazoDerecho].GetComponent<IDrivers>().Initialized(this);
                 _weaponSelected = _modulos[ModulosUnit03.BrazoDerecho];
+                DesactivateArrow(_flecha3);
+
             }
         }
 
         if (Input.GetKeyDown(KeyCode.Q))
         {
             _weaponSelected.GetComponent<IDrivers>().PowerElement();
+        }
+    }
+
+    private void DesactivateArrow(GameObject activateObj)
+    {
+        if (activateObj == _flecha1)
+        {
+            _flecha1.SetActive(true);
+        } else
+        {
+            _flecha1.SetActive(false);
+        }
+
+        if (activateObj == _flecha2)
+        {
+            _flecha2.SetActive(true);
+        }
+        else
+        {
+            _flecha2.SetActive(false);
+        }
+
+        if (activateObj == _flecha3)
+        {
+            _flecha3.SetActive(true);
+        }
+        else
+        {
+            _flecha3.SetActive(false);
         }
     }
 
@@ -205,18 +240,24 @@ public class Player : MonoBehaviour, IDamagiable
             _modulos.Add(ModulosUnit03.Proyector, _elementDetected);
             _elementDetected.transform.position = _proyector.transform.position;
             _moduleSelected = ModulosUnit03.Proyector;
+            DesactivateArrow(_flecha2);
+
         }
         else if (!_modulos.ContainsKey(ModulosUnit03.BrazoIzquierdo))
         {
             _modulos.Add(ModulosUnit03.BrazoIzquierdo, _elementDetected);
             _elementDetected.transform.position = _leftArm.transform.position;
             _moduleSelected = ModulosUnit03.BrazoIzquierdo;
+            DesactivateArrow(_flecha1);
+
         }
         else if (!_modulos.ContainsKey(ModulosUnit03.BrazoDerecho))
         {
             _modulos.Add(ModulosUnit03.BrazoDerecho, _elementDetected);
             _elementDetected.transform.position = _rightArm.transform.position;
             _moduleSelected = ModulosUnit03.BrazoDerecho;
+            DesactivateArrow(_flecha3);
+
         }
     }
 
