@@ -1,9 +1,10 @@
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class Player : MonoBehaviour, IDamagiable
 {
-    [SerializeField] private float _currentLife;
+    [SerializeField] private float _currentLife; 
     [SerializeField] private float _maxLife;
     [SerializeField] private float _moveSpeed = 5f;
     [SerializeField] private float _jumpForce = 7f;
@@ -14,7 +15,9 @@ public class Player : MonoBehaviour, IDamagiable
 
     private Vector3 _direction;
 
-    
+    [SerializeField] private bool _isTutorial = true;
+    [SerializeField] public GameObject _panelUI;
+
 
     //Field of view
     [SerializeField] private float _viewRadius;
@@ -90,6 +93,17 @@ public class Player : MonoBehaviour, IDamagiable
         _zAxis = Input.GetAxisRaw("Horizontal");
         _xAxis = Input.GetAxisRaw("Vertical");
         HandleJump();
+
+        if (CollectWeapon())
+        {
+            if (_isTutorial)
+            {
+                _panelUI.SetActive(true);
+            }
+        } else
+        {
+            _panelUI.SetActive(false);
+        }
 
         //Colectar partes
         if (Input.GetKeyDown(KeyCode.C) && CollectWeapon())
