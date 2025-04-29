@@ -11,7 +11,9 @@ public class Player : MonoBehaviour, IDamagiable
     [SerializeField] private float _rotateSpeed = 1f;
     [SerializeField] private LayerMask _layerArms;
     [SerializeField] private bool _isInvisible = false;
+    [SerializeField] private bool _puzzleCollisionWall = false;
     public bool IsInvisible { get { return _isInvisible; } set { _isInvisible = value; } }
+    public bool PuzzleCollisionWall { get { return _puzzleCollisionWall; } set { _puzzleCollisionWall = value; } }
 
     private Vector3 _direction;
 
@@ -55,7 +57,6 @@ public class Player : MonoBehaviour, IDamagiable
     private Rigidbody rb;
     private bool isGrounded;
 
-    [SerializeField] private InteractionUI _interactionUI;
     [SerializeField] private GameObject _flecha1;
     [SerializeField] private GameObject _flecha2;
     [SerializeField] private GameObject _flecha3;
@@ -139,7 +140,7 @@ public class Player : MonoBehaviour, IDamagiable
             _elementLevitated = null;
         }
 
-        if (Input.GetKeyDown(KeyCode.F) && _elementDetected != null)
+        if (Input.GetKeyDown(KeyCode.F) && _elementDetected != null )
         {
             //Soltar modulo
             LeaveModule();

@@ -5,7 +5,8 @@ using UnityEngine;
 
 public class ElementPuzzle : PuzzleMother
 {
-    [SerializeField] private int _percent;    
+    [SerializeField] private int _percent;
+    [SerializeField] private Player _player;
     
     private bool _activateRadar = false;
 
@@ -78,5 +79,13 @@ public class ElementPuzzle : PuzzleMother
     public override int MyReturnNumber()
     {
         return _percent;
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        IWalls myWalls = collision.gameObject.GetComponent<IWalls>();
+        if (myWalls != null)
+        {
+        }
     }
 }

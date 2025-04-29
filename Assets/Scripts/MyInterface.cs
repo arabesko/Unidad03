@@ -21,6 +21,11 @@ public interface IPuzzlesElements
     public int MyReturnNumber();
 }
 
+public interface IWalls
+{
+
+}
+
 public enum ModulosUnit03
 {
     BrazoIzquierdo,
