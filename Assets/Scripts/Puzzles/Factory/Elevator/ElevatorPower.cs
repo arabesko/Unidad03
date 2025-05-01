@@ -21,6 +21,11 @@ public class ElevatorPower : MonoBehaviour
             {
                 hasPower = true;
                 Debug.Log("Batería instalada, elevador con energía.");
+
+                if (playerOnPlatform && !isMoving)
+                {
+                    StartCoroutine(MoveElevator());
+                }
             }
         }
     }
@@ -38,7 +43,18 @@ public class ElevatorPower : MonoBehaviour
     IEnumerator MoveElevator()
     {
         isMoving = true;
-        Vector3 target = elevator.transform.position == downPosition.position ? upPosition.position : downPosition.position;
+
+        Vector3 currentPos = elevator.transform.position;
+        Vector3 target;
+
+        if (Vector3.Distance(currentPos, downPosition.position) < 0.1f)
+        {
+            target = upPosition.position;
+        }
+        else
+        {
+            target = downPosition.position;
+        }
 
         while (Vector3.Distance(elevator.transform.position, target) > 0.05f)
         {
