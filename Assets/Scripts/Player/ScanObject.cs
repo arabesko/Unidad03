@@ -1,13 +1,12 @@
 using System.Collections;
 using UnityEngine;
-using UnityEngine.UI;
 using TMPro;
 
 public class ScanObject : MonoBehaviour
 {
-    public GameObject scanPanel;       // Panel que contiene texto e imagen
-    public TMP_Text scanPromptText;    // Texto TMP: "Presiona E..."
-    public Image scanResultImage;      // Imagen que se muestra tras el escaneo
+    public GameObject scanPanel;
+    public TMP_Text scanPromptText;
+    public GameObject scanResultObject;
 
     private bool isPlayerInRange = false;
     private bool isScanning = false;
@@ -15,7 +14,7 @@ public class ScanObject : MonoBehaviour
     private void Start()
     {
         scanPanel.SetActive(false);
-        scanResultImage.gameObject.SetActive(false);
+        scanResultObject.SetActive(false);
     }
 
     private void Update()
@@ -29,16 +28,16 @@ public class ScanObject : MonoBehaviour
     private IEnumerator StartScan()
     {
         isScanning = true;
-        scanPromptText.gameObject.SetActive(false); // Oculta solo el texto
+        scanPromptText.gameObject.SetActive(false);
 
-        yield return new WaitForSeconds(3f); // Espera antes de mostrar imagen
+        yield return new WaitForSeconds(3f); // Simula tiempo de escaneo
 
-        scanResultImage.gameObject.SetActive(true);
+        scanResultObject.SetActive(true); // Activa objeto 3D
 
-        yield return new WaitForSeconds(5f); // Imagen visible por 5 segundos
+        yield return new WaitForSeconds(5f); // Muestra objeto durante 5s
 
-        scanResultImage.gameObject.SetActive(false);
-        scanPromptText.gameObject.SetActive(true);  // Reactiva el texto
+        scanResultObject.SetActive(false);
+        scanPromptText.gameObject.SetActive(true);
         isScanning = false;
     }
 
