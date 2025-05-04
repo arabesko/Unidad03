@@ -2,16 +2,17 @@ using UnityEngine;
 
 public class Bullet : MonoBehaviour
 {
-    [SerializeField] private float _moveSpeed;
-    [SerializeField] private float _speedRotation;
+    [SerializeField] private float _moveSpeed = 10f;
+    [SerializeField] private float _speedRotation = 5f;
     [SerializeField] private float _damage = 10f;
+    [SerializeField] private float _targetSearchRange = 10f;
     private Transform _target;
+    private Vector3 _initialDirection;
 
     void Start()
     {
-        Destroy(gameObject, 5f);
-
-        // Busca el enemigo más cercano al iniciar
+        Destroy(gameObject, 2f);
+        _initialDirection = transform.forward;
         FindNearestEnemy();
     }
 
@@ -19,18 +20,15 @@ public class Bullet : MonoBehaviour
     {
         if (_target != null)
         {
-            // Calcula dirección hacia el enemigo
             Vector3 direction = (_target.position - transform.position).normalized;
             transform.position += direction * _moveSpeed * Time.deltaTime;
 
-            // Opcional: rota para mirar hacia el enemigo
             Quaternion lookRotation = Quaternion.LookRotation(direction);
             transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, _speedRotation * Time.deltaTime);
         }
         else
         {
-            // Si no hay enemigo, sigue avanzando recto
-            transform.position += transform.forward * _moveSpeed * Time.deltaTime;
+            transform.position += _initialDirection * _moveSpeed * Time.deltaTime;
             transform.Rotate(0, 0, _speedRotation * Time.deltaTime);
         }
     }
@@ -54,7 +52,7 @@ public class Bullet : MonoBehaviour
         foreach (BaseScavanger enemy in enemies)
         {
             float distance = Vector3.Distance(transform.position, enemy.transform.position);
-            if (distance < minDistance)
+            if (distance < minDistance && distance <= _targetSearchRange) // Solo si está en rango
             {
                 minDistance = distance;
                 nearestEnemy = enemy;

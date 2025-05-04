@@ -40,6 +40,11 @@ public class ElevatorPower : MonoBehaviour
         }
     }
 
+    public bool HasPower()
+    {
+        return hasPower;
+    }
+
     IEnumerator MoveElevator()
     {
         isMoving = true;
