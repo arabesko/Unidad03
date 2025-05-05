@@ -1,14 +1,37 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class ChargingStation : MonoBehaviour
 {
+    [Header("UI")]
+    [SerializeField] private GameObject chargingPromptPanel;
+    [SerializeField] private TextMeshProUGUI chargingPromptText;
+
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Battery"))
         {
-            other.GetComponent<PortableBattery>().StartCharging();
+            PortableBattery battery = other.GetComponent<PortableBattery>();
+            if (battery != null)
+            {
+                battery.StartCharging();
+
+                if (chargingPromptPanel != null)
+                    chargingPromptPanel.SetActive(true);
+
+                if (chargingPromptText != null)
+                    chargingPromptText.text = "Cargando batería...";
+            }
+        }
+        else if (other.CompareTag("Player"))
+        {
+            if (chargingPromptPanel != null)
+                chargingPromptPanel.SetActive(true);
+
+            if (chargingPromptText != null)
+                chargingPromptText.text = "Parece una fuente de energía.";
         }
     }
 
@@ -16,7 +39,18 @@ public class ChargingStation : MonoBehaviour
     {
         if (other.CompareTag("Battery"))
         {
-            other.GetComponent<PortableBattery>().StopCharging();
+            PortableBattery battery = other.GetComponent<PortableBattery>();
+            if (battery != null)
+            {
+                battery.StopCharging();
+            }
+        }
+
+        // Ocultar el panel si se va el jugador o la batería
+        if (other.CompareTag("Player") || other.CompareTag("Battery"))
+        {
+            if (chargingPromptPanel != null)
+                chargingPromptPanel.SetActive(false);
         }
     }
 }

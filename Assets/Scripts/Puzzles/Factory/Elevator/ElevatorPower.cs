@@ -1,12 +1,18 @@
 using System.Collections;
 using UnityEngine;
+using TMPro;
 
 public class ElevatorPower : MonoBehaviour
 {
+    [Header("Elevator Settings")]
     [SerializeField] private GameObject elevator;
     [SerializeField] private Transform upPosition;
     [SerializeField] private Transform downPosition;
     [SerializeField] private float speed = 2f;
+
+    [Header("UI")]
+    [SerializeField] private GameObject elevatorPromptPanel;
+    [SerializeField] private TextMeshProUGUI elevatorPromptText;
 
     private bool hasPower = false;
     private bool playerOnPlatform = false;
@@ -22,11 +28,39 @@ public class ElevatorPower : MonoBehaviour
                 hasPower = true;
                 Debug.Log("Batería instalada, elevador con energía.");
 
+                // Ocultar mensaje si estaba visible
+                if (elevatorPromptPanel != null)
+                    elevatorPromptPanel.SetActive(false);
+
                 if (playerOnPlatform && !isMoving)
                 {
                     StartCoroutine(MoveElevator());
                 }
             }
+        }
+        else if (other.CompareTag("Player"))
+        {
+            SetPlayerOnPlatform(true);
+
+            if (!hasPower)
+            {
+                if (elevatorPromptPanel != null)
+                    elevatorPromptPanel.SetActive(true);
+
+                if (elevatorPromptText != null)
+                    elevatorPromptText.text = "Le falta energía al elevador.";
+            }
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.CompareTag("Player"))
+        {
+            SetPlayerOnPlatform(false);
+
+            if (elevatorPromptPanel != null)
+                elevatorPromptPanel.SetActive(false);
         }
     }
 

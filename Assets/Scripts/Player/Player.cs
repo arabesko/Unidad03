@@ -57,7 +57,7 @@ public class Player : MonoBehaviour, IDamagiable
 
     //Salto Raycast
 
-    private bool _isGrounded;
+    [SerializeField] private bool _isGrounded;
     [SerializeField] private LayerMask _MaskGround;
 
     [SerializeField] private GameObject _flecha1;
@@ -66,7 +66,7 @@ public class Player : MonoBehaviour, IDamagiable
 
     void Awake()
     {
-        rb = GetComponent<Rigidbody>();
+        //rb = GetComponent<Rigidbody>();
         _currentLife = _maxLife;
 
         foreach (var item in bodyRender)
@@ -315,9 +315,9 @@ public class Player : MonoBehaviour, IDamagiable
     {
         RaycastHit hitInfo = new RaycastHit();
 
-        Debug.DrawRay(transform.position, Vector3.down * 0.6f, Color.red);
+        Debug.DrawRay(transform.position, Vector3.down * 1f, Color.red);
 
-        if(Physics.Raycast(transform.position, -Vector3.up, out hitInfo, 0.6f, _MaskGround))
+        if(Physics.Raycast(transform.position, Vector3.down, out hitInfo, 1f, _MaskGround))
         {
             _isGrounded = true;
         }
@@ -330,9 +330,9 @@ public class Player : MonoBehaviour, IDamagiable
 
     private void HandleJump()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.Space) && _isGrounded)
         {
-            rb.AddForce(Vector3.up * _jumpForce);
+            rb.AddForce(Vector3.up * _jumpForce, ForceMode.Impulse);
         }
     }
 
