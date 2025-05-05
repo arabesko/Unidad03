@@ -1,17 +1,30 @@
 using System.Collections;
 using UnityEngine;
+using TMPro;
 
 public class BridgeSpawner : MonoBehaviour
 {
-    public GameObject bridgePrefab; // Prefab del puente
-    public Transform spawnPoint;    // Punto donde aparecerá el puente
+    [Header("Bridge Settings")]
+    public GameObject bridgePrefab;
+    public Transform spawnPoint;
     public float bridgeDuration = 4f;
 
-    private bool playerInRange = false;
+    [Header("UI Settings")]
+    public GameObject interactPanel;
+    public TMP_Text interactText;    
 
-    void Update()
+    private bool playerInRange = false;
+    private bool isSpawning = false;
+
+    private void Start()
     {
-        if (playerInRange && Input.GetKeyDown(KeyCode.E))
+        if (interactPanel != null)
+            interactPanel.SetActive(false);
+    }
+
+    private void Update()
+    {
+        if (playerInRange && Input.GetKeyDown(KeyCode.E) && !isSpawning)
         {
             StartCoroutine(SpawnBridge());
         }
@@ -19,9 +32,17 @@ public class BridgeSpawner : MonoBehaviour
 
     private IEnumerator SpawnBridge()
     {
+        isSpawning = true;
+        if (interactPanel != null)
+            interactPanel.SetActive(false);
+
         GameObject bridge = Instantiate(bridgePrefab, spawnPoint.position, spawnPoint.rotation);
         yield return new WaitForSeconds(bridgeDuration);
         Destroy(bridge);
+
+        isSpawning = false;
+        if (playerInRange && interactPanel != null)
+            interactPanel.SetActive(true);
     }
 
     private void OnTriggerEnter(Collider other)
@@ -29,6 +50,11 @@ public class BridgeSpawner : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             playerInRange = true;
+            if (!isSpawning && interactPanel != null)
+            {
+                interactPanel.SetActive(true);
+                interactText.text = "Presione E para interactuar";
+            }
         }
     }
 
@@ -37,6 +63,8 @@ public class BridgeSpawner : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             playerInRange = false;
+            if (interactPanel != null)
+                interactPanel.SetActive(false);
         }
     }
 }
