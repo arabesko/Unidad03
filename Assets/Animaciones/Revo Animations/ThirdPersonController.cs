@@ -16,33 +16,47 @@ public class ThirdPersonController : MonoBehaviour
 
     [Header("Animation Settings")]
     [Range(0f, 1f)]
-    public float walkAnimValueTransition = 0.3f;
+    public float walkAnimValueTransition = 0.1f;
 
-    private CharacterController controller;
+    [HideInInspector] public CharacterController Controller;
+    [HideInInspector] public bool EnableMovement = true;
+    [HideInInspector] public bool IsDashing = false;
+    public bool IsGrounded => Controller.isGrounded;
+
     private Animator animator;
     private Vector3 velocity;
-    private float coyoteCounter;
-    private float jumpBufferCounter;
+    private float coyoteCounter, jumpBufferCounter;
     private float currentSpeed;
     private bool isSprinting;
 
     void Awake()
     {
-        controller = GetComponent<CharacterController>();
+        Controller = GetComponent<CharacterController>();
         animator = GetComponent<Animator>();
     }
 
     void Update()
     {
         HandleTimers();
-        HandleMovement();
-        HandleGravityAndJump();
+
+        if (EnableMovement)
+        {
+            HandleMovement();
+            HandleGravityAndJump();
+        }
+        else if (!IsGrounded)
+        {
+            // Solo aplicar gravedad si está en el aire
+            velocity.y += gravity * Time.deltaTime;
+            Controller.Move(velocity * Time.deltaTime);
+        }
+
         UpdateAnimation();
     }
 
     private void HandleTimers()
     {
-        if (controller.isGrounded)
+        if (Controller.isGrounded)
             coyoteCounter = coyoteTime;
         else
             coyoteCounter -= Time.deltaTime;
@@ -57,20 +71,16 @@ public class ThirdPersonController : MonoBehaviour
     {
         float h = Input.GetAxis("Horizontal");
         float v = Input.GetAxis("Vertical");
+        Vector3 dir = GetCameraRelativeDirection(h, v);
 
-        Vector3 moveDir = GetCameraRelativeDirection(h, v);
-
-        if (moveDir.magnitude >= 0.1f)
+        if (dir.magnitude >= 0.1f)
         {
-            // Rotación hacia la dirección deseada
-            Quaternion targetRotation = Quaternion.LookRotation(moveDir);
-            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
+            Quaternion target = Quaternion.LookRotation(dir);
+            transform.rotation = Quaternion.Slerp(transform.rotation, target, rotationSpeed * Time.deltaTime);
 
-            // Determinar sprint
             isSprinting = Input.GetKey(KeyCode.LeftShift);
             currentSpeed = moveSpeed * (isSprinting ? sprintMultiplier : 1f);
-
-            controller.Move(moveDir.normalized * currentSpeed * Time.deltaTime);
+            Controller.Move(dir.normalized * currentSpeed * Time.deltaTime);
         }
         else
         {
@@ -81,22 +91,17 @@ public class ThirdPersonController : MonoBehaviour
 
     private Vector3 GetCameraRelativeDirection(float h, float v)
     {
-        Transform cam = Camera.main.transform;
-        Vector3 camForward = cam.forward;
-        Vector3 camRight = cam.right;
-        camForward.y = 0f;
-        camRight.y = 0f;
-        camForward.Normalize();
-        camRight.Normalize();
-        return camForward * v + camRight * h;
+        var cam = Camera.main.transform;
+        Vector3 f = cam.forward; f.y = 0; f.Normalize();
+        Vector3 r = cam.right; r.y = 0; r.Normalize();
+        return f * v + r * h;
     }
 
     private void HandleGravityAndJump()
     {
-        if (controller.isGrounded && velocity.y <= 0f)
+        if (Controller.isGrounded && velocity.y <= 0f)
         {
             velocity.y = -2f;
-
             if (jumpBufferCounter > 0f && coyoteCounter > 0f)
             {
                 velocity.y = Mathf.Sqrt(jumpForce * -2f * gravity);
@@ -104,19 +109,14 @@ public class ThirdPersonController : MonoBehaviour
                 coyoteCounter = 0f;
             }
         }
-
         velocity.y += gravity * Time.deltaTime;
-        controller.Move(velocity * Time.deltaTime);
+        Controller.Move(velocity * Time.deltaTime);
     }
 
     private void UpdateAnimation()
     {
-        if (animator != null)
-        {
-            float velPercent = 0f;
-            if (currentSpeed > 0f)
-                velPercent = isSprinting ? 1f : walkAnimValueTransition;
-            animator.SetFloat("Velocity", velPercent, 0.1f, Time.deltaTime);
-        }
+        if (animator == null) return;
+        float pct = (currentSpeed > 0f) ? (isSprinting ? 1f : walkAnimValueTransition) : 0f;
+        animator.SetFloat("Velocity", pct, 0.1f, Time.deltaTime);
     }
 }

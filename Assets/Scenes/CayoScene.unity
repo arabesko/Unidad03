@@ -608,7 +608,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 567322544}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.09990506, y: -0.0003099965, z: 0.00003112594, w: 0.99499696}
+  m_LocalRotation: {x: 0.09990506, y: -0.00031003074, z: 0.00003112938, w: 0.99499696}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -1704,6 +1704,9 @@ MonoBehaviour:
   coyoteTime: 0.2
   jumpBufferTime: 0.1
   walkAnimValueTransition: 0.1
+  Controller: {fileID: 0}
+  EnableMovement: 1
+  IsDashing: 0
 --- !u!143 &1143725354
 CharacterController:
   m_ObjectHideFlags: 0
@@ -1730,6 +1733,20 @@ CharacterController:
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
   m_Center: {x: 0, y: 1.94, z: 0}
+--- !u!114 &1143725356
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1143725350}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a1972a1ebb873f845908fc4fa06f333f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dashSpeed: 20
+  dashTime: 0.1
 --- !u!1 &1311109571
 GameObject:
   m_ObjectHideFlags: 0
@@ -1942,6 +1959,9 @@ MonoBehaviour:
   coyoteTime: 0.2
   jumpBufferTime: 0.01
   walkAnimValueTransition: 0.1
+  Controller: {fileID: 0}
+  EnableMovement: 1
+  IsDashing: 0
 --- !u!143 &1341172718
 CharacterController:
   m_ObjectHideFlags: 0
@@ -3561,6 +3581,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: c6d82d12238aed94180c24c4700c0bcf, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1143725353}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: c6d82d12238aed94180c24c4700c0bcf, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1143725356}
   m_SourcePrefab: {fileID: 100100000, guid: c6d82d12238aed94180c24c4700c0bcf, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
