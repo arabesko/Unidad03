@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: b5e6dfcbecf305e4f9c20db663fd082d
+guid: c1fba6b32b0f6204a927d9d0196b8e49
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
@@ -16,8 +16,7 @@ ModelImporter:
     optimizeGameObjects: 0
     removeConstantScaleCurves: 0
     motionNodeName: 
-    rigImportErrors: "Invalid copied Avatar Rig Configuration:\n\tNo human bone found.
-      Ensure both rig type match\n"
+    rigImportErrors: 
     rigImportWarnings: 
     animationImportErrors: 
     animationImportWarnings: 
@@ -34,11 +33,11 @@ ModelImporter:
     extraUserProperties: []
     clipAnimations:
     - serializedVersion: 16
-      name: Esqueleto.002|Action
-      takeName: Esqueleto.002|Action
-      internalID: -6735738061605523646
+      name: ESQUELETO RG|Action
+      takeName: ESQUELETO RG|Action
+      internalID: 8317980348586145792
       firstFrame: 0
-      lastFrame: 47
+      lastFrame: 23
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -100,7 +99,7 @@ ModelImporter:
     useFileScale: 1
     strictVertexDataChecks: 0
   tangentSpace:
-    normalSmoothAngle: 60
+    normalSmoothAngle: 180
     normalImportMode: 0
     tangentImportMode: 3
     normalCalculationMode: 4
@@ -125,7 +124,7 @@ ModelImporter:
     hasTranslationDoF: 0
     hasExtraRoot: 0
     skeletonHasParents: 1
-  lastHumanDescriptionAvatarSource: {fileID: 9000000, guid: 536b27fc78a8a0147938ef00918c1e94, type: 3}
+  lastHumanDescriptionAvatarSource: {fileID: 9000000, guid: c6d82d12238aed94180c24c4700c0bcf, type: 3}
   autoGenerateAvatarMappingIfUnspecified: 1
   animationType: 2
   humanoidOversampling: 1
