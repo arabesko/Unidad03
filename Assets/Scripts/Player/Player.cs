@@ -49,13 +49,16 @@ public class Player : MonoBehaviour, IDamagiable
 
     private Dictionary<ModulosUnit03, GameObject> _modulos = new Dictionary<ModulosUnit03, GameObject>();
     
-
     private delegate void PowerAccion();
     private PowerAccion _myPower;
 
     // Componentes
     private Rigidbody rb;
-    private bool isGrounded;
+
+    //Salto Raycast
+
+    private bool _isGrounded;
+    [SerializeField] private LayerMask _MaskGround;
 
     [SerializeField] private GameObject _flecha1;
     [SerializeField] private GameObject _flecha2;
@@ -74,6 +77,7 @@ public class Player : MonoBehaviour, IDamagiable
 
     private void Start()
     {
+        rb = GetComponent<Rigidbody>();
         SelectModule(); //Asigna el modulo inicial (Proyector)
         _elementDetected = null;
     }
@@ -96,6 +100,7 @@ public class Player : MonoBehaviour, IDamagiable
     {
         _zAxis = Input.GetAxisRaw("Horizontal");
         _xAxis = Input.GetAxisRaw("Vertical");
+        CheckGround();
         HandleJump();
 
         if (CollectWeapon())
@@ -306,11 +311,28 @@ public class Player : MonoBehaviour, IDamagiable
         return false;
     }
 
+    private void CheckGround()
+    {
+        RaycastHit hitInfo = new RaycastHit();
+
+        Debug.DrawRay(transform.position, Vector3.down * 0.6f, Color.red);
+
+        if(Physics.Raycast(transform.position, -Vector3.up, out hitInfo, 0.6f, _MaskGround))
+        {
+            _isGrounded = true;
+        }
+        else
+        {
+            _isGrounded = false;
+        }
+
+    }
+
     private void HandleJump()
     {
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            rb.AddForce(Vector3.up * _jumpForce, ForceMode.Impulse);
+            rb.AddForce(Vector3.up * _jumpForce);
         }
     }
 
