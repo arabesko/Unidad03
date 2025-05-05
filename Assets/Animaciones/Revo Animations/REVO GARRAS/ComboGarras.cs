@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class ComboGarras : StateMachineBehaviour
@@ -11,7 +12,7 @@ public class ComboGarras : StateMachineBehaviour
     override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         // Solo durante el primer 10% de la animación, y una sola vez
-        if (!hasDashed && Input.GetButtonDown("Fire1"))
+        if (!hasDashed && Input.GetMouseButtonDown(0))
         {
             hasDashed = true;
             valor = num;
