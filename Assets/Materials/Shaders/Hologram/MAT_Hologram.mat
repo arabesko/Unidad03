@@ -55,7 +55,7 @@ Material:
     - _VelocidadHolograma: 0.1
     m_Colors:
     - _BaseColor: {r: 0.07843137, g: 0.2953416, b: 0.34117648, a: 0}
-    - _FresnelColor: {r: 1.0763044, g: 1.8628348, b: 3.9533494, a: 0}
+    - _FresnelColor: {r: 1.0763044, g: 1.8628348, b: 3.9533494, a: 0.5529412}
     - _HologramaTiling: {r: 1, g: 3, b: 0, a: 0}
   m_BuildTextureStacks: []
 --- !u!114 &6892203433197493591
