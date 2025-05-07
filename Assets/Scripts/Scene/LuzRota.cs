@@ -19,10 +19,10 @@ public class LuzRota : MonoBehaviour
     {
         _titilo = true;
         this.gameObject.GetComponent<Light>().enabled = false;
-        _timeDelay = Random.Range(0.01f, 0.2f);
+        _timeDelay = Random.Range(0.01f, 0.3f);
         yield return new WaitForSeconds(_timeDelay);
         this.gameObject.GetComponent<Light>().enabled = true;
-        _timeDelay = Random.Range(0.02f, 0.2f);
+        _timeDelay = Random.Range(0.02f, 0.3f);
         yield return new WaitForSeconds(_timeDelay);
         _titilo = false;
     }
