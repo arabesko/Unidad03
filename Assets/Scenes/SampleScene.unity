@@ -3724,7 +3724,7 @@ Transform:
   m_GameObject: {fileID: 215734406}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0.7071068, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: 0.48, z: 2.49}
+  m_LocalPosition: {x: -0, y: 2.65, z: 0.71}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -14145,6 +14145,7 @@ GameObject:
   - component: {fileID: 827203376}
   - component: {fileID: 827203375}
   - component: {fileID: 827203374}
+  - component: {fileID: 827203378}
   m_Layer: 8
   m_Name: Player
   m_TagString: Player
@@ -14176,7 +14177,7 @@ MonoBehaviour:
   _puzzleCollisionWall: 0
   _isTutorial: 1
   _panelUI: {fileID: 1407446891}
-  _viewRadius: 2.36
+  _viewRadius: 5.5
   _viewAngle: 84
   _colectables:
   - {fileID: 1471389672}
@@ -14276,6 +14277,14 @@ Transform:
   - {fileID: 215734407}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
+--- !u!81 &827203378
+AudioListener:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 827203373}
+  m_Enabled: 1
 --- !u!1 &831778201
 GameObject:
   m_ObjectHideFlags: 0
@@ -15520,7 +15529,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &914531049
 Transform:
   m_ObjectHideFlags: 0
@@ -15732,6 +15741,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 827203374}
     - target: {fileID: 6526578467590702017, guid: 3a7035a7cee2ead4dbe9c281cb5e9860, type: 3}
+      propertyPath: _percent
+      value: 33
+      objectReference: {fileID: 0}
+    - target: {fileID: 6526578467590702017, guid: 3a7035a7cee2ead4dbe9c281cb5e9860, type: 3}
       propertyPath: _speedRotation
       value: 33
       objectReference: {fileID: 0}
@@ -15795,7 +15808,6 @@ GameObject:
   m_Component:
   - component: {fileID: 963194228}
   - component: {fileID: 963194227}
-  - component: {fileID: 963194226}
   - component: {fileID: 963194229}
   - component: {fileID: 963194230}
   - component: {fileID: 963194232}
@@ -15807,14 +15819,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!81 &963194226
-AudioListener:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 963194225}
-  m_Enabled: 1
 --- !u!20 &963194227
 Camera:
   m_ObjectHideFlags: 0
@@ -25503,7 +25507,7 @@ Transform:
   m_GameObject: {fileID: 1471389672}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -97.16913, y: 3.8142762, z: -36.416397}
+  m_LocalPosition: {x: -32.799126, y: 4.4942765, z: -36.296402}
   m_LocalScale: {x: 0.54038, y: 0.54038, z: 0.54038}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -25521,7 +25525,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eaac44b79a05e05469ba6f6777e8947e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _radarRadious: 10.88
+  _radarRadious: 20
   _targetLayer:
     serializedVersion: 2
     m_Bits: 64
@@ -25536,7 +25540,7 @@ AudioSource:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1471389672}
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
@@ -27575,14 +27579,6 @@ PrefabInstance:
       propertyPath: _player
       value: 
       objectReference: {fileID: 827203374}
-    - target: {fileID: 6526578467590702017, guid: 3a7035a7cee2ead4dbe9c281cb5e9860, type: 3}
-      propertyPath: _audioSource
-      value: 
-      objectReference: {fileID: 1605612156}
-    - target: {fileID: 6526578467590702017, guid: 3a7035a7cee2ead4dbe9c281cb5e9860, type: 3}
-      propertyPath: _speedRotation
-      value: 34
-      objectReference: {fileID: 0}
     - target: {fileID: 8858564259806846583, guid: 3a7035a7cee2ead4dbe9c281cb5e9860, type: 3}
       propertyPath: m_Name
       value: Puzzle1
@@ -27595,11 +27591,6 @@ PrefabInstance:
 --- !u!4 &1605612155 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3629622117526868552, guid: 3a7035a7cee2ead4dbe9c281cb5e9860, type: 3}
-  m_PrefabInstance: {fileID: 1605612154}
-  m_PrefabAsset: {fileID: 0}
---- !u!82 &1605612156 stripped
-AudioSource:
-  m_CorrespondingSourceObject: {fileID: 3905335366456253466, guid: 3a7035a7cee2ead4dbe9c281cb5e9860, type: 3}
   m_PrefabInstance: {fileID: 1605612154}
   m_PrefabAsset: {fileID: 0}
 --- !u!43 &1605793523
@@ -38888,6 +38879,10 @@ PrefabInstance:
       propertyPath: _player
       value: 
       objectReference: {fileID: 827203374}
+    - target: {fileID: 6526578467590702017, guid: 3a7035a7cee2ead4dbe9c281cb5e9860, type: 3}
+      propertyPath: _percent
+      value: 33
+      objectReference: {fileID: 0}
     - target: {fileID: 8858564259806846583, guid: 3a7035a7cee2ead4dbe9c281cb5e9860, type: 3}
       propertyPath: m_Name
       value: Puzzle1
