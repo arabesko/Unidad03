@@ -1,7 +1,7 @@
 using UnityEngine;
 
 [RequireComponent(typeof(CharacterController))]
-public class ThirdPersonController : MonoBehaviour
+public class PlayerMovement : MonoBehaviour
 {
     [Header("Movement Settings")]
     public float moveSpeed = 5f;
@@ -15,15 +15,17 @@ public class ThirdPersonController : MonoBehaviour
     public float jumpBufferTime = 0.1f;
 
     [Header("Animation Settings")]
-    [Range(0f, 1f)]
+    public float pct;
     public float walkAnimValueTransition = 0.1f;
+
+    [SerializeField] AnimatorBasic _animatorBasic;
+
 
     [HideInInspector] public CharacterController Controller;
     [HideInInspector] public bool EnableMovement = true;
     [HideInInspector] public bool IsDashing = false;
     public bool IsGrounded => Controller.isGrounded;
 
-    private Animator animator;
     private Vector3 velocity;
     private float coyoteCounter, jumpBufferCounter;
     private float currentSpeed;
@@ -32,7 +34,6 @@ public class ThirdPersonController : MonoBehaviour
     void Awake()
     {
         Controller = GetComponent<CharacterController>();
-        animator = GetComponent<Animator>();
     }
 
     void Update()
@@ -115,8 +116,6 @@ public class ThirdPersonController : MonoBehaviour
 
     private void UpdateAnimation()
     {
-        if (animator == null) return;
-        float pct = (currentSpeed > 0f) ? (isSprinting ? 1f : walkAnimValueTransition) : 0f;
-        animator.SetFloat("Velocity", pct, 0.1f, Time.deltaTime);
+        pct = (currentSpeed > 0f) ? (isSprinting ? 1f : walkAnimValueTransition) : 0f;
     }
 }

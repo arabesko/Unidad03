@@ -32,6 +32,5 @@ public class ComboGarras : StateMachineBehaviour
     {
         hasDashed = false;
         valor = 0;
-
     }
 }

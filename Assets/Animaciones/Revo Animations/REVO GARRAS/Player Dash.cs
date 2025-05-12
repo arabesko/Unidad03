@@ -1,10 +1,10 @@
 using System.Collections;
 using UnityEngine;
 
-[RequireComponent(typeof(ThirdPersonController))]
+[RequireComponent(typeof(PlayerMovement))]
 public class PlayerDash : MonoBehaviour
 {
-    private ThirdPersonController playerScript;
+    private PlayerMovement playerScript;
 
     [Header("Dash Settings")]
     public float dashSpeed = 10f;   // Velocidad del dash
@@ -12,7 +12,7 @@ public class PlayerDash : MonoBehaviour
 
     private void Awake()
     {
-        playerScript = GetComponent<ThirdPersonController>();
+        playerScript = GetComponent<PlayerMovement>();
     }
 
     /// <summary>

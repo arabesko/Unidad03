@@ -12,15 +12,12 @@ public class SDCardPickup : MonoBehaviour
     {
         if (!other.CompareTag("Player")) return;
 
-        var switcher = FindObjectOfType<PlayerModuleSwitcher>();
+        var switcher = FindObjectOfType<PlayerMovement>();
         if (switcher != null)
         {
-            // Solo habilitamos el permiso de switch, sin cambiar ahora mismo
-            switcher.UnlockSwitching();
-        }
-        else
-        {
-            Debug.LogWarning("No encontré PlayerModuleSwitcher en la escena.");
+
+            //Agregar Inventario
+        
         }
 
         Destroy(gameObject);
