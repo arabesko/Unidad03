@@ -7,6 +7,8 @@ public class ElementPuzzle : PuzzleMother
 {
     [SerializeField] private int _percent;
     [SerializeField] private Player _player;
+    [SerializeField] private AudioSource _audioSource;
+    [SerializeField] private AudioClip _audioClip;
     
     private bool _activateRadar = false;
 
@@ -58,6 +60,14 @@ public class ElementPuzzle : PuzzleMother
     {
         yield return new WaitForSeconds(0.4f);
 
+
+        if (GameManager.Instance._canBlin)
+        {
+            _audioSource.PlayOneShot(_audioClip);
+            GameManager.Instance._canBlin = false;
+            StartCoroutine(CanBlinAgain());
+        }
+
         for (int i = 0; i < 15; i++)
         {
             DetectionColor();
@@ -87,5 +97,11 @@ public class ElementPuzzle : PuzzleMother
         if (myWalls != null)
         {
         }
+    }
+
+    private IEnumerator CanBlinAgain()
+    {
+        yield return new WaitForSeconds(3f);
+        GameManager.Instance._canBlin = true;
     }
 }

@@ -23,7 +23,7 @@ public class WeaponRadar : Weapon
     {
         if (!_canRadar) return;
         base.PowerElement();
-        _audioSource.PlayOneShot(_audioClip);
+        //_audioSource.PlayOneShot(_audioClip);
         Collider[] hitColliders = Physics.OverlapSphere(transform.position, _radarRadious, _targetLayer);
         foreach (Collider collider in hitColliders)
         {
