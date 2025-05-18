@@ -28,17 +28,17 @@ RenderSettings:
   m_SubtractiveShadowColor: {r: 0.42, g: 0.478, b: 0.627, a: 1}
   m_SkyboxMaterial: {fileID: 2100000, guid: 2039a0ad0a9d05549928b70362f54902, type: 2}
   m_HaloStrength: 0.5
-  m_FlareStrength: 1
+  m_FlareStrength: 0.9
   m_FlareFadeSpeed: 3
   m_HaloTexture: {fileID: 0}
   m_SpotCookie: {fileID: 10001, guid: 0000000000000000e000000000000000, type: 0}
   m_DefaultReflectionMode: 0
   m_DefaultReflectionResolution: 128
   m_ReflectionBounces: 1
-  m_ReflectionIntensity: 0.8
+  m_ReflectionIntensity: 0.7
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.023269778, g: 0.023918062, b: 0.023917316, a: 0.8}
+  m_IndirectSpecularColor: {r: 0.020361055, g: 0.020928305, b: 0.02092765, a: 0.7}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -20905,7 +20905,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.14401756, y: -0.00020867135, z: 0.000030368927, w: 0.98957515}
+  m_LocalRotation: {x: 0.14401756, y: -0.00020867135, z: 0.000030368928, w: 0.98957515}
   m_LocalPosition: {x: 21.19, y: 11.35, z: -99.100006}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -28426,11 +28426,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3305562968966127255, guid: 9c4e3ab200c93cb4f95e430a3571d58d, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0.00020869689
+      value: -0.00020869692
       objectReference: {fileID: 0}
     - target: {fileID: 3305562968966127255, guid: 9c4e3ab200c93cb4f95e430a3571d58d, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0.00003037264
+      value: 0.000030372647
       objectReference: {fileID: 0}
     - target: {fileID: 3635797008329044407, guid: 9c4e3ab200c93cb4f95e430a3571d58d, type: 3}
       propertyPath: m_LocalPosition.x
@@ -28454,11 +28454,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3635797008329044407, guid: 9c4e3ab200c93cb4f95e430a3571d58d, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0.00020965388
+      value: -0.00020967089
       objectReference: {fileID: 0}
     - target: {fileID: 3635797008329044407, guid: 9c4e3ab200c93cb4f95e430a3571d58d, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0.000022770768
+      value: 0.000022772618
       objectReference: {fileID: 0}
     - target: {fileID: 3640021631844042191, guid: 9c4e3ab200c93cb4f95e430a3571d58d, type: 3}
       propertyPath: m_IsActive
@@ -28490,11 +28490,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6518032871722841449, guid: 9c4e3ab200c93cb4f95e430a3571d58d, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0.00020924091
+      value: -0.00020924084
       objectReference: {fileID: 0}
     - target: {fileID: 6518032871722841449, guid: 9c4e3ab200c93cb4f95e430a3571d58d, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0.000026574851
+      value: 0.000026574839
       objectReference: {fileID: 0}
     - target: {fileID: 7012350025629959345, guid: 9c4e3ab200c93cb4f95e430a3571d58d, type: 3}
       propertyPath: m_Strategy
@@ -51747,6 +51747,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: PUERTAS DOBLES
       objectReference: {fileID: 0}
+    - target: {fileID: 5359065385945007477, guid: df911571adf42124d94d4424abaa07e2, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 9377bc08bc1f28a4fa881862b53ba5e3, type: 2}
     - target: {fileID: 6486070434252253464, guid: df911571adf42124d94d4424abaa07e2, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
