@@ -1,28 +1,23 @@
 using UnityEngine;
 
-public class Weapon : MonoBehaviour, IDrivers
+public class Weapon : MonoBehaviour, IModules
 {
     private MeshRenderer _render;
-    protected Player _player;
+    protected PlayerMovement _player;
+
+    [SerializeField] private GameObject _myBodyFBX; public GameObject MyBodyFBX { get { return _myBodyFBX; } }
+    [SerializeField] private Animator _myAnimator; public Animator MyAnimator { get { return _myAnimator; } }
 
     private void Awake()
     {
         _render = GetComponent<MeshRenderer>();
     }
-    public virtual void Initialized(Player player)
+    public virtual void Initialized(PlayerMovement player)
     {
        _player = player;
     }
     public virtual void PowerElement()
     {
     }
-
-    public void ChangeColor(Player player)
-    {
-        //Provisorio, solo para que se entienda que paso algo al colectar
-        foreach (var item in player.bodyRender)
-        {
-            item.material = _render.material;
-        }
-    }
+    
 }

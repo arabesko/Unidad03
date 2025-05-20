@@ -4,7 +4,8 @@ public class WeaponPulse : Weapon
 {
     [SerializeField] public GameObject _myBulletPrebaf;
     [SerializeField] public Transform _instancePoint;
-    public override void Initialized(Player player)
+
+    public override void Initialized(PlayerMovement player)
     {
         base.Initialized(player);
     }
@@ -13,7 +14,6 @@ public class WeaponPulse : Weapon
     {
         base.PowerElement();
         Instantiate(_myBulletPrebaf, _instancePoint.position, transform.rotation);
-        print("disparar");
-
     }
+
 }

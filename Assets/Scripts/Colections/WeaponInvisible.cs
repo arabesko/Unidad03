@@ -5,7 +5,7 @@ using UnityEngine.Analytics;
 
 public class WeaponInvisible : Weapon
 {
-    public override void Initialized(Player player)
+    public override void Initialized(PlayerMovement player)
     {
         base.Initialized(player);
     }
@@ -13,10 +13,9 @@ public class WeaponInvisible : Weapon
     public override void PowerElement()
     {
         if (_player.IsInvisible) return;
-        base.PowerElement();
         _player.IsInvisible = true;
-        ChangeColor(_player);
         StartCoroutine(InvisibleTime());
+        
     }
 
     public IEnumerator InvisibleTime()
@@ -33,5 +32,4 @@ public class WeaponInvisible : Weapon
         _player.IsInvisible = false;
     }
 
-    
 }

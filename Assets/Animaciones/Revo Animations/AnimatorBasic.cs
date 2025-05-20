@@ -13,22 +13,22 @@ public class AnimatorBasic : MonoBehaviour
     [HideInInspector] public bool EnableMovement = true;
     [HideInInspector] public bool IsDashing = false;
 
-    [SerializeField] private Animator _animator;
+    [SerializeField] public Animator animator;
 
     void Update()
     {
-        print(_playerMovement.pct);
+        //print(_playerMovement.pct);
         UpdateAnimation();
     }
 
     void ChangeAnimator(Animator myAnimator)
     {
-        _animator = myAnimator;
+        animator = myAnimator;
     }
 
     private void UpdateAnimation()
     {
-        if (_animator == null) return;
-        _animator.SetFloat("Velocity", _playerMovement.pct, 0.1f, Time.deltaTime);
+        if (animator == null) return;
+        animator.SetFloat("Velocity", _playerMovement.pct, 0.1f, Time.deltaTime);
     }
 }

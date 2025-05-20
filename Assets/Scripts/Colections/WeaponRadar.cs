@@ -14,16 +14,15 @@ public class WeaponRadar : Weapon
 
     public float RadarRadious {  get {  return _radarRadious; } set { _radarRadious = value; } }
 
-    public override void Initialized(Player player)
+    public override void Initialized(PlayerMovement player)
     {
         base.Initialized(player);
     }
 
+
     public override void PowerElement()
     {
         if (!_canRadar) return;
-        base.PowerElement();
-        //_audioSource.PlayOneShot(_audioClip);
         Collider[] hitColliders = Physics.OverlapSphere(transform.position, _radarRadious, _targetLayer);
         foreach (Collider collider in hitColliders)
         {
@@ -48,4 +47,5 @@ public class WeaponRadar : Weapon
         yield return new WaitForSeconds(3);
         _canRadar = true;
     }
+
 }

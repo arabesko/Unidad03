@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 [RequireComponent(typeof(CharacterController))]
@@ -7,6 +9,16 @@ public class PlayerMovement : MonoBehaviour
     public float moveSpeed = 5f;
     public float sprintMultiplier = 1.5f;
     public float rotationSpeed = 10f;
+
+    [SerializeField] private float _viewRadius;
+    [SerializeField] private float _viewAngle;
+    [SerializeField] private List<GameObject> _colectables;
+    [SerializeField] private LayerMask _wallLayer;
+
+    [SerializeField] private GameObject _elementDetected; //La que detecta el Raycast
+    [SerializeField] private GameObject _weaponSelected; //El arma que esta activa
+
+    [SerializeField] private GameObject _elementLevitated; //El el elemento levitado
 
     [Header("Jump Settings")]
     public float jumpForce = 8f;
@@ -18,12 +30,25 @@ public class PlayerMovement : MonoBehaviour
     public float pct;
     public float walkAnimValueTransition = 0.1f;
 
-    [SerializeField] AnimatorBasic _animatorBasic;
+    [SerializeField] public AnimatorBasic _animatorBasic;
 
+    [Header("Inventory")]
+    [SerializeField] private GameObject _element0;
+    [SerializeField] private Inventory _inventory;
 
     [HideInInspector] public CharacterController Controller;
     [HideInInspector] public bool EnableMovement = true;
     [HideInInspector] public bool IsDashing = false;
+
+    [SerializeField] private bool _isInvisible = false; public bool IsInvisible { get { return _isInvisible; } set { _isInvisible = value; } }
+    //Partes del cuerpo
+    public List<MeshRenderer> bodyRender;
+    [SerializeField] private Transform _projectorPosition;
+    [SerializeField] private Transform _module1;
+
+    //Respaldo de las partes del cuerpo
+    [SerializeField] private List<Material> _bodyRenderOriginal; public List<Material> BodyRenderOriginal { get { return _bodyRenderOriginal; } }
+
     public bool IsGrounded => Controller.isGrounded;
 
     private Vector3 velocity;
@@ -31,9 +56,17 @@ public class PlayerMovement : MonoBehaviour
     private float currentSpeed;
     private bool isSprinting;
 
+    
+
     void Awake()
     {
         Controller = GetComponent<CharacterController>();
+    }
+
+    private void Start()
+    {
+        _inventory = new Inventory(8, _element0);
+        AddModules(_projectorPosition);
     }
 
     void Update()
@@ -53,8 +86,109 @@ public class PlayerMovement : MonoBehaviour
         }
 
         UpdateAnimation();
+
+        //Colectar Modulos
+        if (Input.GetKeyDown(KeyCode.C) && CollectWeapon())
+        {
+            AddModules(_module1);
+        }
+
+        //Ejecutar poder del arma
+        if (Input.GetKeyDown(KeyCode.Q))
+        {
+            _weaponSelected.GetComponent<IModules>().PowerElement();
+        }
+
+        if (Input.GetKeyDown (KeyCode.Alpha1))
+        {
+            SelectModule(0);
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha2))
+        {
+            SelectModule(1);
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha3))
+        {
+            SelectModule(2);
+        }
     }
 
+    private void AddModules(Transform _position)
+    {
+        var myDriver = _elementDetected.GetComponent<IModules>();
+        if (myDriver == null) return;
+
+        _weaponSelected = _elementDetected;
+        _inventory.AddWeapon(_weaponSelected);
+        _weaponSelected.transform.parent = transform;
+        _weaponSelected.transform.position = _position.position;
+        _weaponSelected.transform.rotation = this.transform.rotation;
+        _weaponSelected.GetComponent<Rigidbody>().isKinematic = true;
+        SelectModule(_inventory.WeaponSelected);
+        myDriver.Initialized(this);
+    }
+
+    private void SelectModule(int index)
+    {
+        _weaponSelected = _inventory.SelectWeapon(index);
+        _animatorBasic.animator = _inventory.MyCurrentAnimator();
+        //ASIGNAR EL ANIMATOR DEL INVENTARIO
+    }
+
+    #region Detecciones
+    public Vector3 GetVectorFromAngle(float angle)
+    {
+        return new Vector3(Mathf.Sin(angle * Mathf.Deg2Rad), 0, Mathf.Cos(angle * Mathf.Deg2Rad));
+    }
+
+    private bool CollectWeapon()
+    {
+        foreach (var item in _colectables)
+        {
+            if (FieldOfView(item))
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public bool FieldOfView(GameObject obj)
+    {
+        Vector3 dir = obj.transform.position - transform.position;
+        if (dir.magnitude < _viewRadius)
+        {
+            if (Vector3.Angle(transform.forward, dir) < _viewAngle * 0.5f) //Field of View
+            {
+                if (!Physics.Raycast(transform.position, dir, out RaycastHit hit, _viewRadius, _wallLayer)) //Line of Sign
+                {
+                    Debug.DrawLine(transform.position, obj.transform.position, Color.magenta);
+                    _elementDetected = obj;
+                    return true;
+                }
+                else
+                {
+                    Debug.DrawLine(transform.position, hit.point, Color.magenta);
+                    _elementDetected = null;
+                }
+            }
+        }
+        return false;
+    }
+    #endregion
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.cyan;
+        Gizmos.DrawWireSphere(transform.position, _viewRadius);
+
+        Vector3 lineA = GetVectorFromAngle(_viewAngle * 0.5f + transform.eulerAngles.y);
+        Vector3 lineB = GetVectorFromAngle(-_viewAngle * 0.5f + transform.eulerAngles.y);
+
+        Gizmos.DrawLine(transform.position, transform.position + lineA * _viewRadius);
+        Gizmos.DrawLine(transform.position, transform.position + lineB * _viewRadius);
+    }
+
+    #region LoDelAgus
     private void HandleTimers()
     {
         if (Controller.isGrounded)
@@ -118,4 +252,6 @@ public class PlayerMovement : MonoBehaviour
     {
         pct = (currentSpeed > 0f) ? (isSprinting ? 1f : walkAnimValueTransition) : 0f;
     }
+
+    #endregion
 }

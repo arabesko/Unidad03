@@ -10,9 +10,9 @@ public class Player : MonoBehaviour, IDamagiable
     [SerializeField] private float _jumpForce = 7f;
     [SerializeField] private float _rotateSpeed = 1f;
     [SerializeField] private LayerMask _layerArms;
-    [SerializeField] private bool _isInvisible = false;
+    [SerializeField] private bool _isInvisible = false; public bool IsInvisible { get { return _isInvisible; } set { _isInvisible = value; } }
     [SerializeField] private bool _puzzleCollisionWall = false;
-    public bool IsInvisible { get { return _isInvisible; } set { _isInvisible = value; } }
+
     public bool PuzzleCollisionWall { get { return _puzzleCollisionWall; } set { _puzzleCollisionWall = value; } }
 
     private Vector3 _direction;
@@ -153,44 +153,44 @@ public class Player : MonoBehaviour, IDamagiable
 
 
         //Cambiar de arma
-        if (Input.GetKeyDown(KeyCode.Alpha1))
-        {
-           if (_modulos.ContainsKey(ModulosUnit03.BrazoIzquierdo))
-            {
-                _moduleSelected = ModulosUnit03.BrazoIzquierdo;
-                _modulos[ModulosUnit03.BrazoIzquierdo].GetComponent<IDrivers>().Initialized(this);
-                _weaponSelected = _modulos[ModulosUnit03.BrazoIzquierdo];
-                DesactivateArrow(_flecha1);
-            }
-        }
+        //if (Input.GetKeyDown(KeyCode.Alpha1))
+        //{
+        //   if (_modulos.ContainsKey(ModulosUnit03.BrazoIzquierdo))
+        //    {
+        //        _moduleSelected = ModulosUnit03.BrazoIzquierdo;
+        //        _modulos[ModulosUnit03.BrazoIzquierdo].GetComponent<IModules>().Initialized(this);
+        //        _weaponSelected = _modulos[ModulosUnit03.BrazoIzquierdo];
+        //        DesactivateArrow(_flecha1);
+        //    }
+        //}
 
-        if (Input.GetKeyDown(KeyCode.Alpha2))
-        {
-            if (_modulos.ContainsKey(ModulosUnit03.Proyector))
-            {
-                _moduleSelected = ModulosUnit03.Proyector;
-                _modulos[ModulosUnit03.Proyector].GetComponent<IDrivers>().Initialized(this);
-                _weaponSelected = _modulos[ModulosUnit03.Proyector];
-                DesactivateArrow(_flecha2);
+        //if (Input.GetKeyDown(KeyCode.Alpha2))
+        //{
+        //    if (_modulos.ContainsKey(ModulosUnit03.Proyector))
+        //    {
+        //        _moduleSelected = ModulosUnit03.Proyector;
+        //        _modulos[ModulosUnit03.Proyector].GetComponent<IModules>().Initialized(this);
+        //        _weaponSelected = _modulos[ModulosUnit03.Proyector];
+        //        DesactivateArrow(_flecha2);
 
-            }
-        }
+        //    }
+        //}
 
-        if (Input.GetKeyDown(KeyCode.Alpha3))
-        {
-            if (_modulos.ContainsKey(ModulosUnit03.BrazoDerecho))
-            {
-                _moduleSelected = ModulosUnit03.BrazoDerecho;
-                _modulos[ModulosUnit03.BrazoDerecho].GetComponent<IDrivers>().Initialized(this);
-                _weaponSelected = _modulos[ModulosUnit03.BrazoDerecho];
-                DesactivateArrow(_flecha3);
+        //if (Input.GetKeyDown(KeyCode.Alpha3))
+        //{
+        //    if (_modulos.ContainsKey(ModulosUnit03.BrazoDerecho))
+        //    {
+        //        _moduleSelected = ModulosUnit03.BrazoDerecho;
+        //        _modulos[ModulosUnit03.BrazoDerecho].GetComponent<IModules>().Initialized(this);
+        //        _weaponSelected = _modulos[ModulosUnit03.BrazoDerecho];
+        //        DesactivateArrow(_flecha3);
 
-            }
-        }
+        //    }
+        //}
 
         if (Input.GetKeyDown(KeyCode.Q))
         {
-            _weaponSelected.GetComponent<IDrivers>().PowerElement();
+            _weaponSelected.GetComponent<IModules>().PowerElement();
         }
     }
 
@@ -228,14 +228,14 @@ public class Player : MonoBehaviour, IDamagiable
     /// </summary>
     private void SelectModule()
     {
-        var myDriver = _elementDetected.GetComponent<IDrivers>();
+        var myDriver = _elementDetected.GetComponent<IModules>();
         if (myDriver == null) return;
 
         _weaponSelected = _elementDetected;
         _weaponSelected.transform.parent = transform;
         _weaponSelected.transform.rotation = this.transform.rotation;
         _weaponSelected.GetComponent<Rigidbody>().isKinematic = true;
-        myDriver.Initialized(this);
+        //myDriver.Initialized(this);
 
         //Selecciona que modulo esta disponible para asignar el arma colectada
 
@@ -281,7 +281,7 @@ public class Player : MonoBehaviour, IDamagiable
 
         //Deja el proyector como arma por defecto
         _moduleSelected = ModulosUnit03.Proyector;
-        _modulos[ModulosUnit03.Proyector].GetComponent<IDrivers>().Initialized(this);
+        //_modulos[ModulosUnit03.Proyector].GetComponent<IModules>().Initialized(this);
         _weaponSelected = _modulos[ModulosUnit03.Proyector];
 
     }

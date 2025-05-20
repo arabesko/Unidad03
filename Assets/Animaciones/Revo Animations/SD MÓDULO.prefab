@@ -12,8 +12,8 @@ GameObject:
   - component: {fileID: 1980872478346953982}
   - component: {fileID: 3114679621245176554}
   - component: {fileID: 8684009548336451248}
-  - component: {fileID: 4295339133272809637}
   - component: {fileID: 8138839923193263339}
+  - component: {fileID: 9010281946176743427}
   m_Layer: 0
   m_Name: "SD M\xD3DULO"
   m_TagString: Untagged
@@ -109,18 +109,6 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 7.75, y: 0.50000036, z: 6}
   m_Center: {x: -1.875, y: 0, z: 0}
---- !u!114 &4295339133272809637
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1759323942912948600}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4b6f4716203ad1f46a7c0f35722309c5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &8138839923193263339
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -136,6 +124,18 @@ MonoBehaviour:
   rotationPerSecond: {x: 0, y: 90, z: 0}
   bobAmplitude: 0.3
   bobFrequency: 2
+--- !u!114 &9010281946176743427
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1759323942912948600}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ac3e5d4d35f153944a5d5170f6592d97, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &5149792266574389869
 GameObject:
   m_ObjectHideFlags: 0

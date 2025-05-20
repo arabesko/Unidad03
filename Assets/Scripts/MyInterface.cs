@@ -6,9 +6,9 @@ public interface IDamagiable
     public void Damage(int damage);
 }
 
-public interface IDrivers
+public interface IModules
 {
-    public void Initialized(Player player);
+    public void Initialized(PlayerMovement player);
     public void PowerElement();
 }
 
