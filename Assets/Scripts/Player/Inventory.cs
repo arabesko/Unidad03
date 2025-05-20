@@ -66,4 +66,9 @@ public class Inventory
     {
         return _inventory[_weaponSelected].GetComponent<Weapon>().MyAnimator;
     }
+
+    public int MyItemsCount()
+    {
+        return _inventory.Count;
+    }
 }

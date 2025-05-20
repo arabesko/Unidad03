@@ -94,7 +94,7 @@ public class PlayerMovement : MonoBehaviour
         }
 
         //Ejecutar poder del arma
-        if (Input.GetKeyDown(KeyCode.Q))
+        if (Input.GetKeyDown(KeyCode.Mouse0))
         {
             _weaponSelected.GetComponent<IModules>().PowerElement();
         }
@@ -110,6 +110,10 @@ public class PlayerMovement : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Alpha3))
         {
             SelectModule(2);
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha4))
+        {
+            SelectModule(3);
         }
     }
 
@@ -130,6 +134,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void SelectModule(int index)
     {
+        if (index > _inventory.MyItemsCount() - 1) return;
         _weaponSelected = _inventory.SelectWeapon(index);
         _animatorBasic.animator = _inventory.MyCurrentAnimator();
         //ASIGNAR EL ANIMATOR DEL INVENTARIO
