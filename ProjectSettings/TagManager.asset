@@ -17,8 +17,8 @@ TagManager:
   - Player
   - Ground
   - VisionElementals
-  - 
-  - 
+  - WallLimit
+  - DeathZone
   - 
   - 
   - 
