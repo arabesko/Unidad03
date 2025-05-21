@@ -1,25 +1,28 @@
 using UnityEngine;
+using System.Collections;
 
 public class PlayerRespawn : MonoBehaviour
 {
     public Transform respawnPoint;
+    public ScreenFader screenFader; 
 
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("DeathZone"))
         {
-            Respawn();
+            StartCoroutine(FadeAndRespawn());
         }
     }
 
-    void Respawn()
+    private IEnumerator FadeAndRespawn()
     {
-        transform.position = respawnPoint.position;
-        
-        Rigidbody rb = GetComponent<Rigidbody>();
-        if (rb != null)
+        yield return screenFader.FadeOutIn(() =>
         {
-            rb.velocity = Vector3.zero;
-        }
+            // Esto se ejecuta justo cuando la pantalla está negra
+            CharacterController cc = GetComponent<CharacterController>();
+            if (cc != null) cc.enabled = false;
+            transform.position = respawnPoint.position;
+            if (cc != null) cc.enabled = true;
+        });
     }
 }
