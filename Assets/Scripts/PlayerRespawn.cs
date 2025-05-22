@@ -1,29 +1,34 @@
 using UnityEngine;
 using System.Collections;
+using Cinemachine;
 
 public class PlayerRespawn : MonoBehaviour
 {
     public Transform respawnPoint;         // Punto donde reaparece el jugador
     public Animator fadeAnimator;          // Animator con las animaciones FadeIn y FadeOut
-    public float fadeDuration = 1.5f;      // Duración total del fade (ajustalo a la duración real de tu animación)
+    public float fadeToBlackTime = 1f;     // Tiempo hasta que la pantalla esté completamente negra
+    public float blackScreenDuration = 0.5f; // Tiempo que permanece negra antes de FadeOut
+    public float fadeFromBlackTime = 1f;   // Tiempo que dura el FadeOut
+   
 
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("DeathZone"))
         {
             StartCoroutine(FadeAndRespawn());
+    
         }
     }
 
     private IEnumerator FadeAndRespawn()
     {
-        // Iniciar FadeIn (pantalla oscura)
+        // Iniciar FadeIn (oscurecer pantalla)
         fadeAnimator.Play("FadeIn");
 
-        // Esperar duración del fade a negro
-        yield return new WaitForSeconds(fadeDuration);
+        // Esperar a que la pantalla se oscurezca completamente
+        yield return new WaitForSeconds(fadeToBlackTime);
 
-        // Teletransportar al jugador cuando ya está todo oscuro
+        // Teletransportar al jugador cuando la pantalla ya está completamente negra
         CharacterController cc = GetComponent<CharacterController>();
         if (cc != null) cc.enabled = false;
 
@@ -31,10 +36,13 @@ public class PlayerRespawn : MonoBehaviour
 
         if (cc != null) cc.enabled = true;
 
-        // Iniciar FadeOut (pantalla vuelve a aclararse)
+        // Esperar un momento en negro (opcional)
+        yield return new WaitForSeconds(blackScreenDuration);
+
+        // Iniciar FadeOut (volver a mostrar la pantalla)
         fadeAnimator.Play("FadeOut");
 
-        // Esperar hasta que termine el FadeOut (opcional)
-        yield return new WaitForSeconds(fadeDuration);
+        // Esperar a que se complete el FadeOut (opcional)
+        yield return new WaitForSeconds(fadeFromBlackTime);
     }
 }
