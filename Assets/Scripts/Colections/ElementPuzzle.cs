@@ -10,7 +10,7 @@ public class ElementPuzzle : PuzzleMother
     [SerializeField] private AudioSource _audioSource;
     [SerializeField] private AudioClip _audioClip;
     
-    private bool _activateRadar = false;
+    //private bool _activateRadar = false;
 
     public override void Activate()
     {
@@ -75,15 +75,15 @@ public class ElementPuzzle : PuzzleMother
             OriginalColor();
             yield return new WaitForSeconds(time);
         }
-        _activateRadar = false;
+        //_activateRadar = false;
     }
 
     public override void ActionPuzzle()
     {
         base.ActionPuzzle();
-        if (_activateRadar) return;
+        //if (_activateRadar) return;
         StartCoroutine(ChangeColorBlink(0.05f));
-        _activateRadar = true;
+        //_activateRadar = true;
     }
 
     public override int MyReturnNumber()

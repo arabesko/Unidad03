@@ -8,8 +8,6 @@ public class WeaponRadar : Weapon
     [SerializeField] private float _radarRadious;
     [SerializeField] private LayerMask _targetLayer; // Capa de objetos a detectar
     [SerializeField] private Material _myLitMaterial;
-    [SerializeField] private AudioSource _audioSource;
-    [SerializeField] private AudioClip _audioClip;
     [SerializeField] private bool _canRadar = true;
 
     public float RadarRadious {  get {  return _radarRadious; } set { _radarRadious = value; } }

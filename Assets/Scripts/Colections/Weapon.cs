@@ -6,7 +6,7 @@ public class Weapon : MonoBehaviour, IModules
     protected PlayerMovement _player;
 
     [SerializeField] private GameObject _myBodyFBX; public GameObject MyBodyFBX { get { return _myBodyFBX; } }
-    [SerializeField] private Animator _myAnimator; public Animator MyAnimator { get { return _myAnimator; } }
+    [SerializeField] private Animator _myAnimator; public Animator MyAnimator { get { return _myAnimator; } set { _myAnimator = value; } }
 
     private void Awake()
     {

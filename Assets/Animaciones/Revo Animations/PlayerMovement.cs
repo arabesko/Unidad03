@@ -46,8 +46,6 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private Transform _projectorPosition;
     [SerializeField] private Transform _module1;
 
-    //Respaldo de las partes del cuerpo
-    [SerializeField] private List<Material> _bodyRenderOriginal; public List<Material> BodyRenderOriginal { get { return _bodyRenderOriginal; } }
 
     public bool IsGrounded => Controller.isGrounded;
 
@@ -94,7 +92,7 @@ public class PlayerMovement : MonoBehaviour
         }
 
         //Ejecutar poder del arma
-        if (Input.GetKeyDown(KeyCode.Mouse0))
+        if (Input.GetKeyDown(KeyCode.Mouse0) || Input.GetKeyDown(KeyCode.Q))
         {
             _weaponSelected.GetComponent<IModules>().PowerElement();
         }
@@ -136,8 +134,7 @@ public class PlayerMovement : MonoBehaviour
     {
         if (index > _inventory.MyItemsCount() - 1) return;
         _weaponSelected = _inventory.SelectWeapon(index);
-        _animatorBasic.animator = _inventory.MyCurrentAnimator();
-        //ASIGNAR EL ANIMATOR DEL INVENTARIO
+        _animatorBasic.animator = _inventory.MyCurrentAnimator(); //Asigna el animator
     }
 
     #region Detecciones

@@ -1,10 +1,13 @@
 
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Analytics;
 
 public class WeaponInvisible : Weapon
 {
+    [SerializeField] private GameObject _myBodyInvisible;
+    [SerializeField] private Animator _myAnimatorInvisible;
     public override void Initialized(PlayerMovement player)
     {
         base.Initialized(player);
@@ -20,16 +23,22 @@ public class WeaponInvisible : Weapon
 
     public IEnumerator InvisibleTime()
     {
+        AcitvateInvisibilityMaterial();
         yield return new WaitForSeconds(5);
         RecoveryMaterial();
     }
     public void RecoveryMaterial()
     {
-        for (int i = 0; i < _player.BodyRenderOriginal.Count; i++)
-        {
-            _player.bodyRender[i].material = _player.BodyRenderOriginal[i];
-        }
+        MyBodyFBX.SetActive(true);
+        _myBodyInvisible.SetActive(false);
+        _player._animatorBasic.animator = MyAnimator;
         _player.IsInvisible = false;
     }
 
+    public void AcitvateInvisibilityMaterial()
+    {
+        MyBodyFBX.SetActive(false);
+        _myBodyInvisible.SetActive(true);
+        _player._animatorBasic.animator = _myAnimatorInvisible;
+    }
 }

@@ -52,7 +52,7 @@ public abstract class Entity : MonoBehaviour
         if (player == null) return;
 
         float dist = Vector3.Distance(transform.position, player.position);
-        if (dist <= visionRange)
+        if (dist <= visionRange && !playerScript.IsInvisible) //No modificar condicion de invisibilidad
             ChasePlayer();
         else
             OnIdle();
