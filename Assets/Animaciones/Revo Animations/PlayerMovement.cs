@@ -19,6 +19,8 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private GameObject _weaponSelected; //El arma que esta activa
 
     [SerializeField] private GameObject _elementLevitated; //El el elemento levitado
+    [SerializeField] private Transform _levitationPoint;
+
 
     [Header("Jump Settings")]
     public float jumpForce = 8f;
@@ -89,6 +91,30 @@ public class PlayerMovement : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.C) && CollectWeapon())
         {
             AddModules(_module1);
+        }
+
+        //Levitar partes
+        if (Input.GetKeyDown(KeyCode.R) && CollectWeapon() && _elementLevitated == null)
+        {
+            _elementLevitated = _elementDetected;
+            IPuzzlesElements myPuzzle = _elementLevitated.GetComponent<IPuzzlesElements>();
+            if (myPuzzle == null)
+            {
+                _elementLevitated = null;
+                return;
+            }
+            _elementLevitated.transform.parent = transform;
+            _elementLevitated.GetComponent<Rigidbody>().isKinematic = true;
+            _elementLevitated.transform.position = _levitationPoint.transform.position;
+            myPuzzle.Activate();
+        }
+        //Cuando deja de levitar cosas
+        else if (Input.GetKeyDown(KeyCode.R) && _elementLevitated != null)
+        {
+            _elementLevitated.GetComponent<Rigidbody>().isKinematic = false;
+            _elementLevitated.GetComponent<IPuzzlesElements>().Desactivate();
+            _elementLevitated.transform.parent = null;
+            _elementLevitated = null;
         }
 
         //Ejecutar poder del arma
