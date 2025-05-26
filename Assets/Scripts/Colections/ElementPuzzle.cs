@@ -6,7 +6,7 @@ using UnityEngine;
 public class ElementPuzzle : PuzzleMother
 {
     [SerializeField] private int _percent;
-    [SerializeField] private Player _player;
+    [SerializeField] private PlayerMovement _player;
     [SerializeField] private AudioSource _audioSource;
     [SerializeField] private AudioClip _audioClip;
     

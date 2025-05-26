@@ -2,8 +2,8 @@ using System.Collections.Generic;
 
 public interface IDamagiable
 {
-    public void Health(int health);
-    public void Damage(int damage);
+    public void Health(float health);
+    public void Damage(float damage);
 }
 
 public interface IModules

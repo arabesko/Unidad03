@@ -11,6 +11,6 @@ public class WeaponGarras : Weapon
 
     public override void PowerElement()
     {
-
+        //Aqui se debe hacer el daño al enemigo utilizando el area de ataque de las garras
     }
 }

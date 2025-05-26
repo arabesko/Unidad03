@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 [RequireComponent(typeof(AudioSource))]
-public abstract class Entity : MonoBehaviour
+public abstract class Entity : MonoBehaviour, IDamagiable
 {
     [Header("Stats")]
     [SerializeField] protected float maxHealth = 30f;
@@ -75,26 +75,7 @@ public abstract class Entity : MonoBehaviour
         Quaternion toRot = Quaternion.LookRotation(dir);
         transform.rotation = Quaternion.Slerp(transform.rotation, toRot, rotationSpeed * Time.deltaTime);
     }
-
-    /// <summary>
-    /// Llama a este método para infligir daño.
-    /// </summary>
-    public virtual void TakeDamage(float amount)
-    {
-        // Reducir vida
-        currentHealth -= amount;
-
-        // Sonido de daño
-        if (damageClip != null)
-            audioSource.PlayOneShot(damageClip);
-
-        // Feedback visual / debug
-        OnDamageFeedback(amount);
-
-        // Comprobación de muerte
-        if (currentHealth <= 0f)
-            StartCoroutine(DieRoutine());
-    }
+   
 
     /// <summary>
     /// Feedback visual o de animación; recibe la cantidad de daño para poder detallar.
@@ -132,5 +113,30 @@ public abstract class Entity : MonoBehaviour
     {
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position, visionRange);
+    }
+
+    public void Health(float health)
+    {
+        
+    }
+
+    /// <summary>
+    /// Llama a este método para infligir daño.
+    /// </summary>
+    public void Damage(float damage)
+    {
+        // Reducir vida
+        currentHealth -= damage;
+
+        // Sonido de daño
+        if (damageClip != null)
+            audioSource.PlayOneShot(damageClip);
+
+        // Feedback visual / debug
+        OnDamageFeedback(damage);
+
+        // Comprobación de muerte
+        if (currentHealth <= 0f)
+            StartCoroutine(DieRoutine());
     }
 }

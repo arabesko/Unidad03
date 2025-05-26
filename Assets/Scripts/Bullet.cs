@@ -35,10 +35,10 @@ public class Bullet : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        BaseScavanger enemy = other.GetComponent<BaseScavanger>();
-        if (enemy != null)
+        IDamagiable entity = other.GetComponent<IDamagiable>();
+        if (entity != null)
         {
-            enemy.TakeDamage(_damage);
+            entity.Damage(_damage);
             Destroy(gameObject);
         }
     }
