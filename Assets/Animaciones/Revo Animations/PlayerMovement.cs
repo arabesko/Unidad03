@@ -117,8 +117,8 @@ public class PlayerMovement : MonoBehaviour
             _elementLevitated.transform.parent = null;
             _elementLevitated = null;
         }
-
         //Ejecutar poder del arma
+
         if (Input.GetKeyDown(KeyCode.Mouse0) || Input.GetKeyDown(KeyCode.Q) && CanWeaponChange)
         {
             CanWeaponChange = false;
