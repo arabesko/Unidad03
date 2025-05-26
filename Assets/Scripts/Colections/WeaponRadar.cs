@@ -44,6 +44,7 @@ public class WeaponRadar : Weapon
     {
         yield return new WaitForSeconds(3);
         _canRadar = true;
+        _player.CanWeaponChange = true;
     }
 
 }

@@ -14,6 +14,7 @@ public class WeaponPulse : Weapon
     {
         base.PowerElement();
         Instantiate(_myBulletPrebaf, _instancePoint.position, transform.rotation);
+        _player.CanWeaponChange = true;
     }
 
 }

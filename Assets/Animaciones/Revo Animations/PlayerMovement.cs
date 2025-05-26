@@ -56,7 +56,8 @@ public class PlayerMovement : MonoBehaviour
     private float currentSpeed;
     private bool isSprinting;
 
-    
+    //Es para que solo pueda cambiar de arma cuando el poder de cada arma este concluido
+    [SerializeField] private bool _canWeaponChange = true; public bool CanWeaponChange { get { return _canWeaponChange; } set { _canWeaponChange = value; } }
 
     void Awake()
     {
@@ -88,7 +89,7 @@ public class PlayerMovement : MonoBehaviour
         UpdateAnimation();
 
         //Colectar Modulos
-        if (Input.GetKeyDown(KeyCode.C) && CollectWeapon())
+        if (Input.GetKeyDown(KeyCode.C) && CollectWeapon() && CanWeaponChange)
         {
             AddModules(_module1);
         }
@@ -118,24 +119,25 @@ public class PlayerMovement : MonoBehaviour
         }
 
         //Ejecutar poder del arma
-        if (Input.GetKeyDown(KeyCode.Mouse0) || Input.GetKeyDown(KeyCode.Q))
+        if (Input.GetKeyDown(KeyCode.Mouse0) || Input.GetKeyDown(KeyCode.Q) && CanWeaponChange)
         {
+            CanWeaponChange = false;
             _weaponSelected.GetComponent<IModules>().PowerElement();
         }
 
-        if (Input.GetKeyDown (KeyCode.Alpha1))
+        if (Input.GetKeyDown (KeyCode.Alpha1) && CanWeaponChange)
         {
             SelectModule(0);
         }
-        if (Input.GetKeyDown(KeyCode.Alpha2))
+        if (Input.GetKeyDown(KeyCode.Alpha2) && CanWeaponChange)
         {
             SelectModule(1);
         }
-        if (Input.GetKeyDown(KeyCode.Alpha3))
+        if (Input.GetKeyDown(KeyCode.Alpha3) && CanWeaponChange)
         {
             SelectModule(2);
         }
-        if (Input.GetKeyDown(KeyCode.Alpha4))
+        if (Input.GetKeyDown(KeyCode.Alpha4) && CanWeaponChange)
         {
             SelectModule(3);
         }

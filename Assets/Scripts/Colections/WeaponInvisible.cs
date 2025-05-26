@@ -33,6 +33,7 @@ public class WeaponInvisible : Weapon
         _myBodyInvisible.SetActive(false);
         _player._animatorBasic.animator = MyAnimator;
         _player.IsInvisible = false;
+        _player.CanWeaponChange = true;
     }
 
     public void AcitvateInvisibilityMaterial()
