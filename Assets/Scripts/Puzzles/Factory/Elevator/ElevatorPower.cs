@@ -17,7 +17,12 @@ public class ElevatorPower : MonoBehaviour
     private bool hasPower = false;
     private bool playerOnPlatform = false;
     private bool isMoving = false;
-
+    [SerializeField] private Light statusLight;
+    private void Start()
+    {
+        if (statusLight != null)
+            statusLight.color = Color.red;
+    }
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Battery"))
@@ -28,7 +33,10 @@ public class ElevatorPower : MonoBehaviour
                 hasPower = true;
                 Debug.Log("Batería instalada, elevador con energía.");
 
-                // Ocultar mensaje si estaba visible
+                // Cambiar luz a verde
+                if (statusLight != null)
+                    statusLight.color = Color.green;
+
                 if (elevatorPromptPanel != null)
                     elevatorPromptPanel.SetActive(false);
 
@@ -40,7 +48,7 @@ public class ElevatorPower : MonoBehaviour
         }
         else if (other.CompareTag("Player"))
         {
-            SetPlayerOnPlatform(true);
+            //SetPlayerOnPlatform(true);
 
             if (!hasPower)
             {
@@ -68,7 +76,7 @@ public class ElevatorPower : MonoBehaviour
     {
         playerOnPlatform = state;
 
-        if (hasPower && playerOnPlatform && !isMoving)
+        if (hasPower && playerOnPlatform)
         {
             StartCoroutine(MoveElevator());
         }
