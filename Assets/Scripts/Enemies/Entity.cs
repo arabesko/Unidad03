@@ -20,8 +20,8 @@ public abstract class Entity : MonoBehaviour, IDamagiable
     [SerializeField, Tooltip("Vida actual. Solo lectura en Inspector.")]
     protected float currentHealth;
 
-    protected Transform player;
-    protected PlayerMovement playerScript;
+    [SerializeField] protected Transform player;
+    [SerializeField] protected PlayerMovement playerScript;
     protected AudioSource audioSource;
 
     protected virtual void Awake()
@@ -34,17 +34,7 @@ public abstract class Entity : MonoBehaviour, IDamagiable
         if (audioSource == null)
             Debug.LogError($"{name}: necesita un AudioSource para reproducir sonidos.");
 
-        // Referencia al jugador
-        var go = GameObject.FindWithTag("Player");
-        if (go != null)
-        {
-            player = go.transform;
-            playerScript = go.GetComponent<PlayerMovement>();
-        }
-        else
-        {
-            Debug.LogWarning($"{name}: no se encontró ningún GameObject con tag \"Player\".");
-        }
+       
     }
 
     protected virtual void Update()

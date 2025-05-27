@@ -3,7 +3,7 @@ using UnityEngine;
 public class SphereEffect : MonoBehaviour
 {
     [Header("Configuración")]
-    public float maxScale = 20f;          // Escala máxima
+    public float maxScale = 25f;          // Escala máxima
     public float growthSpeed = 5f;        // Velocidad de crecimiento
     public float effectDuration = 10f;    // Tiempo visible en escala grande
     public float cooldown = 3f;           // Tiempo de espera entre usos
@@ -23,10 +23,10 @@ public class SphereEffect : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Mouse0) && CanActivate())
-        {
-            StartEffect();
-        }
+        //if (Input.GetKeyDown(KeyCode.Mouse0) && CanActivate())
+        //{
+        //    StartEffect();
+        //}
 
         if (isAnimating)
         {
@@ -40,7 +40,7 @@ public class SphereEffect : MonoBehaviour
         return !isAnimating && (Time.time - lastActivationTime >= cooldown);
     }
 
-    void StartEffect()
+    public void StartEffect()
     {
         lastActivationTime = Time.time;
         sphereRenderer.enabled = true;

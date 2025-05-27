@@ -10,6 +10,8 @@ public class WeaponRadar : Weapon
     [SerializeField] private Material _myLitMaterial;
     [SerializeField] private bool _canRadar = true;
 
+    [SerializeField] private SphereEffect _sphereEffect;
+
     public float RadarRadious {  get {  return _radarRadious; } set { _radarRadious = value; } }
 
     public override void Initialized(PlayerMovement player)
@@ -21,6 +23,7 @@ public class WeaponRadar : Weapon
     public override void PowerElement()
     {
         if (!_canRadar) return;
+        _sphereEffect.StartEffect();
         Collider[] hitColliders = Physics.OverlapSphere(transform.position, _radarRadious, _targetLayer);
         foreach (Collider collider in hitColliders)
         {
