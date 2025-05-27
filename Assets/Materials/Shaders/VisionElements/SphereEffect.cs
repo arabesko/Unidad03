@@ -23,7 +23,7 @@ public class SphereEffect : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.R) && CanActivate())
+        if (Input.GetKeyDown(KeyCode.Mouse0) && CanActivate())
         {
             StartEffect();
         }
