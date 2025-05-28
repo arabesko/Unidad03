@@ -1,22 +1,60 @@
 using System.Collections;
 using UnityEngine;
+using TMPro;
 
 public class DuctButton : MonoBehaviour
 {
+    [Header("Puertas")]
     [SerializeField] private Transform[] doorsToOpen;
     [SerializeField] private float moveDistance = 2f;
     [SerializeField] private float moveSpeed = 1f;
+
+    [Header("UI Interacción")]
+    [SerializeField] private GameObject interactionPanel; // Panel con el texto "Presiona E"
+    [SerializeField] private TMP_Text interactionText;
+
+    private bool isPlayerInRange = false;
     private bool opened = false;
+
+    private void Start()
+    {
+        if (interactionPanel != null)
+            interactionPanel.SetActive(false);
+    }
+
+    private void Update()
+    {
+        if (isPlayerInRange && Input.GetKeyDown(KeyCode.E) && !opened)
+        {
+            opened = true;
+            interactionPanel.SetActive(false);
+            foreach (Transform door in doorsToOpen)
+            {
+                StartCoroutine(MoveDoorUp(door));
+            }
+        }
+    }
 
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player") && !opened)
         {
-            opened = true;
-            foreach (Transform door in doorsToOpen)
+            isPlayerInRange = true;
+            if (interactionPanel != null)
             {
-                StartCoroutine(MoveDoorUp(door));
+                interactionPanel.SetActive(true);
+                interactionText.text = "Presiona E para interactuar";
             }
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.CompareTag("Player"))
+        {
+            isPlayerInRange = false;
+            if (interactionPanel != null)
+                interactionPanel.SetActive(false);
         }
     }
 

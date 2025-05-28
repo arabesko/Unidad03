@@ -1,4 +1,4 @@
-using System.Collections;
+Ôªøusing System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
@@ -14,15 +14,15 @@ public class ChargingStation : MonoBehaviour
         if (other.CompareTag("Battery"))
         {
             PortableBattery battery = other.GetComponent<PortableBattery>();
-            if (battery != null)
+            if (battery != null && !battery.isCharged)
             {
-                battery.StartCharging();
+                battery.StartCharging(this); // ‚Üê Pasa la estaci√≥n
 
                 if (chargingPromptPanel != null)
                     chargingPromptPanel.SetActive(true);
 
                 if (chargingPromptText != null)
-                    chargingPromptText.text = "Cargando baterÌa...";
+                    chargingPromptText.text = "Cargando bateria...";
             }
         }
         else if (other.CompareTag("Player"))
@@ -31,7 +31,7 @@ public class ChargingStation : MonoBehaviour
                 chargingPromptPanel.SetActive(true);
 
             if (chargingPromptText != null)
-                chargingPromptText.text = "Parece una fuente de energÌa.";
+                chargingPromptText.text = "Parece una fuente de energ√≠a.";
         }
     }
 
@@ -46,11 +46,17 @@ public class ChargingStation : MonoBehaviour
             }
         }
 
-        // Ocultar el panel si se va el jugador o la baterÌa
+        // Ocultar el panel si se va el jugador o la bater√≠a
         if (other.CompareTag("Player") || other.CompareTag("Battery"))
         {
             if (chargingPromptPanel != null)
                 chargingPromptPanel.SetActive(false);
         }
+    }
+
+    public void HideChargingText()
+    {
+        if (chargingPromptPanel != null)
+            chargingPromptPanel.SetActive(false);
     }
 }
