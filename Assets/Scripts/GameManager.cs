@@ -11,5 +11,9 @@ public class GameManager : MonoBehaviour
         Instance = this;
     }
 
-    
+    void Start()
+    {
+        Cursor.lockState = CursorLockMode.Locked; // Bloquea el cursor al centro de la pantalla
+        Cursor.visible = false; // Oculta el cursor
+    }
 }
