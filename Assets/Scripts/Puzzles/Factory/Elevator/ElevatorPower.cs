@@ -18,6 +18,11 @@ public class ElevatorPower : MonoBehaviour
     private bool playerOnPlatform = false;
     private bool isMoving = false;
     [SerializeField] private Light statusLight;
+
+    [Header("Sonido")]
+    [SerializeField] private AudioSource audioSource;
+    [SerializeField] private AudioClip elevatorMoveClip;
+
     private void Start()
     {
         if (statusLight != null)
@@ -90,6 +95,12 @@ public class ElevatorPower : MonoBehaviour
     IEnumerator MoveElevator()
     {
         isMoving = true;
+
+        // Reproducir sonido de elevador
+        if (audioSource != null && elevatorMoveClip != null)
+        {
+            audioSource.PlayOneShot(elevatorMoveClip);
+        }
 
         Vector3 currentPos = elevator.transform.position;
         Vector3 target;

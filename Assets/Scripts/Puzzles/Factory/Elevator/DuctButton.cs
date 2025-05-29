@@ -16,6 +16,10 @@ public class DuctButton : MonoBehaviour
     private bool isPlayerInRange = false;
     private bool opened = false;
 
+    [Header("Sonido de puerta")]
+    [SerializeField] private AudioSource audioSource;
+    [SerializeField] private AudioClip openDoorClip;
+
     private void Start()
     {
         if (interactionPanel != null)
@@ -28,6 +32,13 @@ public class DuctButton : MonoBehaviour
         {
             opened = true;
             interactionPanel.SetActive(false);
+
+            // Sonido de abrir puerta
+            if (audioSource != null && openDoorClip != null)
+            {
+                audioSource.PlayOneShot(openDoorClip);
+            }
+
             foreach (Transform door in doorsToOpen)
             {
                 StartCoroutine(MoveDoorUp(door));

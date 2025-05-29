@@ -11,6 +11,7 @@ public abstract class Entity : MonoBehaviour, IDamagiable
     [SerializeField] protected float visionRange = 5f;
     [SerializeField] protected float moveSpeed = 3f;
     [SerializeField] protected float rotationSpeed = 5f;
+    public Transform TargetPoint;
 
     [Header("Feedback")]
     [SerializeField] protected AudioClip damageClip;
