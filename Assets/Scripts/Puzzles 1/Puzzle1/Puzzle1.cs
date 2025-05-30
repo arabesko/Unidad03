@@ -11,6 +11,8 @@ public class Puzzle1 : MonoBehaviour
     [SerializeField] private Transform _p1A;
     [SerializeField] private Transform _p1B;
     [SerializeField] private float _speedMoveDoor;
+    [SerializeField] private AudioSource _audioSource;
+    [SerializeField] private AudioClip _openDoorClip;
 
     private void OnTriggerEnter(Collider other)
     {
@@ -50,12 +52,18 @@ public class Puzzle1 : MonoBehaviour
 
     private IEnumerator OpenTheDoor()
     {
-        Vector3 dir =(_p1B.position - _p1A.position).normalized;
-        while (Vector3.Distance(_door.position, _p1B.position) >= 0.2f)
+        // Reproducir sonido una sola vez al iniciar la apertura
+        if (_audioSource != null && _openDoorClip != null)
         {
-            _door.position += dir * _speedMoveDoor * Time.deltaTime;
+            _audioSource.PlayOneShot(_openDoorClip);
+        }
+
+        while (Vector3.Distance(_door.position, _p1B.position) > 0.01f)
+        {
+            _door.position = Vector3.MoveTowards(_door.position, _p1B.position, _speedMoveDoor * Time.deltaTime);
             yield return null;
         }
+
         Destroy(this);
     }
 }
