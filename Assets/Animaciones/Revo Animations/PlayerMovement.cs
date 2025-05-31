@@ -89,13 +89,14 @@ public class PlayerMovement : MonoBehaviour
         UpdateAnimation();
 
         //Colectar Modulos
-        if (Input.GetKeyDown(KeyCode.C) && CollectWeapon() && CanWeaponChange)
+        if (Input.GetKeyDown(KeyCode.E) && CollectWeapon() && CanWeaponChange)
         {
-            AddModules(_module1);
+            Weapon myWeapon = _elementDetected.GetComponent<Weapon>();
+            if (myWeapon != null) AddModules(_module1);
         }
 
         //Levitar partes
-        if (Input.GetKeyDown(KeyCode.R) && CollectWeapon() && _elementLevitated == null)
+        if (Input.GetKeyDown(KeyCode.E) && CollectWeapon() && _elementLevitated == null)
         {
             _elementLevitated = _elementDetected;
             IPuzzlesElements myPuzzle = _elementLevitated.GetComponent<IPuzzlesElements>();
@@ -110,7 +111,7 @@ public class PlayerMovement : MonoBehaviour
             myPuzzle.Activate();
         }
         //Cuando deja de levitar cosas
-        else if (Input.GetKeyDown(KeyCode.R) && _elementLevitated != null)
+        else if (Input.GetKeyDown(KeyCode.E) && _elementLevitated != null)
         {
             _elementLevitated.GetComponent<Rigidbody>().isKinematic = false;
             _elementLevitated.GetComponent<IPuzzlesElements>().Desactivate();
