@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 0.7
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.020361055, g: 0.020928305, b: 0.02092765, a: 0.7}
+  m_IndirectSpecularColor: {r: 0.020361057, g: 0.020928308, b: 0.02092766, a: 0.7}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -3670,7 +3670,7 @@ Transform:
   - {fileID: 1471389678}
   - {fileID: 420215918}
   - {fileID: 111841757}
-  - {fileID: 1697095882}
+  - {fileID: 1264994195791070069}
   - {fileID: 65244076}
   - {fileID: 947985455}
   - {fileID: 1605612155}
@@ -20052,7 +20052,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.14400615, y: 0.00016690395, z: -0.00002428836, w: 0.9895768}
+  m_LocalRotation: {x: 0.14400615, y: 0.00016696552, z: -0.000024297318, w: 0.9895768}
   m_LocalPosition: {x: 8.8, y: 11.75, z: -104.100006}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -38790,103 +38790,6 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.021635542, y: 0.019457718, z: 0.02163554}
   m_Center: {x: 0, y: 9.313226e-10, z: 0}
---- !u!1 &1697095881
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1697095882}
-  - component: {fileID: 1697095883}
-  - component: {fileID: 1697095884}
-  - component: {fileID: 1697095885}
-  m_Layer: 0
-  m_Name: WeaponGarras
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1697095882
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1697095881}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -94.9, y: 2.59, z: -43.1}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 1264994195791070069}
-  m_Father: {fileID: 164681615}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1697095883
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1697095881}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ac3e5d4d35f153944a5d5170f6592d97, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _myBodyFBX: {fileID: 3640021630843610787}
-  _myAnimator: {fileID: 8009660849988200035}
---- !u!65 &1697095884
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1697095881}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 0.34, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
---- !u!54 &1697095885
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1697095881}
-  serializedVersion: 4
-  m_Mass: 1
-  m_Drag: 0
-  m_AngularDrag: 0.05
-  m_CenterOfMass: {x: 0, y: 0, z: 0}
-  m_InertiaTensor: {x: 1, y: 1, z: 1}
-  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ImplicitCom: 1
-  m_ImplicitTensor: 1
-  m_UseGravity: 1
-  m_IsKinematic: 0
-  m_Interpolate: 0
-  m_Constraints: 0
-  m_CollisionDetection: 0
 --- !u!1 &1700009004
 GameObject:
   m_ObjectHideFlags: 0
@@ -51856,7 +51759,7 @@ Light:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5149792266835554989}
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 10
   m_Type: 2
   m_Shape: 0
@@ -53477,12 +53380,12 @@ Transform:
   m_GameObject: {fileID: 1759323943645964728}
   serializedVersion: 2
   m_LocalRotation: {x: -0.5, y: 0.5, z: -0.5, w: 0.5}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: -94.9, y: 2.59, z: -43.100002}
   m_LocalScale: {x: 0.17193986, y: 0.17193986, z: 0.17193986}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 4189574037700271669}
-  m_Father: {fileID: 1697095882}
+  m_Father: {fileID: 164681615}
   m_LocalEulerAnglesHint: {x: 0, y: 90, z: -90}
 --- !u!4 &1267372736338062770
 Transform:
@@ -54191,8 +54094,11 @@ GameObject:
   - component: {fileID: 1980872478171780158}
   - component: {fileID: 3114679620390525482}
   - component: {fileID: 8138839923001304107}
+  - component: {fileID: 8138839923001304110}
+  - component: {fileID: 8138839923001304109}
+  - component: {fileID: 8138839923001304108}
   m_Layer: 0
-  m_Name: WeaponGarrasX
+  m_Name: WeaponGarras
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -56198,7 +56104,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1204227052889929554}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.1018449, y: -0.69961846, z: 0.10181055, w: 0.6998545}
+  m_LocalRotation: {x: 0.10184491, y: -0.6996184, z: 0.101810545, w: 0.69985455}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -56721,7 +56627,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5574189994558790655}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.076355524, y: -0.70285493, z: 0.07632976, w: 0.70309216}
+  m_LocalRotation: {x: 0.07635552, y: -0.702855, z: 0.07632977, w: 0.7030921}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -63195,7 +63101,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6310855923633310631}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.08909808, y: -0.70135456, z: 0.089068025, w: 0.7015913}
+  m_LocalRotation: {x: 0.08909808, y: -0.7013546, z: 0.089068025, w: 0.70159125}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -64294,7 +64200,7 @@ MonoBehaviour:
   - {fileID: 65244073}
   - {fileID: 1645717780}
   - {fileID: 804633657}
-  - {fileID: 1697095881}
+  - {fileID: 1759323943645964728}
   - {fileID: 1573691542}
   _wallLayer:
     serializedVersion: 2
@@ -65626,6 +65532,68 @@ MonoBehaviour:
   rotationPerSecond: {x: 0, y: 90, z: 0}
   bobAmplitude: 0.3
   bobFrequency: 2
+--- !u!54 &8138839923001304108
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1759323943645964728}
+  serializedVersion: 4
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
+--- !u!65 &8138839923001304109
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1759323943645964728}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 7.7499995, y: 0.49999997, z: 5.9999995}
+  m_Center: {x: -1.8750004, y: 0, z: 0.000020980835}
+--- !u!114 &8138839923001304110
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1759323943645964728}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ac3e5d4d35f153944a5d5170f6592d97, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _myBodyFBX: {fileID: 3640021630843610787}
+  _myAnimator: {fileID: 8009660849988200035}
 --- !u!1 &8138984474322573345
 GameObject:
   m_ObjectHideFlags: 0
