@@ -23,6 +23,13 @@ public class ElevatorPower : MonoBehaviour
     [SerializeField] private AudioSource audioSource;
     [SerializeField] private AudioClip elevatorMoveClip;
 
+    [Header("PortaBateria")]
+    [SerializeField] private Transform _battery;
+    [SerializeField] private Transform _pointA;
+    [SerializeField] private Transform _pointB;
+    [SerializeField] private float _speedBoxBattery;
+    [SerializeField] private bool _playerInAreaBatteryBox;
+
     private void Start()
     {
         if (statusLight != null)
@@ -63,13 +70,33 @@ public class ElevatorPower : MonoBehaviour
                 if (elevatorPromptText != null)
                     elevatorPromptText.text = "Le falta energía al elevador.";
             }
+
+            if (_battery != null && _pointA != null & _pointB != null && _speedBoxBattery > 0)
+            {
+                StopCoroutine(OpenCloseBoxBattery(_pointA));
+                StartCoroutine(OpenCloseBoxBattery(_pointB));
+            }
         }
     }
+
+    private IEnumerator OpenCloseBoxBattery(Transform point)
+    {
+        while (Vector3.Distance(_battery.position, point.position) > 0.2f)
+        {
+            var dir = (point.position - _battery.position).normalized;
+            _battery.position += dir * _speedBoxBattery * Time.deltaTime;
+            yield return null;
+        }
+    }
+
 
     private void OnTriggerExit(Collider other)
     {
         if (other.CompareTag("Player"))
         {
+            _playerInAreaBatteryBox = false;
+            StopCoroutine(OpenCloseBoxBattery(_pointB));
+            StartCoroutine(OpenCloseBoxBattery(_pointA));
             SetPlayerOnPlatform(false);
 
             if (elevatorPromptPanel != null)
