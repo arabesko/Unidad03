@@ -14,7 +14,7 @@ OcclusionCullingSettings:
 RenderSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 9
-  m_Fog: 1
+  m_Fog: 0
   m_FogColor: {r: 0.008593055, g: 0, b: 0.122641504, a: 1}
   m_FogMode: 3
   m_FogDensity: 0.01
@@ -7680,7 +7680,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &360507246
 Transform:
   m_ObjectHideFlags: 0
@@ -18120,7 +18120,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 1
-  m_Volume: 0.24
+  m_Volume: 0.195
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -23934,8 +23934,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.14400624, y: 0.00016701425, z: -0.000024304425, w: 0.9895768}
-  m_LocalPosition: {x: 84.4, y: 15.25, z: -76.7}
+  m_LocalRotation: {x: 0.14400621, y: 0.00016685501, z: -0.000024281248, w: 0.9895768}
+  m_LocalPosition: {x: 275.1, y: 15.550001, z: -5.5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -40240,8 +40240,9 @@ MonoBehaviour:
   isCharged: 0
   chargeTime: 3
   timer: 0
-  currentStation: {fileID: 0}
+  currentStation: {fileID: 585332479}
   audioSource: {fileID: 1573691548}
+  chargingLoopClip: {fileID: 8300000, guid: 0b42d137cce4f9a49aefa0c0110413d6, type: 3}
   chargedSound: {fileID: 8300000, guid: 01804b30945f72a41b67e4a6f68e54d5, type: 3}
 --- !u!82 &1573691548
 AudioSource:
@@ -40255,7 +40256,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 1
-  m_Volume: 1
+  m_Volume: 0.644
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -56804,10 +56805,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 912f7f140de97d940b4a684aa1b0cda7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxScale: 150000
-  growthSpeed: 4
-  effectDuration: 3
-  cooldown: 4
+  maxScale: 100000
+  growthSpeed: 1.2
+  effectDuration: 0.5
+  cooldown: 2
 --- !u!1 &1302208382467634526
 GameObject:
   m_ObjectHideFlags: 0
@@ -57378,7 +57379,7 @@ Transform:
   m_GameObject: {fileID: 7380485190707218272}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 23.699999, y: 11, z: 0.0000019073486}
+  m_LocalPosition: {x: 23.700003, y: 11, z: 0.0000019073486}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -59512,7 +59513,7 @@ Transform:
   m_GameObject: {fileID: 8480806826847748997}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 84.4, y: 4.25, z: -53}
+  m_LocalPosition: {x: 275.1, y: 4.55, z: 18.2}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -59606,8 +59607,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1204227052889929554}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.10184505, y: -0.6996183, z: 0.10181067, w: 0.69985455}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalRotation: {x: 0.10184513, y: -0.69961846, z: 0.1018108, w: 0.6998544}
+  m_LocalPosition: {x: 0.0000076293945, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -60148,8 +60149,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5574189994558790655}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.07635594, y: -0.7028548, z: 0.07633016, w: 0.70309216}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalRotation: {x: 0.07635596, y: -0.702855, z: 0.07633022, w: 0.703092}
+  m_LocalPosition: {x: 0.000015258789, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -66678,8 +66679,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6310855923633310631}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.08909865, y: -0.7013544, z: 0.08906856, w: 0.70159125}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalRotation: {x: 0.089099005, y: -0.7013545, z: 0.089068964, w: 0.701591}
+  m_LocalPosition: {x: 0.0000076293945, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:

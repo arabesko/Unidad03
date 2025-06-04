@@ -16,13 +16,13 @@ public class ChargingStation : MonoBehaviour
             PortableBattery battery = other.GetComponent<PortableBattery>();
             if (battery != null && !battery.isCharged)
             {
-                battery.StartCharging(this); // ← Pasa la estación
+                battery.StartCharging(this); // Le avisamos al script de la batería que inicie la carga
 
                 if (chargingPromptPanel != null)
                     chargingPromptPanel.SetActive(true);
 
                 if (chargingPromptText != null)
-                    chargingPromptText.text = "Cargando bateria...";
+                    chargingPromptText.text = "Cargando batería...";
             }
         }
         else if (other.CompareTag("Player"))
@@ -42,7 +42,7 @@ public class ChargingStation : MonoBehaviour
             PortableBattery battery = other.GetComponent<PortableBattery>();
             if (battery != null)
             {
-                battery.StopCharging();
+                battery.StopCharging(); // Si la batería sale del trigger antes de tiempo, detenemos la carga
             }
         }
 
