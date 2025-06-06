@@ -45,15 +45,21 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _Opacity: 0.918
+    - _Opacity: 0
     - _QueueControl: 0
     - _QueueOffset: 0
-    - _Size: 3.27
-    - _Smoothness: 0.153
+    - _RingSize: 0.41
+    - _RingSizeIn: 0.84
+    - _RingSizeOut: 1
+    - _Size: 5
+    - _SizeFuera: 0.85
+    - _Smoothness: 0.824
+    - _asdsa: 3
     m_Colors:
+    - _ColorRing: {r: 0, g: 0.66267174, b: 1, a: 0}
     - _PlayerPosition: {r: 0, g: -0.15, b: 0, a: 0}
-    - _Position: {r: 0, g: 0, b: 0, a: 0}
-    - _Tint: {r: 0, g: 0, b: 0, a: 0}
+    - _Position: {r: 0, g: -0.24, b: 0, a: 0}
+    - _Tint: {r: 0.10196079, g: 0.098039225, b: 0.098039225, a: 0}
   m_BuildTextureStacks: []
 --- !u!114 &441774237606139592
 MonoBehaviour:
