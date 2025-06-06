@@ -25,15 +25,22 @@ public class InteractableText : MonoBehaviour
     public bool interactableEnabled = true;
 
     private Transform _player;
+    [SerializeField] private PlayerMovement _playerScript;
     private TextMeshPro _instanceTMP;
     private float _baseY;
 
-    private void Awake()
+    private void Start()
     {
         // Buscar al jugador por tag
         var go = GameObject.FindGameObjectWithTag("Player");
-        if (go != null) _player = go.transform;
-        else Debug.LogWarning("No se encontró ningún GameObject con tag 'Player'.");
+        if (go != null)
+        {
+            _player = go.transform;
+        }
+        else 
+        { 
+            Debug.LogWarning("No se encontró ningún GameObject con tag 'Player'."); 
+        }
 
         // Instanciar el texto como objeto independiente
         if (textPrefab != null)
@@ -57,7 +64,15 @@ public class InteractableText : MonoBehaviour
         if (_player == null || _instanceTMP == null || !interactableEnabled) return;
 
         float dist = Vector3.Distance(_player.position, transform.position);
-        bool shouldShow = dist <= showDistance;
+        bool shouldShow = dist <= showDistance; //Estoy cercano??
+
+        //Si la letra se ve y el player esta levitando
+        if (_instanceTMP.gameObject.activeSelf && _playerScript.ElementLevitated != null)
+        {
+            HideUILetter();
+        }
+
+        if (_playerScript.ElementLevitated != null) return;
 
         if (shouldShow && !_instanceTMP.gameObject.activeSelf)
         {
@@ -78,5 +93,10 @@ public class InteractableText : MonoBehaviour
             Vector3 dir = _instanceTMP.transform.position - Camera.main.transform.position;
             _instanceTMP.transform.rotation = Quaternion.LookRotation(dir);
         }
+    }
+
+    private void HideUILetter()
+    {
+        _instanceTMP.gameObject.SetActive(false);
     }
 }

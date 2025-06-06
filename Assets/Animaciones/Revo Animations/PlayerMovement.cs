@@ -19,6 +19,8 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private GameObject _weaponSelected; //El arma que esta activa
 
     [SerializeField] private GameObject _elementLevitated; //El el elemento levitado
+    public GameObject ElementLevitated { get { return _elementLevitated; } }
+
     [SerializeField] private Transform _levitationPoint;
 
 
