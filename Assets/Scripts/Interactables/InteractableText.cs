@@ -52,7 +52,7 @@ public class InteractableText : MonoBehaviour
         }
         else
         {
-            Debug.LogError("Asigna un TextMeshPro 3D prefab en el Inspector.");
+            //Debug.LogError("Asigna un TextMeshPro 3D prefab en el Inspector.");
         }
 
         // Valor base para el movimiento
