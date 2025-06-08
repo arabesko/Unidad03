@@ -13,6 +13,11 @@ public class BaseScavanger : Entity
     [SerializeField] Animator animator;
     [SerializeField] Transform[] waypoints;
 
+    [Header("Targeting")]
+    [SerializeField] Transform targetPoint; 
+
+    public Transform TargetPoint => targetPoint;
+
     int currentWP = 0;
     bool isStunned = false;
     bool isAttacking = false;
@@ -78,7 +83,7 @@ public class BaseScavanger : Entity
                 animator.ResetTrigger("Walk");
                 animator.ResetTrigger("Chase");
                 animator.ResetTrigger("Attack");
-                animator.SetTrigger("Stun"); // si tienes animación de stun
+                animator.SetTrigger("Stun");
                 break;
         }
     }
@@ -106,7 +111,6 @@ public class BaseScavanger : Entity
         }
     }
 
-    // Este método se debe llamar desde un evento en la animación de ataque
     public void DealDamageToPlayer()
     {
         IDamagiable damagiable = player.GetComponent<IDamagiable>();
