@@ -3,135 +3,107 @@ using System.Collections;
 
 public class BaseScavanger : Entity
 {
-    enum State { Idle, Patrolling, Chasing, Attacking, Stunned }
-    State currentState = State.Idle;
+    public Transform[] patrolPoints;
+    public float patrolSpeed = 2f;
+    public float chaseSpeed = 4f;
+    public float chaseDistance = 5f;
+    public float waitTime = 2f;
+    public float stunDuration = 1.5f;
 
-    [SerializeField] Transform player;
-    [SerializeField] float visionRange = 10f;
-    [SerializeField] float attackRange = 2f;
-    [SerializeField] float patrolSpeed = 2f, chaseSpeed = 4f;
-    [SerializeField] Animator animator;
-    [SerializeField] Transform[] waypoints;
+    int currentPoint = 0;
+    Transform player;
+    bool isWaiting;
 
-    [Header("Targeting")]
-    [SerializeField] Transform targetPoint; 
+    void Awake()
+    {
+        base.Awake();
+        player = GameObject.FindGameObjectWithTag("Player").transform;
+    }
 
-    public Transform TargetPoint => targetPoint;
-
-    int currentWP = 0;
-    bool isStunned = false;
-    bool isAttacking = false;
-
-    float attackCooldown = 1.5f;
-    float attackTimer = 0f;
+    void Start() => StartPatrol();
 
     void Update()
     {
-        if (isStunned)
-        {
-            SetState(State.Stunned);
-            return;
-        }
-
-        attackTimer -= Time.deltaTime;
+        if (animator.GetBool("isStunned")) return;
 
         float dist = Vector3.Distance(transform.position, player.position);
+        if (dist <= chaseDistance)
+            StartChase();
+        else if (animator.GetBool("isChasing"))
+            ReturnToPatrol();
+    }
 
-        if (dist < attackRange && attackTimer <= 0f)
+    void StartPatrol()
+    {
+        StopAllCoroutines();
+        animator.SetBool("isStunned", false);
+        animator.SetBool("isChasing", false);
+        animator.SetBool("isIdle", false);
+        animator.SetBool("isPatrolling", true);
+        MoveToNextPoint();
+    }
+
+    void MoveToNextPoint()
+    {
+        if (patrolPoints.Length == 0) return;
+        Vector3 target = patrolPoints[currentPoint].position;
+        StartCoroutine(Move(target, patrolSpeed, () =>
         {
-            SetState(State.Attacking);
-            Attack();
-        }
-        else if (dist < visionRange)
+            StartCoroutine(Wait(waitTime, StartPatrol));
+            animator.SetBool("isIdle", true);
+            animator.SetBool("isPatrolling", false);
+        }));
+        currentPoint = (currentPoint + 1) % patrolPoints.Length;
+    }
+
+    void StartChase()
+    {
+        StopAllCoroutines();
+        animator.SetBool("isIdle", false);
+        animator.SetBool("isPatrolling", false);
+        animator.SetBool("isChasing", true);
+        StartCoroutine(Move(player.position, chaseSpeed, () => { }));
+    }
+
+    void ReturnToPatrol()
+    {
+        animator.SetBool("isChasing", false);
+        StartCoroutine(Wait(waitTime, StartPatrol));
+        animator.SetBool("isIdle", true);
+    }
+
+    IEnumerator StunRoutine()
+    {
+        StopAllCoroutines();
+        animator.SetBool("isStunned", true);
+        yield return new WaitForSeconds(stunDuration);
+        animator.SetBool("isStunned", false);
+        ReturnToPatrol();
+    }
+
+    protected override void OnDamageFeedback(float amount)
+    {
+        StartCoroutine(StunRoutine());
+    }
+
+    IEnumerator Move(Vector3 dest, float speed, System.Action onArrive)
+    {
+        while (Vector3.Distance(transform.position, dest) > 0.1f)
         {
-            SetState(State.Chasing);
-            Chase();
+            Vector3 dir = (dest - transform.position).normalized;
+            transform.position += dir * speed * Time.deltaTime;
+            transform.rotation = Quaternion.Slerp(
+                transform.rotation,
+                Quaternion.LookRotation(dir),
+                10f * Time.deltaTime);
+            yield return null;
         }
-        else
-        {
-            SetState(State.Patrolling);
-            Patrol();
-        }
+        onArrive?.Invoke();
     }
 
-    void SetState(State newState)
+    IEnumerator Wait(float seconds, System.Action onComplete)
     {
-        if (currentState == newState) return;
-        currentState = newState;
-
-        switch (newState)
-        {
-            case State.Patrolling:
-                animator.ResetTrigger("Attack");
-                animator.ResetTrigger("Chase");
-                animator.SetTrigger("Walk");
-                break;
-
-            case State.Chasing:
-                animator.ResetTrigger("Attack");
-                animator.ResetTrigger("Walk");
-                animator.SetTrigger("Chase");
-                break;
-
-            case State.Attacking:
-                animator.ResetTrigger("Walk");
-                animator.ResetTrigger("Chase");
-                animator.SetTrigger("Attack");
-                break;
-
-            case State.Stunned:
-                animator.ResetTrigger("Walk");
-                animator.ResetTrigger("Chase");
-                animator.ResetTrigger("Attack");
-                animator.SetTrigger("Stun");
-                break;
-        }
-    }
-
-    void Patrol()
-    {
-        Transform target = waypoints[currentWP];
-        transform.position = Vector3.MoveTowards(transform.position, target.position, patrolSpeed * Time.deltaTime);
-        if (Vector3.Distance(transform.position, target.position) < 0.2f)
-            currentWP = (currentWP + 1) % waypoints.Length;
-    }
-
-    void Chase()
-    {
-        Vector3 dir = (player.position - transform.position).normalized;
-        transform.position += dir * chaseSpeed * Time.deltaTime;
-    }
-
-    void Attack()
-    {
-        if (!isAttacking)
-        {
-            isAttacking = true;
-            attackTimer = attackCooldown;
-        }
-    }
-
-    public void DealDamageToPlayer()
-    {
-        IDamagiable damagiable = player.GetComponent<IDamagiable>();
-        if (damagiable != null)
-        {
-            damagiable.Damage(contactDamage);
-        }
-    }
-
-    public void EndAttack()
-    {
-        isAttacking = false;
-    }
-
-    public void Stun(float duration) => StartCoroutine(StunRoutine(duration));
-
-    IEnumerator StunRoutine(float time)
-    {
-        isStunned = true;
-        SetState(State.Stunned);
-        yield return new WaitForSeconds(time);
-        isStunned = false;
+        yield return new WaitForSeconds(seconds);
+        onComplete?.Invoke();
     }
 }

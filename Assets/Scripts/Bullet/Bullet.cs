@@ -61,7 +61,7 @@ public class Bullet : MonoBehaviour
 
         if (nearestEnemy != null)
         {
-            _target = nearestEnemy.TargetPoint != null ? nearestEnemy.TargetPoint : nearestEnemy.transform;
+            //_target = nearestEnemy.TargetPoint != null ? nearestEnemy.TargetPoint : nearestEnemy.transform;
         }
     }
 }
