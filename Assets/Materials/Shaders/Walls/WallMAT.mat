@@ -54,7 +54,7 @@ Material:
     - _CastShadows: 0
     - _Cull: 2
     - _DstBlend: 0
-    - _Opacity: 1
+    - _Opacity: 0.706
     - _QueueControl: 0
     - _QueueOffset: 0
     - _RingSize: 0.41
@@ -62,7 +62,7 @@ Material:
     - _RingSizeOut: 1
     - _Size: 3.12
     - _SizeFuera: 0.85
-    - _Smoothness: 0.824
+    - _Smoothness: 0.547
     - _SrcBlend: 1
     - _Surface: 0
     - _ZTest: 4
@@ -73,7 +73,7 @@ Material:
     - _ColorRing: {r: 0, g: 0.66267174, b: 1, a: 0}
     - _PlayerPosition: {r: 0, g: -0.15, b: 0, a: 0}
     - _Position: {r: 0, g: -0.24, b: 0, a: 0}
-    - _Tint: {r: 0.10196079, g: 0.098039225, b: 0.098039225, a: 0}
+    - _Tint: {r: 0.3019608, g: 0.3019608, b: 0.29803923, a: 0}
   m_BuildTextureStacks: []
 --- !u!114 &441774237606139592
 MonoBehaviour:

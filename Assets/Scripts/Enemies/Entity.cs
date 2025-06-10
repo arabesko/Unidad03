@@ -11,13 +11,13 @@ public abstract class Entity : MonoBehaviour, IDamagiable
 
     [Header("Runtime")]
     protected float currentHealth;
-    protected Animator animator;
+    //public Animator animator;
     protected AudioSource audioSource;
 
     protected virtual void Awake()
     {
         currentHealth = maxHealth;
-        animator = GetComponent<Animator>();
+        //animator = GetComponent<Animator>();
         audioSource = GetComponent<AudioSource>();
     }
 
