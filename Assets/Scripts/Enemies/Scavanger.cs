@@ -25,10 +25,6 @@ public class Scavanger : Entity
     private Vector3 puntoInicial;
     private Coroutine esperaCoroutine;
 
-    //Estamos del player
-    private delegate void EstadosEnemy();
-    private EstadosEnemy _estadoActual;
-
     public enum EstadosMovimiento { Esperando, Siguiendo, Volviendo, PerdiendoJugador }
     public EstadosMovimiento estadoActual;
 
@@ -36,7 +32,6 @@ public class Scavanger : Entity
     {
         puntoInicial = transform.position;
         estadoActual = EstadosMovimiento.Esperando;
-        _estadoActual = EstadoEsperando;
         ResetAnimatorParameters();
         anim.SetBool("isIdle", true);
     }
@@ -177,13 +172,13 @@ public class Scavanger : Entity
                                               velocidadRotacion * Time.deltaTime);
     }
 
-    private void OnDrawGizmos()
-    {
-        Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(transform.position, radioBusqueda);
+    //private void OnDrawGizmosSelected()
+    //{
+    //    Gizmos.color = Color.red;
+    //    Gizmos.DrawWireSphere(transform.position, radioBusqueda);
 
-        Vector3 origin = Application.isPlaying ? puntoInicial : transform.position;
-        Gizmos.color = Color.yellow;
-        Gizmos.DrawWireSphere(origin, distanciaMaxima);
-    }
+    //    Vector3 origin = Application.isPlaying ? puntoInicial : transform.position;
+    //    Gizmos.color = Color.yellow;
+    //    Gizmos.DrawWireSphere(origin, distanciaMaxima);
+    //}
 }

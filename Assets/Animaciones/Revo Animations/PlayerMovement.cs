@@ -3,8 +3,12 @@ using Unity.VisualScripting;
 using UnityEngine;
 
 [RequireComponent(typeof(CharacterController))]
-public class PlayerMovement : MonoBehaviour
+public class PlayerMovement : MonoBehaviour, IDamagiable
 {
+    [Header("Player")]
+    [SerializeField] private float _maxHealth;
+    [SerializeField] private float _currentHealth;
+
     [Header("Movement Settings")]
     public float moveSpeed = 5f;
     public float sprintMultiplier = 1.5f;
@@ -68,6 +72,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void Start()
     {
+        _currentHealth = _maxHealth;
         _inventory = new Inventory(8, _element0);
         AddModules(_projectorPosition);
     }
@@ -209,7 +214,7 @@ public class PlayerMovement : MonoBehaviour
         return false;
     }
     #endregion
-    private void OnDrawGizmos()
+    private void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.cyan;
         Gizmos.DrawWireSphere(transform.position, _viewRadius);
@@ -284,6 +289,24 @@ public class PlayerMovement : MonoBehaviour
     private void UpdateAnimation()
     {
         pct = (currentSpeed > 0f) ? (isSprinting ? 1f : walkAnimValueTransition) : 0f;
+    }
+
+    public void Health(float health)
+    {
+        _currentHealth += health;
+        if (_currentHealth > _maxHealth)
+        {
+            _currentHealth = _maxHealth;
+        }
+    }
+
+    public void Damage(float damage)
+    {
+        _currentHealth -= damage;
+        if (_currentHealth <= 0f)
+        {
+            //Morir
+        }
     }
 
     #endregion
