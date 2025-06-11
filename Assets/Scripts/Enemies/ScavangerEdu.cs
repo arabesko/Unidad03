@@ -90,7 +90,6 @@ public class ScavangerEdu : MonoBehaviour, IDamagiable
     private void Idle()
     {
         //Lo que sea que haga en idle
-        print("Estoy en Idle");
     }
 
     private void WalkingArround()

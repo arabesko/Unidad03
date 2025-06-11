@@ -29,6 +29,8 @@ public class InteractableText : MonoBehaviour
     private TextMeshPro _instanceTMP;
     private float _baseY;
 
+    public bool _isUIActivate = true;
+
     private void Start()
     {
         // Buscar al jugador por tag
@@ -74,7 +76,7 @@ public class InteractableText : MonoBehaviour
 
         if (_playerScript.ElementLevitated != null) return;
 
-        if (shouldShow && !_instanceTMP.gameObject.activeSelf)
+        if (shouldShow && !_instanceTMP.gameObject.activeSelf && _isUIActivate)
         {
             _instanceTMP.text = message;
             _instanceTMP.gameObject.SetActive(true);

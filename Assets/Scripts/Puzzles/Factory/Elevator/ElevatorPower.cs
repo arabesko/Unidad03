@@ -1,6 +1,7 @@
 using System.Collections;
 using UnityEngine;
 using TMPro;
+using System.Collections.Generic;
 
 public class ElevatorPower : MonoBehaviour
 {
@@ -24,17 +25,83 @@ public class ElevatorPower : MonoBehaviour
     [SerializeField] private AudioClip elevatorMoveClip;
 
     [Header("PortaBateria")]
-    [SerializeField] private Transform _battery;
+    [SerializeField] private Transform _batteryBox;
     [SerializeField] private Transform _pointA;
     [SerializeField] private Transform _pointB;
     [SerializeField] private float _speedBoxBattery;
     [SerializeField] private bool _playerInAreaBatteryBox;
+    [SerializeField] private bool _isIntaling = false;
+
+    [SerializeField] private List<Transform> _points;
+    [SerializeField] private GameObject _battery;
+    [SerializeField] private Rigidbody _rbBattery;
+    private int _indexBattery = 0;
+    [SerializeField] private float _batterySpeed = 5;
+    [SerializeField] private float _batterySpeedRotation = 5;
+    [SerializeField] private bool _activateAscensor = false;
+    [SerializeField] private PlayerMovement _playerScript;
+    [SerializeField] private float offsetY = -90f;
 
     private void Start()
     {
         if (statusLight != null)
             statusLight.color = Color.red;
     }
+
+    private void Update()
+    {
+        if (_isIntaling)
+        {
+            Vector3 dir = (_points[_indexBattery].transform.position - _battery.transform.position).normalized;
+            _battery.transform.position += dir * _batterySpeed * Time.deltaTime;
+            GirarHacia(_points[_indexBattery].transform.position);
+            if (Vector3.Distance(_battery.transform.position, _points[_indexBattery].transform.position) < 0.2f)
+            {
+                _indexBattery++;
+            }
+            if (_indexBattery > _points.Count - 1)
+            {
+                _activateAscensor=true;
+                _isIntaling = false;
+                _battery.transform.SetParent(_batteryBox);
+                StartCoroutine(OpenCloseBoxBattery(_pointA));
+                ActivateAscensor();
+            }
+        }
+    }
+
+    private void GirarHacia(Vector3 target)
+    {
+        Vector3 direccion = (target - _battery.transform.position);
+        direccion.y = 0;
+        if (direccion.sqrMagnitude < 0.001f) return;
+
+        Quaternion rotDeseada = Quaternion.LookRotation(direccion.normalized, Vector3.up);
+        Quaternion rotCorregida = rotDeseada * Quaternion.Euler(0, offsetY, 0);
+
+        _battery.transform.rotation = Quaternion.Slerp(_battery.transform.rotation, rotCorregida,
+                                              _batterySpeedRotation * Time.deltaTime);
+    }
+
+    private void ActivateAscensor()
+    {
+        hasPower = true;
+        Debug.Log("Batería instalada, elevador con energía.");
+
+
+        // Cambiar luz a verde
+        if (statusLight != null)
+            statusLight.color = Color.green;
+
+        if (elevatorPromptPanel != null)
+            elevatorPromptPanel.SetActive(false);
+
+        if (playerOnPlatform && !isMoving)
+        {
+            StartCoroutine(MoveElevator());
+        }
+    }
+
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Battery"))
@@ -42,20 +109,13 @@ public class ElevatorPower : MonoBehaviour
             PortableBattery battery = other.GetComponent<PortableBattery>();
             if (battery != null && battery.isCharged)
             {
-                hasPower = true;
-                Debug.Log("Batería instalada, elevador con energía.");
-
-                // Cambiar luz a verde
-                if (statusLight != null)
-                    statusLight.color = Color.green;
-
-                if (elevatorPromptPanel != null)
-                    elevatorPromptPanel.SetActive(false);
-
-                if (playerOnPlatform && !isMoving)
-                {
-                    StartCoroutine(MoveElevator());
-                }
+                var UIBattery = other.GetComponent<InteractableText>();
+                UIBattery._isUIActivate = false;
+                StartCoroutine(OpenCloseBoxBattery(_pointB));
+                _playerScript.colectables.Remove(_battery);
+                _playerScript.NoLevitate();
+                _rbBattery.isKinematic = true;
+                _isIntaling = true;
             }
         }
         else if (other.CompareTag("Player"))
@@ -71,20 +131,20 @@ public class ElevatorPower : MonoBehaviour
                     elevatorPromptText.text = "Le falta energía al elevador.";
             }
 
-            if (_battery != null && _pointA != null & _pointB != null && _speedBoxBattery > 0)
+            if (_batteryBox != null && _pointA != null & _pointB != null && _speedBoxBattery > 0)
             {
-                StopCoroutine(OpenCloseBoxBattery(_pointA));
-                StartCoroutine(OpenCloseBoxBattery(_pointB));
+                StopAllCoroutines();
+                if(!_activateAscensor) StartCoroutine(OpenCloseBoxBattery(_pointB));
             }
         }
     }
 
     private IEnumerator OpenCloseBoxBattery(Transform point)
     {
-        while (Vector3.Distance(_battery.position, point.position) > 0.2f)
+        while (Vector3.Distance(_batteryBox.position, point.position) > 0.2f)
         {
-            var dir = (point.position - _battery.position).normalized;
-            _battery.position += dir * _speedBoxBattery * Time.deltaTime;
+            var dir = (point.position - _batteryBox.position).normalized;
+            _batteryBox.position += dir * _speedBoxBattery * Time.deltaTime;
             yield return null;
         }
     }
@@ -95,8 +155,8 @@ public class ElevatorPower : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             _playerInAreaBatteryBox = false;
-            StopCoroutine(OpenCloseBoxBattery(_pointB));
-            StartCoroutine(OpenCloseBoxBattery(_pointA));
+            StopAllCoroutines();
+            if (!_isIntaling) StartCoroutine(OpenCloseBoxBattery(_pointA));
             SetPlayerOnPlatform(false);
 
             if (elevatorPromptPanel != null)
@@ -149,4 +209,6 @@ public class ElevatorPower : MonoBehaviour
 
         isMoving = false;
     }
+
+   
 }

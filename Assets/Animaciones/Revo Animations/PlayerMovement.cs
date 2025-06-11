@@ -16,7 +16,7 @@ public class PlayerMovement : MonoBehaviour, IDamagiable
 
     [SerializeField] private float _viewRadius;
     [SerializeField] private float _viewAngle;
-    [SerializeField] private List<GameObject> _colectables;
+    public List<GameObject> colectables;
     [SerializeField] private LayerMask _wallLayer;
 
     [SerializeField] private GameObject _elementDetected; //La que detecta el Raycast
@@ -103,7 +103,8 @@ public class PlayerMovement : MonoBehaviour, IDamagiable
         }
 
         //Levitar partes
-        if (Input.GetKeyDown(KeyCode.E) && CollectWeapon() && _elementLevitated == null)
+        print(CollectWeapon());
+        if (Input.GetKeyDown(KeyCode.R) && CollectWeapon() && _elementLevitated == null)
         {
             _elementLevitated = _elementDetected;
             IPuzzlesElements myPuzzle = _elementLevitated.GetComponent<IPuzzlesElements>();
@@ -118,12 +119,9 @@ public class PlayerMovement : MonoBehaviour, IDamagiable
             myPuzzle.Activate();
         }
         //Cuando deja de levitar cosas
-        else if (Input.GetKeyDown(KeyCode.E) && _elementLevitated != null)
+        else if (Input.GetKeyDown(KeyCode.R) && _elementLevitated != null)
         {
-            _elementLevitated.GetComponent<Rigidbody>().isKinematic = false;
-            _elementLevitated.GetComponent<IPuzzlesElements>().Desactivate();
-            _elementLevitated.transform.parent = null;
-            _elementLevitated = null;
+            NoLevitate();
         }
         //Ejecutar poder del arma
 
@@ -151,6 +149,14 @@ public class PlayerMovement : MonoBehaviour, IDamagiable
         }
     }
 
+    public void NoLevitate()
+    {
+        if (_elementLevitated == null) return;
+        _elementLevitated.GetComponent<Rigidbody>().isKinematic = false;
+        _elementLevitated.GetComponent<IPuzzlesElements>().Desactivate();
+        _elementLevitated.transform.parent = null;
+        _elementLevitated = null;
+    }
     private void AddModules(Transform _position)
     {
         var myDriver = _elementDetected.GetComponent<IModules>();
@@ -181,7 +187,7 @@ public class PlayerMovement : MonoBehaviour, IDamagiable
 
     private bool CollectWeapon()
     {
-        foreach (var item in _colectables)
+        foreach (var item in colectables)
         {
             if (FieldOfView(item))
             {
