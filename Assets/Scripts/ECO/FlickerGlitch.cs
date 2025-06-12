@@ -3,13 +3,14 @@ using System.Collections;
 
 public class FlickerGlitch : MonoBehaviour
 {
-    [Header("Target Objects")]
-    public GameObject target;          // Objeto principal a encender/apagar
-    public GameObject lightObject;     // GameObject que contiene la luz
+    [Header("Targets Sequence")]
+    public GameObject[] targets;            // Array de GameObjects a mostrar en secuencia
+    public GameObject lightObject;          // GameObject que contiene la luz proyectora
+    public ParticleSystem particleSystem;   // Sistema de partículas a mostrar durante la secuencia
 
     [Header("Audio Clips")]
-    public AudioClip glitchSound;      // Sonido al comenzar y al apagar
-    public AudioClip onSound;          // Sonido cuando está encendido
+    public AudioClip glitchSound;           // Sonido al iniciar y al apagar cada uno
+    public AudioClip onSound;               // Sonido cuando cada uno se mantiene encendido (loopable)
 
     [Header("Trigger Key & Cooldown")]
     public KeyCode triggerKey = KeyCode.E;
@@ -25,77 +26,127 @@ public class FlickerGlitch : MonoBehaviour
     private bool isRunning = false;
     private float nextAvailableTime = 0f;
     private AudioSource audioSource;
+    private int currentIdx = -1;
 
     void Awake()
     {
-        audioSource = GetComponent<AudioSource>();
-        if (audioSource == null)
-            audioSource = gameObject.AddComponent<AudioSource>();
+        // Obtener o crear AudioSource para reproducir clips
+        audioSource = GetComponent<AudioSource>() ?? gameObject.AddComponent<AudioSource>();
+        audioSource.loop = false;
+
+        // Apagar todos los targets, la luz y las partículas al iniciar
+        if (targets != null)
+        {
+            foreach (var go in targets)
+                if (go) go.SetActive(false);
+        }
+        if (lightObject)
+            lightObject.SetActive(false);
+        if (particleSystem)
+            particleSystem.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
     }
 
     void Update()
     {
-        // La luz siempre apunta al target
-        if (lightObject != null && target != null)
+        // Hacer que la luz siga al target actual
+        if (lightObject != null && isRunning && currentIdx >= 0 && currentIdx < targets.Length)
         {
-            lightObject.transform.LookAt(target.transform.position);
+            var tgt = targets[currentIdx];
+            if (tgt != null)
+                lightObject.transform.LookAt(tgt.transform.position);
         }
 
         // Disparo de la acción con cooldown
         if (Input.GetKeyDown(triggerKey) && Time.time >= nextAvailableTime && !isRunning)
         {
-            StartCoroutine(ToggleFlickerWithCooldown());
+            StartCoroutine(RunSequence());
         }
     }
 
-    IEnumerator ToggleFlickerWithCooldown()
+    IEnumerator RunSequence()
     {
         isRunning = true;
         nextAvailableTime = Time.time + keyCooldown;
 
-        // Sonido de glitch inicial
-        if (glitchSound != null)
-            audioSource.PlayOneShot(glitchSound);
+        // Iniciar partículas
+        if (particleSystem)
+            particleSystem.Play();
 
-        // Flicker al encender
-        yield return StartCoroutine(Flicker(true, flickerCountOn, flickerDurationOn));
-        SetState(true);
+        for (int i = 0; i < targets.Length; i++)
+        {
+            currentIdx = i;
+            var go = targets[i];
+            if (go == null) continue;
 
-        // Sonido al encendido
-        if (onSound != null)
-            audioSource.PlayOneShot(onSound);
+            // Detener cualquier sonido previo
+            audioSource.Stop();
 
-        // Permanecer encendido
-        yield return new WaitForSeconds(onDuration);
+            // Sonido de glitch inicial
+            if (glitchSound != null)
+            {
+                audioSource.loop = false;
+                audioSource.PlayOneShot(glitchSound);
+            }
 
-        // Sonido de glitch antes de apagar
-        if (glitchSound != null)
-            audioSource.PlayOneShot(glitchSound);
+            // Flicker encendiendo este GO y luz
+            yield return StartCoroutine(Flicker(go, lightObject, true, flickerCountOn, flickerDurationOn));
 
-        // Flicker al apagar
-        yield return StartCoroutine(Flicker(false, flickerCountOff, flickerDurationOff));
-        SetState(false);
+            // Estado encendido
+            SetState(go, true);
+            if (lightObject) SetState(lightObject, true);
 
+            // Sonido al quedar encendido (loop)
+            if (onSound != null)
+            {
+                audioSource.clip = onSound;
+                audioSource.loop = true;
+                audioSource.Play();
+            }
+
+            // Mantener encendido
+            yield return new WaitForSeconds(onDuration);
+
+            // Sonido de glitch antes de apagar
+            if (glitchSound != null)
+            {
+                audioSource.loop = false;
+                audioSource.PlayOneShot(glitchSound);
+            }
+
+            // Flicker apagando este GO y luz
+            yield return StartCoroutine(Flicker(go, lightObject, false, flickerCountOff, flickerDurationOff));
+
+            SetState(go, false);
+            if (lightObject) SetState(lightObject, false);
+
+            // Asegurar que el loop de onSound se detenga
+            audioSource.Stop();
+        }
+
+        // Finalizar partículas y secuencia
+        if (particleSystem)
+            particleSystem.Stop(true, ParticleSystemStopBehavior.StopEmitting);
+
+        currentIdx = -1;
         isRunning = false;
     }
 
-    IEnumerator Flicker(bool finalState, int count, float duration)
+    IEnumerator Flicker(GameObject go, GameObject lightGo, bool finalState, int count, float duration)
     {
         float interval = duration / (count * 2f);
         for (int i = 0; i < count * 2; i++)
         {
             bool state = (i % 2 == 0) ? finalState : !finalState;
-            SetState(state);
+            SetState(go, state);
+            if (lightGo) SetState(lightGo, state);
             yield return new WaitForSeconds(interval);
         }
-        SetState(finalState);
+        SetState(go, finalState);
+        if (lightGo) SetState(lightGo, finalState);
     }
 
-    void SetState(bool on)
+    void SetState(GameObject go, bool on)
     {
-        if (target != null)
-            target.SetActive(on);
-        if (lightObject != null)
-            lightObject.SetActive(on);
+        if (go) go.SetActive(on);
     }
 }
