@@ -34,6 +34,9 @@ public class ScavangerEdu : MonoBehaviour, IDamagiable
     [SerializeField] private LayerMask _playerLayer;
     [SerializeField] private Transform _origen;
 
+    [Header("Target")]
+    public Transform targetPoint;
+
 
     private void Start()
     {

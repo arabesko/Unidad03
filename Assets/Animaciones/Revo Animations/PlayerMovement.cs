@@ -103,7 +103,7 @@ public class PlayerMovement : MonoBehaviour, IDamagiable
         }
 
         //Levitar partes
-        print(CollectWeapon());
+        //print(CollectWeapon());
         if (Input.GetKeyDown(KeyCode.R) && CollectWeapon() && _elementLevitated == null)
         {
             _elementLevitated = _elementDetected;

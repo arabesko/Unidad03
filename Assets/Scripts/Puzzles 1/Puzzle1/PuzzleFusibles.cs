@@ -10,6 +10,11 @@ public class PuzzleFusibles : MonoBehaviour
     public Transform door;
     public Transform doorOpenPosition;
 
+    public AudioSource doorAudioSource;
+    public AudioClip doorOpenSound;
+    public AudioClip fuseInsertSound;
+    public float openSpeed = 1f;
+
     private List<GameObject> insertedFuses = new List<GameObject>();
     private int totalPercent = 0;
 
@@ -19,9 +24,6 @@ public class PuzzleFusibles : MonoBehaviour
 
         if (fuse != null && !insertedFuses.Contains(fuse.gameObject))
         {
-            Debug.Log("Fusible detectado: " + fuse.name);
-
-            // Encuentra un slot libre (directamente)
             foreach (Transform slot in fuseSlots)
             {
                 if (slot.childCount == 0)
@@ -37,7 +39,6 @@ public class PuzzleFusibles : MonoBehaviour
     {
         insertedFuses.Add(fuse.gameObject);
 
-        // Detach del jugador
         PlayerMovement player = fuse._player;
         if (player != null && player.colectables.Contains(fuse.gameObject))
         {
@@ -45,20 +46,22 @@ public class PuzzleFusibles : MonoBehaviour
             player.NoLevitate();
         }
 
-        // Desactivar física
         Rigidbody rb = fuse.GetComponent<Rigidbody>();
         if (rb != null) rb.isKinematic = true;
 
-        // Posicionar y fijar en el slot directamente
         fuse.transform.SetParent(slot);
         fuse.transform.localPosition = Vector3.zero;
         fuse.transform.localRotation = Quaternion.identity;
-        fuse.transform.localScale = Vector3.one; // Esta línea soluciona la deformación
+        fuse.transform.localScale = Vector3.one;
 
-        // Desactivar si tiene función extra
         fuse.Desactivate();
 
-        // Actualizar porcentaje
+        
+        if (doorAudioSource != null && fuseInsertSound != null)
+        {
+            doorAudioSource.PlayOneShot(fuseInsertSound);
+        }
+
         totalPercent += fuse.MyReturnNumber();
         percentText.text = totalPercent.ToString() + "%";
 
@@ -70,13 +73,18 @@ public class PuzzleFusibles : MonoBehaviour
 
     private IEnumerator OpenDoor()
     {
+        if (doorAudioSource != null && doorOpenSound != null)
+        {
+            doorAudioSource.PlayOneShot(doorOpenSound);
+        }
+
         float t = 0;
         Vector3 startPos = door.position;
         Vector3 endPos = doorOpenPosition.position;
 
         while (t < 1f)
         {
-            t += Time.deltaTime;
+            t += Time.deltaTime * openSpeed;
             door.position = Vector3.Lerp(startPos, endPos, t);
             yield return null;
         }
