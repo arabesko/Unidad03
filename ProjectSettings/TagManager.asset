@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Battery
   - DeathZone
+  - Fusible
   layers:
   - Default
   - TransparentFX
