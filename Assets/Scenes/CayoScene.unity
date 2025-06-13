@@ -5199,7 +5199,7 @@ GameObject:
   - component: {fileID: 598841009}
   - component: {fileID: 598841008}
   - component: {fileID: 598841012}
-  m_Layer: 13
+  m_Layer: 7
   m_Name: MURO (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5660,13 +5660,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   LayerMask:
     serializedVersion: 2
-    m_Bits: 8192
-  Player: {fileID: 1538574000}
+    m_Bits: 0
+  Target: {fileID: 1538574000}
   Camera: {fileID: 1039987014}
   FadedAlpha: 0.33
-  FadingMode: 1
-  ChecksPerSecond: 10
-  FadeFPS: 30
+  RetainShadows: 1
+  TargetPositionOffset: {x: 0, y: 1, z: 0}
   FadeSpeed: 3
   ObjectsBlockingView: []
 --- !u!1 &1071236108
@@ -5808,8 +5807,8 @@ GameObject:
   - component: {fileID: 1311109574}
   - component: {fileID: 1311109573}
   - component: {fileID: 1311109572}
-  - component: {fileID: 1311109576}
-  m_Layer: 13
+  - component: {fileID: 1311109577}
+  m_Layer: 7
   m_Name: MURO (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5902,7 +5901,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1610901327}
   m_LocalEulerAnglesHint: {x: 0, y: -90, z: 0}
---- !u!114 &1311109576
+--- !u!114 &1311109577
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -6358,6 +6357,7 @@ GameObject:
   - component: {fileID: 1538573999}
   - component: {fileID: 1538573998}
   - component: {fileID: 1538573997}
+  - component: {fileID: 1538574001}
   m_Layer: 8
   m_Name: PLAYER
   m_TagString: Player
@@ -6447,12 +6447,34 @@ Transform:
   m_GameObject: {fileID: 1538573996}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 14.2, y: 10.51, z: 1.35}
-  m_LocalScale: {x: 1.2184598, y: 1.2184598, z: 1.2184598}
+  m_LocalPosition: {x: 14.2, y: 13.6, z: 1.35}
+  m_LocalScale: {x: 1.9507542, y: 1.9507542, z: 1.9507542}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1538574001
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1538573996}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 673c660dfe565ad4da5d3e080ef698e2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  LayerMask:
+    serializedVersion: 2
+    m_Bits: 128
+  Target: {fileID: 1538574000}
+  Camera: {fileID: 1039987014}
+  FadedAlpha: 0.33
+  RetainShadows: 1
+  TargetPositionOffset: {x: 0, y: 1, z: 0}
+  FadeSpeed: 1
+  ObjectsBlockingView: []
 --- !u!1 &1610901323
 GameObject:
   m_ObjectHideFlags: 0
@@ -6465,7 +6487,7 @@ GameObject:
   - component: {fileID: 1610901326}
   - component: {fileID: 1610901325}
   - component: {fileID: 1610901324}
-  m_Layer: 13
+  m_Layer: 7
   m_Name: SUELO
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6654,8 +6676,8 @@ GameObject:
   - component: {fileID: 1677761394}
   - component: {fileID: 1677761393}
   - component: {fileID: 1677761392}
-  - component: {fileID: 1677761396}
-  m_Layer: 13
+  - component: {fileID: 1677761397}
+  m_Layer: 7
   m_Name: MURO (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6748,7 +6770,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1610901327}
   m_LocalEulerAnglesHint: {x: 0, y: -180, z: 0}
---- !u!114 &1677761396
+--- !u!114 &1677761397
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -6777,7 +6799,7 @@ GameObject:
   - component: {fileID: 1693429731}
   - component: {fileID: 1693429730}
   - component: {fileID: 1693429734}
-  m_Layer: 13
+  m_Layer: 7
   m_Name: MURO
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -7026,7 +7048,7 @@ GameObject:
   - component: {fileID: 1807004468}
   - component: {fileID: 1807004467}
   - component: {fileID: 1807004470}
-  m_Layer: 13
+  m_Layer: 7
   m_Name: MURO (4)
   m_TagString: FadeWall
   m_Icon: {fileID: 0}

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -14,13 +13,14 @@ public class FadingObject : MonoBehaviour, IEquatable<FadingObject>
     private void Awake()
     {
         Position = transform.position;
+
         if (Renderers.Count == 0)
         {
             Renderers.AddRange(GetComponentsInChildren<Renderer>());
         }
-        for (int i = 0; i < Renderers.Count; i++)
+        foreach(Renderer renderer in Renderers)
         {
-            Materials.AddRange(Renderers[i].materials);
+            Materials.AddRange(renderer.materials);
         }
 
         InitialAlpha = Materials[0].color.a;
