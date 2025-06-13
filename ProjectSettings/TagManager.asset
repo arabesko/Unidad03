@@ -6,7 +6,7 @@ TagManager:
   tags:
   - Battery
   - DeathZone
-  - FadeWall
+  - Fusible
   layers:
   - Default
   - TransparentFX
@@ -21,7 +21,7 @@ TagManager:
   - VisionElementals
   - WallLimit
   - DeathZone
-  - FadeWall
+  - 
   - 
   - 
   - 
