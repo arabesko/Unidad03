@@ -87,7 +87,8 @@ MonoBehaviour:
   - {fileID: 1792925448999045135}
   - {fileID: -2495865001412703053}
   - {fileID: 660561161330656753}
-  m_RendererFeatureMap: 6e751f51c704441aa4f923a073080afb0f88585032c0e118b34c773f01e85cddf185885de0c82a09
+  - {fileID: 3988632459199137173}
+  m_RendererFeatureMap: 6e751f51c704441aa4f923a073080afb0f88585032c0e118b34c773f01e85cddf185885de0c82a09954528c616785a37
   m_UseNativeRenderPass: 0
   postProcessData: {fileID: 11400000, guid: 41439944d30ece34e96484bdb6645b55, type: 2}
   xrSystemData: {fileID: 11400000, guid: 60e1133243b97e347b653163a8c01b64, type: 2}
@@ -200,3 +201,20 @@ MonoBehaviour:
       restoreCamera: 1
       offset: {x: 0, y: 0, z: 0, w: 0}
       cameraFieldOfView: 60
+--- !u!114 &3988632459199137173
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6d613f08f173d4dd895bb07b3230baa9, type: 3}
+  m_Name: RadarVision
+  m_EditorClassIdentifier: 
+  m_Active: 1
+  passMaterial: {fileID: 2100000, guid: b8e459a3d1bdcc54cbc7d0db87db89d0, type: 2}
+  injectionPoint: 600
+  requirements: 4
+  passIndex: 0

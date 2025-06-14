@@ -5029,7 +5029,6 @@ MeshRenderer:
   m_RendererPriority: 0
   m_Materials:
   - {fileID: 2100000, guid: 5589ca118cb7fb84c976a8906867af3b, type: 2}
-  - {fileID: 2100000, guid: b8e459a3d1bdcc54cbc7d0db87db89d0, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -5371,7 +5370,6 @@ MeshRenderer:
   m_RendererPriority: 0
   m_Materials:
   - {fileID: 2100000, guid: 5589ca118cb7fb84c976a8906867af3b, type: 2}
-  - {fileID: 2100000, guid: b8e459a3d1bdcc54cbc7d0db87db89d0, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -5627,7 +5625,6 @@ MeshRenderer:
   m_RendererPriority: 0
   m_Materials:
   - {fileID: 2100000, guid: 5589ca118cb7fb84c976a8906867af3b, type: 2}
-  - {fileID: 2100000, guid: b8e459a3d1bdcc54cbc7d0db87db89d0, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -5765,6 +5762,7 @@ GameObject:
   - component: {fileID: 1039987013}
   - component: {fileID: 1039987016}
   - component: {fileID: 1039987019}
+  - component: {fileID: 1039987020}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -5915,6 +5913,19 @@ MonoBehaviour:
   TargetPositionOffset: {x: 0, y: 1, z: 0}
   FadeSpeed: 3
   ObjectsBlockingView: []
+--- !u!114 &1039987020
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1039987012}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c208d4f2a0672cc44b076ffeac9055e6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  visionMaterial: {fileID: 2100000, guid: b8e459a3d1bdcc54cbc7d0db87db89d0, type: 2}
 --- !u!1 &1071236108
 GameObject:
   m_ObjectHideFlags: 3
@@ -6119,7 +6130,6 @@ MeshRenderer:
   m_RendererPriority: 0
   m_Materials:
   - {fileID: 2100000, guid: 5589ca118cb7fb84c976a8906867af3b, type: 2}
-  - {fileID: 2100000, guid: b8e459a3d1bdcc54cbc7d0db87db89d0, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -6227,7 +6237,6 @@ MeshRenderer:
   m_RendererPriority: 0
   m_Materials:
   - {fileID: 2100000, guid: 5589ca118cb7fb84c976a8906867af3b, type: 2}
-  - {fileID: 2100000, guid: b8e459a3d1bdcc54cbc7d0db87db89d0, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -6819,7 +6828,7 @@ Transform:
   m_GameObject: {fileID: 1538573996}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 27.1, y: 9.8, z: -16.6}
+  m_LocalPosition: {x: 29.2, y: 9.8, z: -13.6}
   m_LocalScale: {x: 6.709619, y: 6.709619, z: 6.709619}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -6842,7 +6851,7 @@ MonoBehaviour:
     m_Bits: 128
   Target: {fileID: 1538574000}
   Camera: {fileID: 1039987014}
-  FadedAlpha: 0.33
+  FadedAlpha: 0.6
   RetainShadows: 1
   TargetPositionOffset: {x: 0, y: 1, z: 0}
   FadeSpeed: 1
@@ -6859,9 +6868,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b022eb0e3228e204d9149c1d477d42f5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  waveSpeed: 25
-  maxRadius: 150
+  waveSpeed: 100
+  maxRadius: 100
   fadeDuration: 2
+  waveColor: {r: 0, g: 0.8, b: 1, a: 0.7}
+  waveWidth: 2
   visionMaterial: {fileID: 2100000, guid: b8e459a3d1bdcc54cbc7d0db87db89d0, type: 2}
   currentState: 0
 --- !u!1 &1610901323
@@ -6925,7 +6936,6 @@ MeshRenderer:
   m_RendererPriority: 0
   m_Materials:
   - {fileID: 2100000, guid: 89e67b1dd08cc1c42a7518cdb391b6a2, type: 2}
-  - {fileID: 2100000, guid: b8e459a3d1bdcc54cbc7d0db87db89d0, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -7120,7 +7130,6 @@ MeshRenderer:
   m_RendererPriority: 0
   m_Materials:
   - {fileID: 2100000, guid: 5589ca118cb7fb84c976a8906867af3b, type: 2}
-  - {fileID: 2100000, guid: b8e459a3d1bdcc54cbc7d0db87db89d0, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -7243,7 +7252,6 @@ MeshRenderer:
   m_RendererPriority: 0
   m_Materials:
   - {fileID: 2100000, guid: 5589ca118cb7fb84c976a8906867af3b, type: 2}
-  - {fileID: 2100000, guid: b8e459a3d1bdcc54cbc7d0db87db89d0, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -7508,7 +7516,6 @@ MeshRenderer:
   m_RendererPriority: 0
   m_Materials:
   - {fileID: 2100000, guid: 5589ca118cb7fb84c976a8906867af3b, type: 2}
-  - {fileID: 2100000, guid: b8e459a3d1bdcc54cbc7d0db87db89d0, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -7631,7 +7638,6 @@ MeshRenderer:
   m_RendererPriority: 0
   m_Materials:
   - {fileID: 2100000, guid: 5589ca118cb7fb84c976a8906867af3b, type: 2}
-  - {fileID: 2100000, guid: b8e459a3d1bdcc54cbc7d0db87db89d0, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

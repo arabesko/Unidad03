@@ -8,17 +8,31 @@ public class EagleVision : MonoBehaviour
     [SerializeField] private float waveSpeed = 25f;
     [SerializeField] private float maxRadius = 150f;
     [SerializeField] private float fadeDuration = 2f;
-    [SerializeField] private Material visionMaterial;
+    [SerializeField] private Color waveColor = new Color(0, 0.8f, 1f, 0.7f);
+    [SerializeField] private float waveWidth = 10f;
+
+    [Header("Referencias")]
+    [SerializeField] private Material visionMaterial; // Material del shader de post-processing
 
     [Header("Debug")]
     [SerializeField] private WaveState currentState = WaveState.Inactive;
 
     private float currentRadius;
     private float fadeTimer;
-    private Vector3 waveOrigin;
+
+    void Start()
+    {
+        if (visionMaterial != null)
+        {
+            visionMaterial.SetColor("_WaveColor", waveColor);
+            visionMaterial.SetFloat("_WaveWidth", waveWidth);
+        }
+    }
 
     void Update()
     {
+        if (visionMaterial == null) return;
+
         switch (currentState)
         {
             case WaveState.Inactive:
@@ -40,10 +54,8 @@ public class EagleVision : MonoBehaviour
         currentState = WaveState.Expanding;
         currentRadius = 0.1f;
         fadeTimer = 0f;
-        waveOrigin = transform.position;
 
-        visionMaterial.SetVector("_WaveCenter", waveOrigin);
-        visionMaterial.SetFloat("_WaveFade", 1f); // Totalmente visible
+        visionMaterial.SetFloat("_WaveFade", 1f);
     }
 
     void UpdateExpansion()
@@ -51,7 +63,6 @@ public class EagleVision : MonoBehaviour
         currentRadius += waveSpeed * Time.deltaTime;
         visionMaterial.SetFloat("_WaveRadius", currentRadius);
 
-        // Cambiar a estado de desvanecimiento al alcanzar el radio máximo
         if (currentRadius >= maxRadius)
         {
             currentState = WaveState.Fading;
@@ -62,16 +73,23 @@ public class EagleVision : MonoBehaviour
     void UpdateFading()
     {
         fadeTimer -= Time.deltaTime;
-
-        // Calcular fade (1 → 0)
         float fadeValue = Mathf.Clamp01(fadeTimer / fadeDuration);
         visionMaterial.SetFloat("_WaveFade", fadeValue);
 
-        // Resetear al completar el desvanecimiento
         if (fadeTimer <= 0)
         {
             currentState = WaveState.Inactive;
-            visionMaterial.SetFloat("_WaveRadius", -1); // Ocultar onda
+            visionMaterial.SetFloat("_WaveRadius", -1);
+        }
+    }
+
+    void OnDestroy()
+    {
+        // Resetear valores al salir
+        if (visionMaterial != null)
+        {
+            visionMaterial.SetFloat("_WaveRadius", -1);
+            visionMaterial.SetFloat("_WaveFade", 0);
         }
     }
 }
