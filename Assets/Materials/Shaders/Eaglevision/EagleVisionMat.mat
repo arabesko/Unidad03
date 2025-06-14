@@ -29,7 +29,7 @@ Material:
   m_LightmapFlags: 2
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
-  m_CustomRenderQueue: 2005
+  m_CustomRenderQueue: 3000
   stringTagMap: {}
   disabledShaderPasses: []
   m_LockedProperties: 
@@ -54,10 +54,12 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
+    - _FadeDuration: 0
     - _QueueControl: 0
-    - _QueueOffset: 5
-    - _WaveRadius: 150.01248
-    - _WaveWidth: 3
+    - _QueueOffset: 0
+    - _WaveFade: 0
+    - _WaveRadius: -1
+    - _WaveWidth: 2
     m_Colors:
     - _Color: {r: 0, g: 0.7490196, b: 1, a: 0}
     - _WaveCenter: {r: 27.1, g: 9.8, b: -16.6, a: 0}
