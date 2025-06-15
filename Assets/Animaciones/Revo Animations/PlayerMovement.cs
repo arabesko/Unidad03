@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 [RequireComponent(typeof(CharacterController))]
@@ -14,19 +13,26 @@ public class PlayerMovement : MonoBehaviour, IDamagiable
     public float sprintMultiplier = 1.5f;
     public float rotationSpeed = 10f;
 
+    [Header("Levitation Settings")]
+    public float levitationAmplitude = 0.2f;
+    public float levitationFrequency = 1f;
+    public Vector2 levitationHeightRange = new Vector2(0.5f, 2f);
+    public float maxDistanceFromPlayer = 3f;
+    public float levitationRotationSpeed = 30f;
+    private float levitationOffset = 0f;
+
     [SerializeField] private float _viewRadius;
     [SerializeField] private float _viewAngle;
     public List<GameObject> colectables;
     [SerializeField] private LayerMask _wallLayer;
 
-    [SerializeField] private GameObject _elementDetected; //La que detecta el Raycast
-    [SerializeField] private GameObject _weaponSelected; //El arma que esta activa
+    [SerializeField] private GameObject _elementDetected;
+    [SerializeField] private GameObject _weaponSelected;
 
-    [SerializeField] private GameObject _elementLevitated; //El el elemento levitado
+    [SerializeField] private GameObject _elementLevitated;
     public GameObject ElementLevitated { get { return _elementLevitated; } }
 
     [SerializeField] private Transform _levitationPoint;
-
 
     [Header("Jump Settings")]
     public float jumpForce = 8f;
@@ -48,12 +54,16 @@ public class PlayerMovement : MonoBehaviour, IDamagiable
     [HideInInspector] public bool EnableMovement = true;
     [HideInInspector] public bool IsDashing = false;
 
-    [SerializeField] private bool _isInvisible = false; public bool IsInvisible { get { return _isInvisible; } set { _isInvisible = value; } }
-    //Partes del cuerpo
+    [SerializeField] private bool _isInvisible = false;
+    public bool IsInvisible
+    {
+        get { return _isInvisible; }
+        set { _isInvisible = value; }
+    }
+
     public List<MeshRenderer> bodyRender;
     [SerializeField] private Transform _projectorPosition;
     [SerializeField] private Transform _module1;
-
 
     public bool IsGrounded => Controller.isGrounded;
 
@@ -62,8 +72,12 @@ public class PlayerMovement : MonoBehaviour, IDamagiable
     private float currentSpeed;
     private bool isSprinting;
 
-    //Es para que solo pueda cambiar de arma cuando el poder de cada arma este concluido
-    [SerializeField] private bool _canWeaponChange = true; public bool CanWeaponChange { get { return _canWeaponChange; } set { _canWeaponChange = value; } }
+    [SerializeField] private bool _canWeaponChange = true;
+    public bool CanWeaponChange
+    {
+        get { return _canWeaponChange; }
+        set { _canWeaponChange = value; }
+    }
 
     void Awake()
     {
@@ -88,22 +102,19 @@ public class PlayerMovement : MonoBehaviour, IDamagiable
         }
         else if (!IsGrounded)
         {
-            // Solo aplicar gravedad si está en el aire
             velocity.y += gravity * Time.deltaTime;
             Controller.Move(velocity * Time.deltaTime);
         }
 
         UpdateAnimation();
 
-        //Colectar Modulos
         if (Input.GetKeyDown(KeyCode.E) && CollectWeapon() && CanWeaponChange)
         {
             Weapon myWeapon = _elementDetected.GetComponent<Weapon>();
             if (myWeapon != null) AddModules(_module1);
         }
 
-        //Levitar partes
-        //print(CollectWeapon());
+        // Levitar objetos
         if (Input.GetKeyDown(KeyCode.R) && CollectWeapon() && _elementLevitated == null)
         {
             _elementLevitated = _elementDetected;
@@ -113,25 +124,37 @@ public class PlayerMovement : MonoBehaviour, IDamagiable
                 _elementLevitated = null;
                 return;
             }
-            _elementLevitated.transform.parent = transform;
-            _elementLevitated.GetComponent<Rigidbody>().isKinematic = true;
-            _elementLevitated.transform.position = _levitationPoint.transform.position;
+
+            Rigidbody rb = _elementLevitated.GetComponent<Rigidbody>();
+            if (rb != null)
+            {
+                rb.useGravity = false; // DESACTIVA GRAVEDAD
+                rb.isKinematic = false;
+                rb.freezeRotation = true;
+            }
+
+            levitationOffset = 0f;
             myPuzzle.Activate();
         }
-        //Cuando deja de levitar cosas
+        // Soltar objeto
         else if (Input.GetKeyDown(KeyCode.R) && _elementLevitated != null)
         {
             NoLevitate();
         }
-        //Ejecutar poder del arma
 
-        if (Input.GetKeyDown(KeyCode.Mouse0) || Input.GetKeyDown(KeyCode.Q) && CanWeaponChange)
+        // Manejo del objeto levitado
+        if (_elementLevitated != null)
+        {
+            HandleLevitatingObject();
+        }
+
+        if ((Input.GetKeyDown(KeyCode.Mouse0) || Input.GetKeyDown(KeyCode.Q)) && CanWeaponChange)
         {
             CanWeaponChange = false;
             _weaponSelected.GetComponent<IModules>().PowerElement();
         }
 
-        if (Input.GetKeyDown (KeyCode.Alpha1) && CanWeaponChange)
+        if (Input.GetKeyDown(KeyCode.Alpha1) && CanWeaponChange)
         {
             SelectModule(0);
         }
@@ -149,14 +172,59 @@ public class PlayerMovement : MonoBehaviour, IDamagiable
         }
     }
 
+    private void HandleLevitatingObject()
+    {
+        levitationOffset += Time.deltaTime * levitationFrequency;
+        float yOffset = Mathf.Sin(levitationOffset) * levitationAmplitude;
+
+        Vector3 targetPosition = _levitationPoint.position + new Vector3(0, yOffset, 0);
+
+        float minHeight = transform.position.y + levitationHeightRange.x;
+        float maxHeight = transform.position.y + levitationHeightRange.y;
+        targetPosition.y = Mathf.Clamp(targetPosition.y, minHeight, maxHeight);
+
+        Vector3 horizontalDirection = targetPosition - transform.position;
+        horizontalDirection.y = 0;
+
+        if (horizontalDirection.magnitude > maxDistanceFromPlayer)
+        {
+            horizontalDirection = horizontalDirection.normalized * maxDistanceFromPlayer;
+            targetPosition = transform.position + horizontalDirection;
+            targetPosition.y = Mathf.Clamp(targetPosition.y, minHeight, maxHeight);
+        }
+
+        _elementLevitated.transform.position = Vector3.Lerp(
+            _elementLevitated.transform.position,
+            targetPosition,
+            Time.deltaTime * 5f
+        );
+
+        if (levitationRotationSpeed > 0)
+        {
+            _elementLevitated.transform.Rotate(
+                Vector3.up,
+                levitationRotationSpeed * Time.deltaTime,
+                Space.World
+            );
+        }
+    }
+
     public void NoLevitate()
     {
         if (_elementLevitated == null) return;
-        _elementLevitated.GetComponent<Rigidbody>().isKinematic = false;
-        _elementLevitated.GetComponent<IPuzzlesElements>().Desactivate();
-        _elementLevitated.transform.parent = null;
+
+        Rigidbody rb = _elementLevitated.GetComponent<Rigidbody>();
+        if (rb != null)
+        {
+            rb.useGravity = true; // ACTIVA GRAVEDAD AL SOLTAR
+            rb.isKinematic = false;
+            rb.freezeRotation = false;
+        }
+
+        _elementLevitated.GetComponent<IPuzzlesElements>()?.Desactivate();
         _elementLevitated = null;
     }
+
     private void AddModules(Transform _position)
     {
         var myDriver = _elementDetected.GetComponent<IModules>();
@@ -167,7 +235,10 @@ public class PlayerMovement : MonoBehaviour, IDamagiable
         _weaponSelected.transform.parent = transform;
         _weaponSelected.transform.position = _position.position;
         _weaponSelected.transform.rotation = this.transform.rotation;
-        _weaponSelected.GetComponent<Rigidbody>().isKinematic = true;
+
+        Rigidbody rb = _weaponSelected.GetComponent<Rigidbody>();
+        if (rb != null) rb.isKinematic = true;
+
         SelectModule(_inventory.WeaponSelected);
         myDriver.Initialized(this);
     }
@@ -176,7 +247,7 @@ public class PlayerMovement : MonoBehaviour, IDamagiable
     {
         if (index > _inventory.MyItemsCount() - 1) return;
         _weaponSelected = _inventory.SelectWeapon(index);
-        _animatorBasic.animator = _inventory.MyCurrentAnimator(); //Asigna el animator
+        _animatorBasic.animator = _inventory.MyCurrentAnimator();
     }
 
     #region Detecciones
@@ -202,9 +273,9 @@ public class PlayerMovement : MonoBehaviour, IDamagiable
         Vector3 dir = obj.transform.position - transform.position;
         if (dir.magnitude < _viewRadius)
         {
-            if (Vector3.Angle(transform.forward, dir) < _viewAngle * 0.5f) //Field of View
+            if (Vector3.Angle(transform.forward, dir) < _viewAngle * 0.5f)
             {
-                if (!Physics.Raycast(transform.position, dir, out RaycastHit hit, _viewRadius, _wallLayer)) //Line of Sign
+                if (!Physics.Raycast(transform.position, dir, out RaycastHit hit, _viewRadius, _wallLayer))
                 {
                     Debug.DrawLine(transform.position, obj.transform.position, Color.magenta);
                     _elementDetected = obj;
@@ -220,6 +291,7 @@ public class PlayerMovement : MonoBehaviour, IDamagiable
         return false;
     }
     #endregion
+
     private void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.cyan;
@@ -232,7 +304,7 @@ public class PlayerMovement : MonoBehaviour, IDamagiable
         Gizmos.DrawLine(transform.position, transform.position + lineB * _viewRadius);
     }
 
-    #region LoDelAgus
+    #region Movement & Physics
     private void HandleTimers()
     {
         if (Controller.isGrounded)
@@ -271,8 +343,14 @@ public class PlayerMovement : MonoBehaviour, IDamagiable
     private Vector3 GetCameraRelativeDirection(float h, float v)
     {
         var cam = Camera.main.transform;
-        Vector3 f = cam.forward; f.y = 0; f.Normalize();
-        Vector3 r = cam.right; r.y = 0; r.Normalize();
+        Vector3 f = cam.forward;
+        f.y = 0;
+        f.Normalize();
+
+        Vector3 r = cam.right;
+        r.y = 0;
+        r.Normalize();
+
         return f * v + r * h;
     }
 
@@ -296,7 +374,9 @@ public class PlayerMovement : MonoBehaviour, IDamagiable
     {
         pct = (currentSpeed > 0f) ? (isSprinting ? 1f : walkAnimValueTransition) : 0f;
     }
+    #endregion
 
+    #region Health System
     public void Health(float health)
     {
         _currentHealth += health;
@@ -311,9 +391,8 @@ public class PlayerMovement : MonoBehaviour, IDamagiable
         _currentHealth -= damage;
         if (_currentHealth <= 0f)
         {
-            //Morir
+            // Morir
         }
     }
-
     #endregion
 }
