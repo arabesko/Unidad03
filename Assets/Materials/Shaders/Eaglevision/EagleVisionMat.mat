@@ -58,10 +58,12 @@ Material:
     - _QueueControl: 0
     - _QueueOffset: 0
     - _WaveFade: 0
-    - _WaveRadius: -1
+    - _WavePower: 1
+    - _WaveQuantity: 2
+    - _WaveRadius: 0
     - _WaveWidth: 2
     m_Colors:
-    - _Color: {r: 0, g: 0.7490196, b: 1, a: 0}
-    - _WaveCenter: {r: 27.1, g: 9.8, b: -16.6, a: 0}
+    - _Color: {r: 0, g: 1.7979794, b: 2, a: 0}
+    - _WaveCenter: {r: 23.6, g: 7.8, b: -19.6, a: 0}
     - _WaveColor: {r: 0, g: 0.8, b: 1, a: 0.7}
   m_BuildTextureStacks: []

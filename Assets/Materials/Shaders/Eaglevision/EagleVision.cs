@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.Rendering;
 
 public class EagleVision : MonoBehaviour
 {
@@ -8,31 +9,36 @@ public class EagleVision : MonoBehaviour
     [SerializeField] private float waveSpeed = 25f;
     [SerializeField] private float maxRadius = 150f;
     [SerializeField] private float fadeDuration = 2f;
-    [SerializeField] private Color waveColor = new Color(0, 0.8f, 1f, 0.7f);
     [SerializeField] private float waveWidth = 10f;
 
     [Header("Referencias")]
-    [SerializeField] private Material visionMaterial; // Material del shader de post-processing
+    [SerializeField] private Material visionMaterial; // Material para el efecto de onda expansiva
+    [SerializeField] private Volume globalVolume;     // Global Volume para efectos adicionales
+    [SerializeField] private float volumeIntensity = 1f;
+
+    [Header("Audio")]
+    [SerializeField] private AudioSource audioSource;
+    [SerializeField] private AudioClip activationSound; // Sonido cuando se activa todo
 
     [Header("Debug")]
     [SerializeField] private WaveState currentState = WaveState.Inactive;
 
     private float currentRadius;
     private float fadeTimer;
+    private float currentVolumeWeight;
 
     void Start()
     {
-        if (visionMaterial != null)
-        {
-            visionMaterial.SetColor("_WaveColor", waveColor);
-            visionMaterial.SetFloat("_WaveWidth", waveWidth);
-        }
+        currentRadius = -1;
+        currentVolumeWeight = 0f;
+
+        // Inicializar valores
+        UpdateGlobalVolume();
+        UpdateMaterial();
     }
 
     void Update()
     {
-        if (visionMaterial == null) return;
-
         switch (currentState)
         {
             case WaveState.Inactive:
@@ -47,6 +53,52 @@ public class EagleVision : MonoBehaviour
                 UpdateFading();
                 break;
         }
+
+        // Actualizar el volumen global gradualmente
+        if (globalVolume != null)
+        {
+            float targetWeight = (currentState != WaveState.Inactive) ? volumeIntensity : 0f;
+            currentVolumeWeight = Mathf.MoveTowards(currentVolumeWeight, targetWeight, Time.deltaTime * 2f);
+            globalVolume.weight = currentVolumeWeight;
+        }
+
+        // Actualizar el material siempre (para seguimiento del jugador)
+        UpdateMaterial();
+    }
+
+    void UpdateMaterial()
+    {
+        if (visionMaterial != null)
+        {
+            // Actualizar propiedades del material
+            visionMaterial.SetVector("_WaveCenter", transform.position);
+            visionMaterial.SetFloat("_WaveRadius", currentRadius);
+
+            // Calcular fade basado en el estado actual
+            float fadeValue = 0f;
+            switch (currentState)
+            {
+                case WaveState.Expanding:
+                    fadeValue = 1f;
+                    break;
+                case WaveState.Fading:
+                    fadeValue = Mathf.Clamp01(fadeTimer / fadeDuration);
+                    break;
+                default:
+                    fadeValue = 0f;
+                    break;
+            }
+
+            visionMaterial.SetFloat("_WaveFade", fadeValue);
+        }
+    }
+
+    void UpdateGlobalVolume()
+    {
+        if (globalVolume != null)
+        {
+            globalVolume.weight = currentVolumeWeight;
+        }
     }
 
     void ActivateVision()
@@ -54,14 +106,37 @@ public class EagleVision : MonoBehaviour
         currentState = WaveState.Expanding;
         currentRadius = 0.1f;
         fadeTimer = 0f;
+        currentVolumeWeight = 0f; // Empezar desde 0 para animar
 
-        visionMaterial.SetFloat("_WaveFade", 1f);
+        // Reproducir sonido de activación
+        PlayActivationSound();
+    }
+
+    // Método para reproducir el sonido de activación
+    void PlayActivationSound()
+    {
+        // Verificar que tenemos lo necesario para reproducir sonido
+        if (activationSound == null)
+        {
+            Debug.LogWarning("No hay sonido de activación asignado!");
+            return;
+        }
+
+        // Intentar reproducir con el AudioSource si está asignado
+        if (audioSource != null)
+        {
+            audioSource.PlayOneShot(activationSound);
+        }
+        else
+        {
+            // Si no hay AudioSource, reproducir en la posición del jugador
+            AudioSource.PlayClipAtPoint(activationSound, transform.position);
+        }
     }
 
     void UpdateExpansion()
     {
         currentRadius += waveSpeed * Time.deltaTime;
-        visionMaterial.SetFloat("_WaveRadius", currentRadius);
 
         if (currentRadius >= maxRadius)
         {
@@ -74,22 +149,50 @@ public class EagleVision : MonoBehaviour
     {
         fadeTimer -= Time.deltaTime;
         float fadeValue = Mathf.Clamp01(fadeTimer / fadeDuration);
-        visionMaterial.SetFloat("_WaveFade", fadeValue);
+
+        // Aplicar curva de desvanecimiento no lineal
+        float smoothFade = Mathf.SmoothStep(0f, 1f, fadeValue);
+
+        if (visionMaterial != null)
+        {
+            visionMaterial.SetFloat("_WaveFade", smoothFade);
+        }
+
+        if (globalVolume != null)
+        {
+            globalVolume.weight = smoothFade * volumeIntensity;
+        }
 
         if (fadeTimer <= 0)
         {
             currentState = WaveState.Inactive;
-            visionMaterial.SetFloat("_WaveRadius", -1);
+            currentRadius = -1;
+        }
+    }
+
+    // Para depuración en el editor
+    void OnValidate()
+    {
+        if (!Application.isPlaying)
+        {
+            UpdateGlobalVolume();
+            UpdateMaterial();
         }
     }
 
     void OnDestroy()
     {
-        // Resetear valores al salir
+        // Limpiar al salir
         if (visionMaterial != null)
         {
             visionMaterial.SetFloat("_WaveRadius", -1);
             visionMaterial.SetFloat("_WaveFade", 0);
         }
     }
+
+    // Métodos para acceder al estado actual (opcional para otros scripts)
+    public bool IsActive() => currentState != WaveState.Inactive;
+    public float GetCurrentRadius() => currentRadius;
+    public float GetCurrentFade() => currentState == WaveState.Fading ?
+                                    Mathf.Clamp01(fadeTimer / fadeDuration) : 1f;
 }
