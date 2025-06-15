@@ -5925,8 +5925,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c208d4f2a0672cc44b076ffeac9055e6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  visionMaterial: {fileID: 2100000, guid: b8e459a3d1bdcc54cbc7d0db87db89d0, type: 2}
-  mainCamera: {fileID: 1039987014}
 --- !u!1 &1071236108
 GameObject:
   m_ObjectHideFlags: 3
@@ -7413,55 +7411,6 @@ MonoBehaviour:
   Position: {x: 0, y: 0, z: 0}
   Materials: []
   InitialAlpha: 0
---- !u!1 &1732281623
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1732281625}
-  - component: {fileID: 1732281624}
-  m_Layer: 0
-  m_Name: GameObject
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1732281624
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1732281623}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b3a800d67dc8caf4bb526842d8a6ef07, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  noiseAmount: 1
-  glitchStrength: 1
-  scanLinesStrength: 1
-  glitchDuration: 5
-  mat: {fileID: 2100000, guid: 649e95c849ea62d4ca1ac4b995dfcb92, type: 2}
---- !u!4 &1732281625
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1732281623}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 21.988825, y: -18.679594, z: 27.10664}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1736372334
 GameObject:
   m_ObjectHideFlags: 3
@@ -8581,4 +8530,3 @@ SceneRoots:
   - {fileID: 166467856}
   - {fileID: 1538574000}
   - {fileID: 1843624528}
-  - {fileID: 1732281625}
